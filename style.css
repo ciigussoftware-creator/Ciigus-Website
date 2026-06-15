@@ -262,10 +262,33 @@ h1 .hl {
 
 .hero-stats {
   display: flex;
+  justify-content: space-between;
   gap: 3rem;
   margin-top: 4rem;
   padding-top: 2rem;
   border-top: 1px solid var(--border);
+  max-width: 720px;
+}
+
+.stat {
+  position: relative;
+  flex: 1;
+  padding-left: 2rem;
+}
+
+.stat:first-child {
+  padding-left: 0;
+}
+
+/* Vertical divider between stats */
+.stat:not(:first-child)::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.15rem;
+  bottom: 0.15rem;
+  width: 1px;
+  background: var(--border);
 }
 
 .stat-val {
@@ -854,7 +877,17 @@ footer {
   }
 
   .hero-stats {
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 1.5rem;
+    max-width: 100%;
+  }
+
+  .stat,
+  .stat:first-child {
+    padding-left: 0;
+  }
+
+  .stat:not(:first-child)::before {
+    display: none;
   }
 }
