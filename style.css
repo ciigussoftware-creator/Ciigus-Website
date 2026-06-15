@@ -350,19 +350,25 @@ section {
 /* Grid using thin borders as dividers */
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.5px;
   background: var(--border);
   margin-top: 4rem;
   border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
 }
 
 .service-card {
   background: var(--bg);
   padding: 2.5rem 2rem;
-  transition: background var(--transition);
+  transition: background var(--transition), transform var(--transition);
   position: relative;
   overflow: hidden;
+}
+
+.service-card:hover {
+  transform: translateY(-2px);
 }
 
 /* Animated bottom accent line on hover */
@@ -414,9 +420,22 @@ section {
 }
 
 /* ─── 7. Process ───────────────────────────── */
+.process-section {
+  text-align: center;
+}
+
+.process-section .section-label,
+.process-section .section-title {
+  text-align: center;
+}
+
 .process-wrap {
   margin-top: 4rem;
   position: relative;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
 }
 
 /* Vertical connecting line */
@@ -506,6 +525,7 @@ section {
 .work-img--blue   { background: linear-gradient(135deg, #0a1628, #1a2e4a); }
 .work-img--green  { background: linear-gradient(135deg, #0a1a0a, #1a3a1a); }
 .work-img--purple { background: linear-gradient(135deg, #1a0a28, #2d1a4a); }
+.work-img--amber  { background: linear-gradient(135deg, #2a1a05, #4a2e0a); }
 
 /* Add a screenshot by replacing the emoji with:
    <img src="images/project-name.jpg" alt="Project Name" style="width:100%;height:100%;object-fit:cover;"/>
@@ -767,6 +787,14 @@ footer {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
+
+/* ─── 14a. Tablet ──────────────────────────── */
+@media (max-width: 900px) {
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 
 /* ─── 14. Responsive ───────────────────────── */
 @media (max-width: 768px) {
