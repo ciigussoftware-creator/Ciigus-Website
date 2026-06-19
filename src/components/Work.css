@@ -1,0 +1,87 @@
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 4rem;
+}
+
+.work-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: transform var(--transition), border-color var(--transition);
+}
+
+.work-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(54, 201, 138, 0.4);
+}
+
+.work-img {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+}
+
+/* Per-project banner gradients (logo-tinted) */
+.work-img--blue   { background: linear-gradient(135deg, #07182a, #103a52); }
+.work-img--green  { background: linear-gradient(135deg, #0a1f14, #154a31); }
+.work-img--purple { background: linear-gradient(135deg, #0a1a28, #1a3a4a); }
+
+.work-body {
+  padding: 1.5rem;
+}
+
+.work-tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent2);
+  background: rgba(54, 201, 138, 0.1);
+  padding: 0.2rem 0.7rem;
+  border-radius: 4px;
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+}
+
+.work-title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.work-desc {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.work-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot--done   { background: var(--green); }
+.status-dot--active { background: #f59e0b; animation: pulse 1.5s infinite; }
+
+@media (max-width: 768px) {
+  .work-grid {
+    grid-template-columns: 1fr;
+  }
+}

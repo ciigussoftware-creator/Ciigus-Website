@@ -1,0 +1,26 @@
+.logo-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* The logo PNG has a transparent/black background.
+   This keeps the mark crisp on the dark UI. */
+.logo-img {
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.logo-text {
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: -0.5px;
+  color: var(--text);
+  line-height: 1;
+}
+
+.logo-text-accent {
+  color: var(--accent);
+}

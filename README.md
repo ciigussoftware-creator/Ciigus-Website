@@ -1,68 +1,98 @@
-# Ciigus Website
+# Ciigus Software — React Website
 
-Plain HTML/CSS/JS — no build tools, no dependencies. Open `index.html` in a browser and it works.
+The Ciigus marketing site, rebuilt with **React + Vite**. Component-based,
+content-driven, and styled with the brand colors pulled directly from the
+Ciigus logo (green gear + cyan/blue "C").
 
-## File Structure
+## Quick Start
+
+You need [Node.js](https://nodejs.org) 18+ installed.
+
+```bash
+npm install      # install dependencies
+npm run dev      # start dev server → http://localhost:5173
+npm run build    # production build → dist/
+npm run preview  # preview the production build locally
+```
+
+## Project Structure
 
 ```
 ciigus-website/
-├── index.html     ← All page content and sections
-├── style.css      ← All styles and responsive rules
-├── main.js        ← Navigation, form handling
-└── images/        ← Create this folder for project screenshots
+├── index.html                 ← HTML shell (fonts, root div)
+├── package.json
+├── vite.config.js
+├── public/
+│   ├── favicon.png            ← browser tab icon (logo mark)
+│   ├── logo-mark.png          ← gear + C symbol only
+│   └── logo-full.png          ← full logo (symbol + wordmark)
+└── src/
+    ├── main.jsx               ← React entry point
+    ├── App.jsx                ← assembles all sections
+    ├── index.css              ← global styles + CSS color variables
+    ├── assets/
+    │   ├── logo-mark.png
+    │   └── logo-full.png
+    ├── data/
+    │   └── content.js         ← ALL editable text/content lives here
+    └── components/
+        ├── Navbar.jsx / .css
+        ├── Logo.jsx  / .css
+        ├── Hero.jsx  / .css
+        ├── Marquee.jsx / .css
+        ├── Services.jsx / .css
+        ├── Process.jsx / .css
+        ├── Work.jsx / .css
+        ├── About.jsx / .css
+        ├── Contact.jsx / .css
+        └── Footer.jsx / .css
 ```
 
-## How to Edit
+## Editing Content
 
-### Change Colors
-Open `style.css` and edit the variables at the top inside `:root { }`:
-- `--accent` → main blue highlight (default: #3b82f6)
-- `--bg` → page background (default: #04070f)
-- `--text` → primary text color (default: #f0f4ff)
+Almost everything you'll want to change — services, portfolio items, process
+steps, team roles, stats, contact email/WhatsApp — lives in one file:
 
-### Update Contact Info
-In `index.html`, search for `hello@ciigus.com` and `94000000000` and replace with your real email and WhatsApp number.
+**`src/data/content.js`**
 
-### Add a Project to the Portfolio
-Copy one of the `.work-card` blocks in `index.html` and paste it inside `.work-grid`. Update:
-- `.work-img` class → `work-img--blue`, `work-img--green`, or `work-img--purple`
-- Emoji or replace with a real screenshot (see below)
-- `.work-tag` → category label
-- `.work-title` → project name
-- `.work-desc` → description
-- `.status-dot` class → `status-dot--done` or `status-dot--active`
+For example, to add a new service, add an object to the `services` array.
+To update contact info, edit the `contact` object at the bottom.
 
-### Add a Real Screenshot to a Work Card
-1. Put your image in an `images/` folder
-2. Replace the emoji inside `.work-img` with:
-   ```html
-   <img src="images/your-project.jpg" alt="Project Name" style="width:100%;height:100%;object-fit:cover;"/>
-   ```
-3. Remove `font-size: 3rem` from that `.work-img` element or add `font-size:0` inline.
+## Changing Colors
 
-### Update Stats in the Hero
-Search for `.stat-val` in `index.html` and update the numbers and labels.
+All colors are CSS variables at the top of **`src/index.css`** inside `:root`.
+The brand colors are derived from the logo:
 
-### Wire Up the Contact Form
-The form currently shows a browser alert. To make it actually send emails:
+- `--accent`  → cyan/blue (the "C")
+- `--accent2` → green (the gear)
+- `--green`   → bright leaf-green highlight
+- `--brand-grad` → the green→cyan gradient used on buttons & highlights
 
-**Easiest (Formspree):**
-1. Sign up at https://formspree.io
-2. Create a new form and copy the endpoint URL
-3. Replace `action="#"` on the `<form>` tag in `index.html` with your Formspree URL
-4. Remove the `contactForm.addEventListener` block from `main.js`
+## Logo
+
+Two cropped, transparent-background versions of the logo are included:
+
+- **Mark** (`logo-mark.png`) — gear + C symbol, used in the navbar.
+- **Full** (`logo-full.png`) — symbol + "Ciigus Software" wordmark, used in the footer.
+
+The `<Logo />` component (`src/components/Logo.jsx`) renders either via the
+`variant="mark"` or `variant="full"` prop.
+
+## Wiring Up the Contact Form
+
+The form in `src/components/Contact.jsx` currently shows a success message
+on submit. To actually send messages, the easiest option is **Formspree**:
+
+1. Create a form at https://formspree.io and copy the endpoint URL.
+2. In `Contact.jsx`'s `handleSubmit`, POST the `form` state to that URL
+   (an example `fetch` call is included as a comment).
 
 ## Deployment
 
-**Netlify (recommended — free):**
-1. Go to https://netlify.com
-2. Drag and drop this entire folder onto their deploy page
-3. Done — live in seconds. Custom domain available in settings.
+**Vercel / Netlify (recommended):**
+Push to a GitHub repo and import it — both auto-detect Vite.
+Build command: `npm run build` · Output directory: `dist`
 
-**Vercel:**
-1. Push this folder to a GitHub repo
-2. Connect the repo to https://vercel.com
-3. It auto-deploys on every push.
-
-**cPanel / local Sri Lanka hosting:**
-Upload all three files via File Manager or FTP to your `public_html` folder.
+**Manual / cPanel:**
+Run `npm run build`, then upload the contents of the `dist/` folder
+to your `public_html`.
