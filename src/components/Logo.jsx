@@ -1,6 +1,5 @@
 import markLogo from '../assets/logo-mark.png'
 import fullLogo from '../assets/logo-full.png'
-import './Logo.css'
 
 /*
   Logo component.
@@ -15,25 +14,26 @@ export default function Logo({ variant = 'mark', size = 36, showText = true }) {
       <img
         src={fullLogo}
         alt="Ciigus Software"
-        className="logo-img logo-full"
+        className="w-auto block object-contain"
         style={{ height: size }}
       />
     )
   }
 
   return (
-    <span className="logo-wrap">
+    <span className="inline-flex items-center gap-2">
       <img
         src={markLogo}
         alt="Ciigus Software"
-        className="logo-img"
+        className="w-auto block object-contain"
         style={{ height: size }}
       />
       {showText && (
-        <span className="logo-text">
-          Cii<span className="logo-text-accent">gus</span>
+        <span className="font-head font-extrabold text-[1.4rem] tracking-[-0.5px] text-text leading-none">
+          Cii<span className="text-accent">gus</span>
         </span>
       )}
     </span>
   )
 }
+
