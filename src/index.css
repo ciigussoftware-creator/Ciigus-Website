@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #04070f;
+  --color-surface: #0b1120;
+  --color-surface2: #111827;
+  --color-border: #1e2d45;
+  --color-accent: #1e9bd7;
+  --color-accent-d: #1580ba;
+  --color-accent2: #36c98a;
+  --color-green: #5bd17a;
+  --color-text: #f0f4ff;
+  --color-muted: #8899bb;
+  --color-faint: #1a2540;
+
+  --font-head: 'Syne', sans-serif;
+  --font-body: 'DM Sans', sans-serif;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  --animate-scroll: scroll 22s linear infinite;
+  --animate-pulse-slow: pulse-animation 2s infinite;
+  --animate-pulse-fast: pulse-animation 1.5s infinite;
+}
+
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes pulse-animation {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+/* ─── Base Styles ──────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* ─── Global Tailwind Utilities ────────────── */
+@utility section-alt {
+  @apply bg-surface border-t border-b border-border;
+}
+
+@utility section-label {
+  @apply text-[0.78rem] uppercase tracking-[0.12em] text-accent2 font-medium mb-4;
+}
+
+@utility section-title {
+  @apply font-head text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-[-1px] leading-[1.15] mb-4;
+}
+
+@utility section-sub {
+  @apply text-muted max-w-130 font-light;
+}
+
+@utility btn-primary {
+  @apply inline-block bg-linear-to-br from-green to-accent text-[#03130d] py-3 px-8 rounded-sm font-semibold text-[0.95rem] transition-all duration-200 ease-in-out text-center cursor-pointer border-none hover:brightness-108 hover:-translate-y-px;
+}
+
+@utility btn-outline {
+  @apply inline-block border border-border text-muted py-3 px-8 rounded-sm font-medium text-[0.95rem] transition-all duration-200 ease-in-out hover:border-accent2 hover:text-text;
+}
