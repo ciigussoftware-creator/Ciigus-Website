@@ -1,32 +1,17 @@
-/* ═══════════════════════════════════════════════
-   CIIGUS SOFTWARE — index.css (global styles)
-   ═══════════════════════════════════════════════
+@import "tailwindcss";
 
-   Color palette derived from the Ciigus logo:
-   - Green gear  → --accent2 / --green
-   - Cyan/Blue C → --accent  (primary)
-   The dark UI base is kept from the original site.
-
-   TO CHANGE THE COLOR SCHEME:
-   Edit the variables in :root below.
-═══════════════════════════════════════════════ */
-
-/* ─── 1. CSS Variables ─────────────────────── */
-:root {
-  --bg:        #04070f;       /* page background */
-  --surface:   #0b1120;       /* card / section background */
-  --surface2:  #111827;       /* slightly lighter surface */
-  --border:    #1e2d45;       /* border color */
-
-  /* Brand colors pulled from the logo */
-  --accent:    #1e9bd7;       /* primary — the cyan/blue "C" */
-  --accent-d:  #1580ba;       /* darker hover state of accent */
-  --accent2:   #36c98a;       /* secondary — the green gear */
-  --green:     #5bd17a;       /* bright leaf green highlight */
-
-  --text:      #f0f4ff;       /* primary text */
-  --muted:     #8899bb;       /* secondary / muted text */
-  --faint:     #1a2540;       /* very faint background */
+@theme {
+  --color-bg: #04070f;
+  --color-surface: #0b1120;
+  --color-surface2: #111827;
+  --color-border: #1e2d45;
+  --color-accent: #1e9bd7;
+  --color-accent-d: #1580ba;
+  --color-accent2: #36c98a;
+  --color-green: #5bd17a;
+  --color-text: #f0f4ff;
+  --color-muted: #8899bb;
+  --color-faint: #1a2540;
 
   --font-head: 'Syne', sans-serif;
   --font-body: 'DM Sans', sans-serif;
@@ -35,26 +20,29 @@
   --radius-md: 10px;
   --radius-lg: 14px;
 
-  --transition: 0.2s ease;
-
-  /* Reusable brand gradient */
-  --brand-grad: linear-gradient(135deg, var(--green), var(--accent));
+  --animate-scroll: scroll 22s linear infinite;
+  --animate-pulse-slow: pulse-animation 2s infinite;
+  --animate-pulse-fast: pulse-animation 1.5s infinite;
 }
 
-/* ─── 2. Reset & Base ──────────────────────── */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+@keyframes scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
+@keyframes pulse-animation {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+/* ─── Base Styles ──────────────────────────── */
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background: var(--bg);
-  color: var(--text);
+  background-color: var(--color-bg);
+  color: var(--color-text);
   font-family: var(--font-body);
   font-size: 16px;
   line-height: 1.7;
@@ -75,93 +63,27 @@ button {
   font-family: inherit;
 }
 
-/* ─── Section base ─────────────────────────── */
-section {
-  padding: 6rem 2.5rem;
+/* ─── Global Tailwind Utilities ────────────── */
+@utility section-alt {
+  @apply bg-surface border-t border-b border-border;
 }
 
-.section-alt {
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+@utility section-label {
+  @apply text-[0.78rem] uppercase tracking-[0.12em] text-accent2 font-medium mb-4;
 }
 
-.section-label {
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--accent2);
-  font-weight: 500;
-  margin-bottom: 1rem;
+@utility section-title {
+  @apply font-head text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-[-1px] leading-[1.15] mb-4;
 }
 
-.section-title {
-  font-family: var(--font-head);
-  font-size: clamp(1.8rem, 4vw, 2.8rem);
-  font-weight: 700;
-  letter-spacing: -1px;
-  line-height: 1.15;
-  margin-bottom: 1rem;
+@utility section-sub {
+  @apply text-muted max-w-130 font-light;
 }
 
-.section-sub {
-  color: var(--muted);
-  max-width: 520px;
-  font-weight: 300;
+@utility btn-primary {
+  @apply inline-block bg-linear-to-br from-green to-accent text-[#03130d] py-3 px-8 rounded-sm font-semibold text-[0.95rem] transition-all duration-200 ease-in-out text-center cursor-pointer border-none hover:brightness-108 hover:-translate-y-px;
 }
 
-/* ─── Buttons ──────────────────────────────── */
-.btn-primary {
-  display: inline-block;
-  background: var(--brand-grad);
-  color: #03130d;
-  padding: 0.75rem 2rem;
-  border-radius: var(--radius-sm);
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: filter var(--transition), transform var(--transition);
-  border: none;
-  text-align: center;
-  cursor: pointer;
-}
-
-.btn-primary:hover {
-  filter: brightness(1.08);
-  transform: translateY(-1px);
-}
-
-.btn-outline {
-  display: inline-block;
-  border: 1px solid var(--border);
-  color: var(--muted);
-  padding: 0.75rem 2rem;
-  border-radius: var(--radius-sm);
-  font-weight: 500;
-  font-size: 0.95rem;
-  transition: border-color var(--transition), color var(--transition);
-}
-
-.btn-outline:hover {
-  border-color: var(--accent2);
-  color: var(--text);
-}
-
-/* ─── Animations ───────────────────────────── */
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.3; }
-}
-
-@keyframes scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-/* ─── Responsive base ──────────────────────── */
-@media (max-width: 768px) {
-  section,
-  .section-alt,
-  .cta-section {
-    padding: 4rem 1.2rem;
-  }
+@utility btn-outline {
+  @apply inline-block border border-border text-muted py-3 px-8 rounded-sm font-medium text-[0.95rem] transition-all duration-200 ease-in-out hover:border-accent2 hover:text-text;
 }
