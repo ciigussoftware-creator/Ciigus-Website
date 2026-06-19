@@ -9,7 +9,7 @@ export default function About() {
       </h2>
       <p className="section-sub">
         We're a team of developers, QA engineers, business analysts, and project
-        managers — many of us fresh graduates — building professional-grade
+        managers - many of us fresh graduates - building professional-grade
         software and growing together toward a shared vision.
       </p>
 

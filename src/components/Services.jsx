@@ -9,7 +9,7 @@ export default function Services() {
       </h2>
       <p className="section-sub">
         From a simple business website to a full-scale industry management
-        system — we design, build, and support it all.
+        system - we design, build, and support it all.
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-[1.5px] bg-border mt-16 border border-border">

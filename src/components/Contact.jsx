@@ -53,7 +53,7 @@ export default function Contact() {
         </h2>
         <p className="section-sub mx-auto">
           Tell us about your project. Whether you have a clear brief or just an
-          idea — we'll help you figure out the path forward.
+          idea - we'll help you figure out the path forward.
         </p>
 
         <form

@@ -22,8 +22,8 @@ export default function Hero() {
       </h1>
 
       <p className="text-[1.1rem] text-muted max-w-130 mb-10 font-light leading-[1.7]">
-        Ciigus develops modern digital products — from restaurant systems to
-        enterprise management platforms — for businesses ready to grow.
+        Ciigus develops modern digital products - from restaurant systems to
+        enterprise management platforms - for businesses ready to grow.
       </p>
 
       <div className="flex gap-4 flex-wrap max-[480px]:flex-col">
