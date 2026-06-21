@@ -3,8 +3,6 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { marqueeItems } from '../data/content'
 
-gsap.registerPlugin(useGSAP)
-
 export default function Marquee() {
   const containerRef = useRef(null)
   const trackRef = useRef(null)
