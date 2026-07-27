@@ -85,7 +85,7 @@ export default function Hero() {
   return (
     <section
       ref={sectionRef}
-      className="h-screen flex flex-col justify-center pt-20 pb-10 px-10 md:pt-16 md:pb-8 md:px-[1.2rem] relative overflow-clip"
+      className="min-h-screen flex flex-col justify-center pt-16 pb-8 px-10 md:pt-14 md:pb-6 md:px-[1.2rem] relative overflow-clip"
       style={{
         backgroundImage:
           'radial-gradient(ellipse 60% 50% at 70% 30%, rgba(30, 155, 215, 0.10) 0%, transparent 70%), radial-gradient(ellipse 50% 50% at 25% 60%, rgba(54, 201, 138, 0.08) 0%, transparent 70%)',
@@ -101,8 +101,8 @@ export default function Hero() {
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)',
-          width: '250vh',
-          height: '250vh',
+          width: '180vh',
+          height: '180vh',
           opacity: 0.8,
         }}
       >
@@ -113,18 +113,16 @@ export default function Hero() {
 
       {/* Hero text content — above the orb */}
       <div className="relative z-10">
-        <div data-hero="badge" className="inline-flex items-center gap-2 bg-accent2/10 border border-accent2/25 rounded-full py-[0.35rem] px-4 text-[0.8rem] text-green mb-[1.8rem] w-fit">
+        <div data-hero="badge" className="inline-flex items-center gap-2 bg-accent2/10 border border-accent2/25 rounded-full py-[0.35rem] px-4 text-[0.8rem] text-green mb-3 w-fit">
           <span className="w-1.5 h-1.5 rounded-full bg-green animate-pulse-slow" />
           🇱🇰 Based in Sri Lanka · Building Globally
         </div>
 
-        <h1 data-hero="heading" className="font-head text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[1.08] tracking-[-2px] md:tracking-[-1px] max-w-205 mb-6">
-          We build software<br />
-          that moves <span className="bg-linear-to-br from-green to-accent bg-clip-text text-transparent">businesses</span><br />
-          forward.
+        <h1 data-hero="heading" className="font-head text-[clamp(2.2rem,6.5vh,5rem)] font-extrabold leading-[1.05] tracking-[-2px] md:tracking-[-1px] max-w-205 mb-2">
+          We build software that moves <span className="bg-linear-to-br from-green to-accent bg-clip-text text-transparent">businesses</span> forward.
         </h1>
 
-        <p data-hero="desc" className="text-[1.1rem] text-muted max-w-130 mb-10 font-light leading-[1.7]">
+        <p data-hero="desc" className="text-[1.05rem] text-muted max-w-130 mb-4 font-light leading-[1.6]">
           Ciigus develops modern digital products - from restaurant systems to
           enterprise management platforms - for businesses ready to grow.
         </p>
@@ -134,7 +132,7 @@ export default function Hero() {
           <a className="btn-outline" href="#work">See Our Work</a>
         </div>
 
-        <div data-hero="stats" className="flex gap-12 md:gap-8 max-[480px]:flex-wrap max-[480px]:gap-6 mt-16 pt-8 border-t border-border">
+        <div data-hero="stats" className="flex gap-12 md:gap-8 max-[480px]:flex-wrap max-[480px]:gap-6 mt-4 pt-3 border-t border-border">
           {stats.map((s) => (
             <div key={s.lbl}>
               <CounterStat value={s.val} />

@@ -205,15 +205,15 @@ function ParticleSystem() {
       0.05
     )
 
-    // ── Rotation: gentle oscillation + cursor tracking ──
+    // ── Rotation: continuous 360° spin + cursor tracking ──
     const group = meshRef.current
 
-    // Slow Y oscillation (±25°) so logo stays mostly front-facing
-    const oscillation = Math.sin(t * 0.2) * 0.44 // ~25 degrees
+    // Slow continuous Y rotation (full 360°)
+    const baseY = t * 0.12 // ~52 seconds per full revolution
 
     // Cursor-driven tilt (subtle)
     const targetRotX = mouseRef.current.y * 0.1
-    const targetRotY = oscillation + mouseRef.current.x * 0.12
+    const targetRotY = baseY + mouseRef.current.x * 0.12
 
     group.rotation.x = THREE.MathUtils.lerp(group.rotation.x, targetRotX, 0.03)
     group.rotation.y = THREE.MathUtils.lerp(group.rotation.y, targetRotY, 0.03)
