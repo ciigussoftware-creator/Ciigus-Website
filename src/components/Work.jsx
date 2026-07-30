@@ -96,12 +96,12 @@ export default function Work() {
       <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-6 mt-16">
         {workItems.map((item, i) => (
           <div
-            className="bg-surface border border-border rounded-lg overflow-hidden transition-all duration-200 ease-in-out hover:-translate-y-1 hover:border-accent2/40"
+            className="group bg-surface border border-border rounded-lg overflow-hidden transition-all duration-200 ease-in-out hover:-translate-y-1.5 hover:border-accent2/40 hover:shadow-[0_16px_40px_-16px_rgba(30,155,215,0.35)]"
             key={i}
             ref={(el) => (cardsRef.current[i] = el)}
           >
             <div
-              className={`h-45 flex items-center justify-center text-[3rem] ${
+              className={`h-45 flex items-center justify-center text-[3rem] overflow-hidden ${
                 item.variant === 'blue'
                   ? 'bg-linear-to-br from-[#07182a] to-[#103a52]'
                   : item.variant === 'green'
@@ -109,7 +109,12 @@ export default function Work() {
                   : 'bg-linear-to-br from-[#0a1a28] to-[#1a3a4a]'
               }`}
             >
-              <span ref={(el) => (emojisRef.current[i] = el)}>{item.emoji}</span>
+              <span
+                className="inline-block transition-transform duration-300 ease-in-out group-hover:scale-115 group-hover:-rotate-3"
+                ref={(el) => (emojisRef.current[i] = el)}
+              >
+                {item.emoji}
+              </span>
             </div>
             <div className="p-6">
               <div

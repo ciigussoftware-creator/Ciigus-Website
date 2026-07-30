@@ -30,7 +30,6 @@ export default function Services() {
       // Service cards stagger in
       gsap.from(cardsRef.current, {
         y: 60,
-        opacity: 0,
         duration: 0.6,
         stagger: 0.12,
         ease: 'power3.out',
@@ -72,15 +71,15 @@ export default function Services() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-[1.5px] bg-border mt-16 border border-border">
+      <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-[1.5px] mt-16">
         {services.map((svc, i) => (
           <div
-            className="bg-bg py-10 px-4 transition-colors duration-200 ease-in-out relative overflow-hidden after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-linear-to-br after:from-green after:to-accent after:scale-x-0 after:origin-left after:transition-transform after:duration-300 after:ease-out hover:bg-surface hover:after:scale-x-100"
+            className="group bg-bg border border-border py-10 px-4 transition-[background-color,transform] duration-200 ease-in-out relative overflow-hidden after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-linear-to-br after:from-green after:to-accent after:scale-x-0 after:origin-left after:transition-transform after:duration-300 after:ease-out hover:bg-surface hover:-translate-y-1 hover:after:scale-x-100"
             key={svc.title}
             ref={(el) => (cardsRef.current[i] = el)}
           >
             <div
-              className="w-11 h-11 rounded-md bg-accent2/10 border border-accent2/20 flex items-center justify-center mb-6 text-[1.2rem]"
+              className="w-11 h-11 rounded-md bg-accent2/15 border border-accent2/30 flex items-center justify-center mb-6 text-[1.2rem] transition-transform duration-200 ease-in-out group-hover:scale-110 group-hover:-rotate-6"
               ref={(el) => (iconsRef.current[i] = el)}
             >
               {svc.icon}
