@@ -30,7 +30,7 @@ export default function Navbar() {
         className="fixed top-0 left-0 right-0 z-100 flex items-center justify-between py-[0.85rem] px-10 md:px-[1.2rem] bg-bg/85 backdrop-blur-md border-b border-border transition-all duration-200 ease-in-out"
       >
         <a href="#home" className="inline-flex items-center" onClick={closeMenu}>
-          <Logo variant="mark" size={34} showText />
+          <Logo variant="mark" size={40} showText />
         </a>
 
         <div className="hidden md:flex gap-8 text-[0.9rem] text-muted">
@@ -48,7 +48,7 @@ export default function Navbar() {
         </div>
 
         <a
-          className="hidden md:inline-block bg-linear-to-br from-green to-accent text-[#03130d] py-[0.55rem] px-[1.3rem] rounded-sm text-[0.9rem] font-semibold transition-all duration-200 ease-in-out hover:brightness-108 hover:-translate-y-px"
+          className="hidden md:inline-block bg-linear-to-br from-green to-accent text-[#03130d] py-[0.55rem] px-[1.3rem] rounded-sm text-[0.9rem] font-semibold transition-all duration-200 ease-in-out hover:brightness-108 hover:-translate-y-px hover:scale-[1.03] active:scale-[0.98]"
           href="#contact"
         >
           Start a Project

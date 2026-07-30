@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { contact } from '../data/content'
+import FadeUp from './FadeUp'
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', contact: '', message: '' })
@@ -47,16 +48,20 @@ export default function Contact() {
       id="contact"
     >
       <div className="max-w-170 mx-auto text-center">
-        <div className="section-label">Get In Touch</div>
-        <h2 className="section-title">
-          Let's build something<br />great together.
-        </h2>
-        <p className="section-sub mx-auto">
-          Tell us about your project. Whether you have a clear brief or just an
-          idea - we'll help you figure out the path forward.
-        </p>
+        <FadeUp>
+          <div className="section-label">Get In Touch</div>
+          <h2 className="section-title">
+            Let's build something<br />great together.
+          </h2>
+          <p className="section-sub mx-auto">
+            Tell us about your project. Whether you have a clear brief or just an
+            idea - we'll help you figure out the path forward.
+          </p>
+        </FadeUp>
 
-        <form
+        <FadeUp
+          as="form"
+          delay={0.15}
           className="flex flex-col gap-4 mt-10 text-left max-w-120 mx-auto"
           onSubmit={handleSubmit}
         >
@@ -97,24 +102,24 @@ export default function Contact() {
               Thanks! We'll get back to you soon. ✅
             </p>
           )}
-        </form>
+        </FadeUp>
 
-        <div className="flex justify-center gap-8 mt-10 flex-wrap">
+        <FadeUp delay={0.25} className="flex justify-center gap-8 mt-10 flex-wrap">
           <a
-            className="flex items-center gap-2 text-[0.9rem] text-muted transition-colors duration-200 ease-in-out hover:text-accent2"
+            className="flex items-center gap-2 text-[0.9rem] text-muted transition-all duration-200 ease-in-out hover:text-accent2 hover:-translate-y-0.5"
             href={`mailto:${contact.email}`}
           >
             ✉️ {contact.email}
           </a>
           <a
-            className="flex items-center gap-2 text-[0.9rem] text-muted transition-colors duration-200 ease-in-out hover:text-accent2"
+            className="flex items-center gap-2 text-[0.9rem] text-muted transition-all duration-200 ease-in-out hover:text-accent2 hover:-translate-y-0.5"
             href={`https://wa.me/${contact.whatsapp}`}
             target="_blank"
             rel="noopener noreferrer"
           >
             💬 WhatsApp
           </a>
-        </div>
+        </FadeUp>
       </div>
     </section>
   )
