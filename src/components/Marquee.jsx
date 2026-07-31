@@ -11,18 +11,13 @@ export default function Marquee() {
   const items = [...marqueeItems, ...marqueeItems]
 
   useGSAP(() => {
-    const track = trackRef.current
-    // Measure half the track (one full set of items)
-    const halfWidth = track.scrollWidth / 2
-
-    gsap.to(track, {
-      x: -halfWidth,
+    // items are duplicated, so -50% of the track's own width is exactly
+    // one full set — the loop point lines up seamlessly on repeat.
+    gsap.to(trackRef.current, {
+      xPercent: -50,
       duration: 30,
       ease: 'none',
       repeat: -1,
-      modifiers: {
-        x: gsap.utils.unitize(x => parseFloat(x) % halfWidth),
-      },
     })
   }, { scope: containerRef })
 
