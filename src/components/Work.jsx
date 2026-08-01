@@ -16,7 +16,6 @@ const MAX_VISIBLE = 3
 
 export default function Work() {
   const sectionRef = useRef(null)
-  const headerRef = useRef(null)
   const pinRef = useRef(null)
   const cardsRef = useRef([])
   const navListRef = useRef([])
@@ -29,7 +28,9 @@ export default function Work() {
     if (!n) return
 
     const ctx = gsap.context(() => {
-      gsap.from(headerRef.current.children, {
+      // targets both the mobile and desktop header instances — only the
+      // one actually visible at the current breakpoint renders the motion
+      gsap.from('[data-work-header]', {
         y: 30,
         opacity: 0,
         duration: 0.7,
@@ -47,7 +48,20 @@ export default function Work() {
         y: Math.min(offset, MAX_VISIBLE) * 14,
         scale: 1 - Math.min(offset, MAX_VISIBLE) * 0.05,
         opacity: offset > MAX_VISIBLE ? 0 : 1,
-        zIndex: n - offset,
+        zIndex: (n - offset) * 10,
+        rotate: 0,
+      })
+
+      // Cards already viewed collapse behind the active card, peeking out
+      // from the top by a fixed amount — depth doesn't grow with how many
+      // cards have been passed, so the header only needs a small, fixed
+      // clearance above the stack instead of scaling with card count.
+      const pastPosition = (layer) => ({
+        x: 0,
+        y: -20,
+        scale: 0.95,
+        opacity: 1,
+        zIndex: n * 10 - layer,
         rotate: 0,
       })
 
@@ -75,10 +89,15 @@ export default function Work() {
         scrollTrigger: {
           trigger: pinRef.current,
           start: 'top top',
-          end: () => `+=${(n - 1) * window.innerHeight * 0.9}`,
-          scrub: 1,
+          end: () => `+=${(n - 1) * window.innerHeight * 0.5}`,
+          scrub: 0.4,
           pin: true,
           anticipatePin: 1,
+          snap: {
+            snapTo: 1 / (n - 1),
+            duration: 0.4,
+            ease: 'power1.inOut',
+          },
           onUpdate: (self) => {
             const idx = Math.min(n - 1, Math.round(self.progress * (n - 1)))
             setActiveNav(idx)
@@ -87,13 +106,18 @@ export default function Work() {
       })
 
       for (let k = 0; k < n - 1; k++) {
-        tl.to(
-          cards[k],
-          { y: '-=420', x: '+=30', rotate: -6, scale: 0.92, opacity: 0, duration: 1, ease: 'power2.inOut' },
-          k
-        )
+        // the outgoing active card becomes the newest past card
+        tl.to(cards[k], { ...pastPosition(1), duration: 0.4, ease: 'power2.inOut' }, k)
+
+        // cards already in the past pile shift one layer further back
+        for (let m = 0; m < k; m++) {
+          const newLayer = k - m + 1
+          tl.to(cards[m], { ...pastPosition(newLayer), duration: 0.4, ease: 'power2.out' }, k)
+        }
+
+        // upcoming cards advance toward the front
         for (let j = k + 1; j < n; j++) {
-          tl.to(cards[j], { ...stackPosition(j - (k + 1)), duration: 1, ease: 'power2.out' }, k)
+          tl.to(cards[j], { ...stackPosition(j - (k + 1)), duration: 0.4, ease: 'power2.out' }, k)
         }
       }
     }, sectionRef)
@@ -105,14 +129,27 @@ export default function Work() {
     <section id="work" className="relative" ref={sectionRef}>
       <div
         ref={pinRef}
-        className="relative h-screen w-full flex flex-col px-5 sm:px-8 md:px-10 pt-24 pb-6 md:pt-20 md:pb-8 overflow-hidden"
+        className="relative h-screen w-full flex flex-col px-8 md:px-10 pt-24 md:pt-20 pb-6 md:pb-8 overflow-hidden"
       >
-        <div ref={headerRef} className="shrink-0 max-w-xl text-left mb-4 md:mb-6">
-          <div className="section-label">Recent Work</div>
-          <h2 className="section-title !text-[clamp(1.4rem,3vw,2.2rem)] !mb-2 md:!mb-3">
+        {/* mobile: compact header, small fixed gap above the card stack */}
+        <div className="md:hidden shrink-0 max-w-xl text-left mb-8">
+          <div data-work-header className="section-label !text-[0.72rem] !mb-2">Recent Work</div>
+          <h2 data-work-header className="section-title !text-[clamp(1.2rem,4vw,1.6rem)] !mb-1.5">
             Products we've built<br />and are building.
           </h2>
-          <p className="section-sub !max-w-none text-[0.8rem] md:text-[0.9rem]">
+          <p data-work-header className="section-sub !max-w-none text-[0.78rem]">
+            From live client projects to industry-changing platforms currently in
+            development.
+          </p>
+        </div>
+
+        {/* desktop: header stays inside the pinned view, above the card stack */}
+        <div className="hidden md:block shrink-0 max-w-xl text-left mb-10">
+          <div data-work-header className="section-label !text-[0.68rem] !mb-2">Recent Work</div>
+          <h2 data-work-header className="section-title !text-[clamp(1.1rem,1.8vw,1.5rem)] !mb-2">
+            Products we've built<br />and are building.
+          </h2>
+          <p data-work-header className="section-sub !max-w-none text-[0.78rem]">
             From live client projects to industry-changing platforms currently in
             development.
           </p>
@@ -124,7 +161,7 @@ export default function Work() {
               <div
                 key={i}
                 ref={(el) => (cardsRef.current[i] = el)}
-                className="absolute inset-0 bg-surface border border-border rounded-lg overflow-hidden shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] flex flex-col"
+                className="absolute inset-0 bg-surface border border-border rounded-lg overflow-hidden shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] flex flex-col [backface-visibility:hidden] [-webkit-backface-visibility:hidden] [transform-style:preserve-3d]"
               >
                 <div
                   className={`h-24 sm:h-32 md:h-44 flex items-center justify-center text-[2.5rem] sm:text-[3.25rem] md:text-[4rem] shrink-0 bg-linear-to-br ${
