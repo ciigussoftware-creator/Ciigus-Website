@@ -110,7 +110,7 @@ export default function Hero() {
         style={{ backgroundColor: 'rgba(0,0,0,0.75)' }}
       />
 
-      <div className="relative z-10 flex flex-col justify-center min-h-screen pt-24 pb-10 px-10 md:pt-20 md:pb-8 md:px-[1.2rem]">
+      <div className="relative z-10 flex flex-col justify-center min-h-screen pt-20 pb-6 px-6 md:pt-20 md:pb-8 md:px-[1.2rem]">
         <div data-hero="badge" className="inline-flex items-center gap-2 bg-accent2/10 border border-accent2/25 rounded-full py-[0.35rem] px-4 text-[0.8rem] text-green mb-5 w-fit">
           <span className="w-1.5 h-1.5 rounded-full bg-green animate-pulse-slow" />
           🇱🇰 Based in Sri Lanka · Building Globally
