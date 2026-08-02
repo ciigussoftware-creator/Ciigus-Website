@@ -5,11 +5,13 @@ import { services } from '../data/content'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const marqueeServices = [...services, ...services]
+
 export default function Services() {
   const sectionRef = useRef(null)
   const headerRef = useRef(null)
-  const cardsRef = useRef([])
-  const iconsRef = useRef([])
+  const trackRef = useRef(null)
+  const tweenRef = useRef(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -27,31 +29,12 @@ export default function Services() {
         },
       })
 
-      // Service cards stagger in
-      gsap.from(cardsRef.current, {
-        y: 60,
-        duration: 0.6,
-        stagger: 0.12,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: cardsRef.current[0],
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-      })
-
-      // Icon boxes pop in
-      gsap.from(iconsRef.current, {
-        scale: 0,
-        rotation: -90,
-        duration: 0.5,
-        stagger: 0.12,
-        ease: 'back.out(1.7)',
-        scrollTrigger: {
-          trigger: cardsRef.current[0],
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
+      // Marquee loop — track scrolls from 0 to -50% (duplicate set continues seamlessly)
+      tweenRef.current = gsap.to(trackRef.current, {
+        xPercent: -50,
+        ease: 'none',
+        duration: 20,
+        repeat: -1,
       })
     }, sectionRef)
 
@@ -59,8 +42,12 @@ export default function Services() {
   }, [])
 
   return (
-    <section id="services" className="py-24 px-10 md:py-16 md:px-5" ref={sectionRef}>
-      <div ref={headerRef}>
+    <section
+      id="services"
+      className="min-h-screen flex flex-col justify-center py-12 px-10 md:px-5"
+      ref={sectionRef}
+    >
+      <div ref={headerRef} className="mb-6">
         <div className="section-label">What We Do</div>
         <h2 className="section-title">
           Everything your business<br />needs, built right.
@@ -71,29 +58,37 @@ export default function Services() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-[1.5px] mt-16">
-        {services.map((svc, i) => (
-          <div
-            className="group bg-bg border border-border py-10 px-4 transition-[background-color,transform] duration-200 ease-in-out relative overflow-hidden after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-linear-to-br after:from-green after:to-accent after:scale-x-0 after:origin-left after:transition-transform after:duration-300 after:ease-out hover:bg-surface hover:-translate-y-1 hover:after:scale-x-100"
-            key={svc.title}
-            ref={(el) => (cardsRef.current[i] = el)}
-          >
+      <div className="overflow-hidden">
+        <div
+          className="flex gap-5 w-max"
+          ref={trackRef}
+          onMouseEnter={() => tweenRef.current?.pause()}
+          onMouseLeave={() => tweenRef.current?.play()}
+        >
+          {marqueeServices.map((svc, i) => (
             <div
-              className="w-11 h-11 rounded-md bg-accent2/15 border border-accent2/30 flex items-center justify-center mb-6 text-[1.2rem] transition-transform duration-200 ease-in-out group-hover:scale-110 group-hover:-rotate-6"
-              ref={(el) => (iconsRef.current[i] = el)}
+              className="group  w-56 h-75 flex-shrink-0 bg-bg border border-border rounded-xl py-5 px-4 transition-[background-color,transform] duration-200 ease-in-out relative overflow-hidden after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-linear-to-br after:from-green after:to-accent after:scale-x-0 after:origin-left after:transition-transform after:duration-300 after:ease-out hover:bg-surface hover:-translate-y-1 hover:after:scale-x-100"
+              key={`${svc.title}-${i}`}
             >
-              {svc.icon}
+              <div className="relative w-full h-20 rounded-lg bg-surface border border-border/40 flex items-center justify-center mb-4 overflow-hidden">
+                <span className="text-2xl">{svc.icon}</span>
+                <img
+                  src={svc.image}
+                  alt={svc.title}
+                  className="absolute inset-0 w-full h-full object-cover"
+                  onError={(e) => (e.target.style.display = 'none')}
+                />
+              </div>
+              <div className="font-head font-bold text-[0.9rem] mb-[0.6rem]">
+                {svc.title}
+              </div>
+              <div className="text-[0.78rem] text-muted leading-[1.7]">
+                {svc.desc}
+              </div>
             </div>
-            <div className="font-head font-bold text-[1.05rem] mb-[0.6rem]">
-              {svc.title}
-            </div>
-            <div className="text-[0.88rem] text-muted leading-[1.7]">
-              {svc.desc}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   )
 }
-

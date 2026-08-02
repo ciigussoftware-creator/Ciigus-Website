@@ -36,6 +36,11 @@
   50%       { opacity: 0.3; }
 }
 
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 /* ─── Base Styles ──────────────────────────── */
 html {
   scroll-behavior: smooth;

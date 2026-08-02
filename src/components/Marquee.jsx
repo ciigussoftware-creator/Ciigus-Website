@@ -1,35 +1,14 @@
-import { useRef } from 'react'
-import gsap from 'gsap'
-import { useGSAP } from '@gsap/react'
 import { marqueeItems } from '../data/content'
 
+const all = [...marqueeItems, ...marqueeItems]
+
 export default function Marquee() {
-  const containerRef = useRef(null)
-  const trackRef = useRef(null)
-
-  // Duplicate the list so the scroll loops seamlessly
-  const items = [...marqueeItems, ...marqueeItems]
-
-  useGSAP(() => {
-    // items are duplicated, so -50% of the track's own width is exactly
-    // one full set — the loop point lines up seamlessly on repeat.
-    gsap.to(trackRef.current, {
-      xPercent: -50,
-      duration: 30,
-      ease: 'none',
-      repeat: -1,
-    })
-  }, { scope: containerRef })
-
   return (
-    <div ref={containerRef} className="overflow-hidden bg-surface border-t border-b border-border py-4">
-      <div ref={trackRef} className="flex gap-10 whitespace-nowrap w-max">
-        {items.map((item, i) => (
-          <span
-            key={i}
-            className="text-[0.8rem] font-medium text-muted tracking-[0.08em] uppercase"
-          >
-            <em className="text-accent2 not-italic pr-7">·</em>{item} 
+    <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', background: 'var(--color-surface)', borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)', padding: '1rem 0' }}>
+      <div className="ticker-track">
+        {all.map((item, i) => (
+          <span key={i} style={{ fontSize: '0.8rem', fontWeight: 500, color: 'var(--color-muted)', letterSpacing: '0.08em', textTransform: 'uppercase', paddingRight: '2.5rem' }}>
+            <span style={{ color: 'var(--color-accent2)', paddingRight: '1rem' }}>·</span>{item}
           </span>
         ))}
       </div>
