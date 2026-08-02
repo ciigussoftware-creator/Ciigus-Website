@@ -1,5 +1,5 @@
-import { roles, values } from '../data/content'
-import FadeUp from './FadeUp'
+import { roles, values } from "../data/content";
+import FadeUp from "./FadeUp";
 
 export default function About() {
   return (
@@ -7,12 +7,14 @@ export default function About() {
       <FadeUp>
         <div className="section-label">About Ciigus</div>
         <h2 className="section-title">
-          Small team.<br />Big ambitions.
+          A versatile team.
+          <br />
+          Ready for anything.
         </h2>
         <p className="section-sub">
-          We're a team of developers, QA engineers, business analysts, and project
-          managers - many of us fresh graduates - building professional-grade
-          software and growing together toward a shared vision.
+          Ciigus brings together developers, QA engineers, business analysts,
+          and project managers - who take on challenges head-on and deliver
+          exactly what our clients expect, every time.
         </p>
       </FadeUp>
 
@@ -47,6 +49,5 @@ export default function About() {
         ))}
       </div>
     </section>
-  )
+  );
 }
-
