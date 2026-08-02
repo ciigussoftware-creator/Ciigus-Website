@@ -80,12 +80,6 @@ export default function Hero() {
       opacity: 0,
       duration: 0.7,
     }, '-=0.45')
-    .from('[data-hero="cta"] > *', {
-      y: 20,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.12,
-    }, '-=0.35')
     .from('[data-hero="stats"] > *', {
       y: 25,
       opacity: 0,
@@ -128,17 +122,12 @@ export default function Hero() {
           forward.
         </h1>
 
-        <p data-hero="desc" className="text-[1.1rem] text-muted max-w-130 mb-6 font-light leading-[1.7]">
+        <p data-hero="desc" className="text-[1.1rem] text-muted max-w-130 mb-0 font-light leading-[1.7]">
           Ciigus develops modern digital products - from restaurant systems to
           enterprise management platforms - for businesses ready to grow.
         </p>
 
-        <div data-hero="cta" className="flex gap-4 flex-wrap max-[480px]:flex-col">
-          <a className="btn-primary" href="#contact">Start a Project</a>
-          <a className="btn-outline" href="#work">See Our Work</a>
-        </div>
-
-        <div data-hero="stats" className="flex justify-center gap-4 sm:gap-8 md:gap-12 mt-8 pt-6 border-t border-border">
+        <div data-hero="stats" className="flex justify-center gap-4 sm:gap-8 md:gap-12 mt-4 pt-4 border-t border-border">
           {stats.map((s) => (
             <div key={s.lbl} className="flex-1 min-w-0 text-center sm:flex-none sm:text-left">
               <CounterStat value={s.val} />

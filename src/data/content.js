@@ -26,31 +26,37 @@ export const services = [
     icon: '🌐',
     title: 'Web Development',
     desc: 'Business websites, promotional pages, booking systems, and fully custom web platforms built for speed and reliability.',
+    image: 'https://placehold.co/320x120/0d1117/39d353?text=WebDev',
   },
   {
     icon: '📱',
     title: 'Mobile Applications',
     desc: 'Android and iOS apps designed for real users — with smooth experiences that drive engagement and retention.',
+    image: 'https://placehold.co/320x120/0d1117/39d353?text=Mobile',
   },
   {
     icon: '🍽️',
     title: 'Restaurant Systems',
     desc: 'Digital menus, restaurant websites, and ordering systems that modernize how hospitality businesses operate.',
+    image: 'https://placehold.co/320x120/0d1117/39d353?text=Restaurant',
   },
   {
     icon: '📊',
     title: 'Dashboard & Analytics',
     desc: 'Business dashboards and data visualization tools that give teams the visibility they need to make smart decisions.',
+    image: 'https://placehold.co/320x120/0d1117/39d353?text=Dashboards',
   },
   {
     icon: '🏭',
     title: 'Industry Management',
     desc: 'Custom management systems built for specific industries — replacing manual workflows with clean, digital operations.',
+    image: 'https://placehold.co/320x120/0d1117/39d353?text=Industry',
   },
   {
     icon: '⚙️',
     title: 'Custom Business Software',
     desc: 'Payroll systems, HR tools, inventory management, and bespoke software tailored to your exact business needs.',
+    image: 'https://placehold.co/320x120/0d1117/39d353?text=Custom+SW',
   },
 ]
 
