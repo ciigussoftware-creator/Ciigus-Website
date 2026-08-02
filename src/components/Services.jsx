@@ -44,10 +44,10 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="min-h-screen flex flex-col justify-center py-12 px-10 md:px-5"
+      className="min-h-screen flex flex-col justify-center py-12 px-0 md:px-10"
       ref={sectionRef}
     >
-      <div ref={headerRef} className="mb-6">
+      <div ref={headerRef} className="mb-6 px-6">
         <div className="section-label">What We Do</div>
         <h2 className="section-title">
           Everything your business<br />needs, built right.
