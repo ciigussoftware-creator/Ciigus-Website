@@ -60,27 +60,15 @@ export const services = [
   },
 ];
 
-export const processSteps = [
-  {
-    num: "01",
-    title: "Understand Your Business",
-    desc: "We start by learning your goals, operations, and pain points — so we build what you actually need, not just what looks good.",
-  },
-  {
-    num: "02",
-    title: "Plan & Architect",
-    desc: "We define scope, design the system architecture, and create a roadmap — balancing speed with long-term scalability.",
-  },
-  {
-    num: "03",
-    title: "Design & Build",
-    desc: "UI/UX design, frontend, backend, APIs, and QA — all handled by one focused team following professional engineering practices.",
-  },
-  {
-    num: "04",
-    title: "Launch & Support",
-    desc: "We deploy, monitor, and stay with you after launch — fixing issues, adding features, and helping your product grow.",
-  },
+export const journeySteps = [
+  { id: 1, emoji: '💡', title: 'Client Idea', desc: 'You bring the vision.' },
+  { id: 2, emoji: '🔍', title: 'Discovery & Requirements', desc: 'We learn your goals and map out exactly what to build.' },
+  { id: 3, emoji: '🗺️', title: 'Planning', desc: 'Roadmap, architecture, and sprint plan defined.' },
+  { id: 4, emoji: '🎨', title: 'Design', desc: 'Wireframes and UI mockups approved by you.' },
+  { id: 5, emoji: '💻', title: 'Development', desc: 'Frontend, backend, and APIs built by our team.' },
+  { id: 6, emoji: '🧪', title: 'Testing & QA', desc: 'Every feature tested before it ships.' },
+  { id: 7, emoji: '🚀', title: 'Deployment', desc: 'Live on production with zero-downtime release.' },
+  { id: 8, emoji: '🛠️', title: 'Maintenance & Support', desc: 'We stay with you after launch.' },
 ];
 
 export const workItems = [
