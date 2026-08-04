@@ -110,26 +110,28 @@ export default function Hero() {
         style={{ backgroundColor: 'rgba(0,0,0,0.75)' }}
       />
 
-      <div className="relative z-10 flex flex-col justify-center min-h-screen pt-4 pb-6 px-6 md:pt-24 md:pb-8 md:px-[1.2rem]">
+      <div className="relative z-10 flex flex-col justify-center min-h-screen pt-4 pb-6 px-6 md:pt-24 md:pb-8 md:px-[1.2rem] pb-24 md:pb-20">
         <div data-hero="badge" className="inline-flex items-center gap-2 bg-accent2/10 border border-accent2/25 rounded-full py-[0.35rem] px-4 text-[0.8rem] text-green mb-5 w-fit">
           <span className="w-1.5 h-1.5 rounded-full bg-green animate-pulse-slow" />
           🇱🇰 Based in Sri Lanka · Building Globally
         </div>
 
-        <h1 data-hero="heading" className="font-head text-[clamp(2.5rem,6vw,5rem)] font-extrabold leading-[1.08] tracking-[-2px] md:tracking-[-1px] max-w-205 mb-4">
+        <h1 data-hero="heading" className="font-head text-[clamp(2.5rem,5vw,4.5rem)] font-extrabold leading-[1.08] tracking-[-2px] md:tracking-[-1px] max-w-205 mb-4">
           We build software<br />
           that moves <span className="bg-linear-to-br from-green to-accent bg-clip-text text-transparent">businesses</span><br />
           forward.
         </h1>
 
-        <p data-hero="desc" className="text-[1.1rem] text-muted max-w-130 mb-0 font-light leading-[1.7]">
+        <p data-hero="desc" className="text-[1rem] md:text-[0.95rem] text-muted max-w-130 mb-0 font-light leading-[1.7]">
           Ciigus develops modern digital products - from restaurant systems to
           enterprise management platforms - for businesses ready to grow.
         </p>
+      </div>
 
-        <div data-hero="stats" className="flex justify-center gap-4 sm:gap-8 md:gap-12 mt-4 pt-4 border-t border-border">
+      <div data-hero="stats" className="absolute bottom-0 left-0 right-0 z-10 border-t border-border">
+        <div className="flex justify-center gap-8 md:gap-16 py-5 px-6 md:px-12">
           {stats.map((s) => (
-            <div key={s.lbl} className="flex-1 min-w-0 text-center sm:flex-none sm:text-left">
+            <div key={s.lbl} className="text-center">
               <CounterStat value={s.val} />
               <div className="text-[0.7rem] sm:text-[0.82rem] text-muted mt-0.5">{s.lbl}</div>
             </div>
