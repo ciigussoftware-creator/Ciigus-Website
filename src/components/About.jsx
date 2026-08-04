@@ -1,7 +1,42 @@
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { roles, values } from "../data/content";
 import FadeUp from "./FadeUp";
+import ValueCard from "./ValueCard";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const accentColors = [
+  "var(--color-green)",
+  "var(--color-accent)",
+  "#f59e0b",
+  "#ec4899",
+];
 
 export default function About() {
+  const gridRef = useRef(null);
+  const cardsRef = useRef([]);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(cardsRef.current, {
+        y: 50,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.15,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: gridRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+      });
+    }, gridRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section className="section-alt py-24 px-10 md:py-16 md:px-5" id="about">
       <FadeUp>
@@ -29,23 +64,19 @@ export default function About() {
         ))}
       </FadeUp>
 
-      <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4">
+      <div
+        ref={gridRef}
+        className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-4"
+      >
         {values.map((val, i) => (
-          <FadeUp
+          <ValueCard
             key={val.title}
-            delay={i * 0.1}
-            className="group bg-bg border border-border rounded-md p-6 transition-all duration-200 ease-in-out hover:border-accent/35 hover:-translate-y-1"
-          >
-            <div className="text-[1.4rem] mb-4 transition-transform duration-200 ease-in-out group-hover:scale-110">
-              {val.icon}
-            </div>
-            <div className="font-head font-bold text-[0.95rem] mb-[0.4rem]">
-              {val.title}
-            </div>
-            <div className="text-[0.83rem] text-muted leading-relaxed">
-              {val.desc}
-            </div>
-          </FadeUp>
+            icon={val.icon}
+            title={val.title}
+            desc={val.desc}
+            accentColor={accentColors[i % accentColors.length]}
+            cardRef={(el) => (cardsRef.current[i] = el)}
+          />
         ))}
       </div>
     </section>
