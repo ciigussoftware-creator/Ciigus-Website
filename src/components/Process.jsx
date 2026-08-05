@@ -47,34 +47,35 @@ const NODE_POSITIONS = RAW_POSITIONS.map((pt, i) => ({
 }))
 
 // Narrow winding road for mobile screens, confined to x: 40–260.
-const MOBILE_SVG_WIDTH = 300
-const MOBILE_SVG_HEIGHT = 1000
+const MOBILE_SVG_WIDTH = 280
+const MOBILE_SVG_HEIGHT = 700
+const MOBILE_NODE_RADIUS = 7
 const MOBILE_CARD_GAP = 10
-const MOBILE_CARD_WIDTH = 128
+const MOBILE_CARD_WIDTH = 96
 const MOBILE_MIN_X = 10
-const MOBILE_MAX_X = 290
+const MOBILE_MAX_X = 270
 
 const MOBILE_PATH_D =
-  'M 150,40 ' +
-  'C 220,80 240,140 200,200 ' +
-  'C 160,260 60,280 60,360 ' +
-  'C 60,440 220,460 220,540 ' +
-  'C 220,620 60,640 60,720 ' +
-  'C 60,800 180,840 180,920 ' +
-  'C 180,960 150,980 150,1000'
+  'M 140,36 ' +
+  'C 205,61 224,99 187,136 ' +
+  'C 149,174 56,186 56,236 ' +
+  'C 56,286 205,298 205,348 ' +
+  'C 205,398 56,410 56,460 ' +
+  'C 56,524 168,556 168,620 ' +
+  'C 168,660 140,680 140,700'
 
 // 7 waypoints from the path above, plus one extra node (midpoint of the
 // longest segment) so all 8 journeySteps get a node — the pin stays on
-// the path's final waypoint.
+// the path's final waypoint. Gaps kept at a minimum of 80 svg-units.
 const MOBILE_RAW_POSITIONS = [
-  { x: 150, y: 40 },
-  { x: 200, y: 200 },
-  { x: 60, y: 360 },
-  { x: 220, y: 540 },
-  { x: 60, y: 720 },
-  { x: 120, y: 820 },
-  { x: 180, y: 920 },
-  { x: 150, y: 1000 },
+  { x: 140, y: 36 },
+  { x: 187, y: 136 },
+  { x: 56, y: 236 },
+  { x: 205, y: 348 },
+  { x: 56, y: 460 },
+  { x: 112, y: 540 },
+  { x: 168, y: 620 },
+  { x: 140, y: 700 },
 ]
 
 const MOBILE_NODE_POSITIONS = MOBILE_RAW_POSITIONS.map((pt, i) => ({
@@ -204,7 +205,7 @@ export default function Process() {
 
   return (
     <section
-      className="section-alt py-24 px-6"
+      className="section-alt py-8 md:py-24 px-6"
       id="process"
       ref={sectionRef}
     >
@@ -314,7 +315,6 @@ export default function Process() {
           <div
             ref={mobileRoadRef}
             className="block md:hidden relative"
-            style={{ minHeight: MOBILE_SVG_HEIGHT }}
           >
             <svg
               width="100%"
@@ -325,7 +325,7 @@ export default function Process() {
                 d={MOBILE_PATH_D}
                 fill="none"
                 stroke="#1a2a1a"
-                strokeWidth="5"
+                strokeWidth="4"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
@@ -334,7 +334,7 @@ export default function Process() {
                 d={MOBILE_PATH_D}
                 fill="none"
                 stroke="var(--color-green)"
-                strokeWidth="5"
+                strokeWidth="4"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
@@ -348,7 +348,7 @@ export default function Process() {
                     </g>
                   ) : (
                     <>
-                      <circle cx={pt.x} cy={pt.y} r={NODE_RADIUS} fill="var(--color-green)" />
+                      <circle cx={pt.x} cy={pt.y} r={MOBILE_NODE_RADIUS} fill="var(--color-green)" />
                       <circle cx={pt.x} cy={pt.y} r={4} fill="#fff" />
                     </>
                   )}
@@ -374,7 +374,7 @@ export default function Process() {
                 <div key={step.id}>
                   <div
                     ref={(el) => (mobileCardsRef.current[i] = el)}
-                    className="absolute -translate-y-1/2 w-32 text-xs bg-surface border border-green/30 rounded-xl p-3"
+                    className="absolute -translate-y-1/2 w-24 h-auto bg-surface border border-green/30 rounded-xl px-2 py-2"
                     style={cardStyle}
                   >
                     <div
@@ -395,9 +395,8 @@ export default function Process() {
                             }
                       }
                     />
-                    <div className="text-lg mb-1">{step.emoji}</div>
-                    <div className="font-head font-bold mb-0.5">{step.title}</div>
-                    <div className="text-muted text-xs leading-relaxed">{step.desc}</div>
+                    <div className="font-head font-bold text-[10px] text-white">{step.title}</div>
+                    <div className="text-[9px] text-muted leading-tight mt-0.5">{step.desc}</div>
                   </div>
                 </div>
               )
