@@ -19,6 +19,11 @@ export const marqueeItems = [
   "Dashboard Systems",
   "Payroll Solutions",
   "Industry Management",
+  "Digital Marketing",
+  "SEO & Search Visibility",
+  "Graphic Design",
+  "AI Video Creation",
+  "Desktop Applications",
 ];
 
 export const services = [
@@ -26,40 +31,69 @@ export const services = [
     icon: "🌐",
     title: "Web Development",
     desc: "Business websites, promotional pages, booking systems, and fully custom web platforms built for speed and reliability.",
-    image: "https://placehold.co/320x120/0d1117/39d353?text=WebDev",
+    image: "/assets/Services/ciigus-web-development-sri-lanka.webp",
   },
   {
     icon: "📱",
     title: "Mobile Applications",
     desc: "Android and iOS apps designed for real users — with smooth experiences that drive engagement and retention.",
-    image: "https://placehold.co/320x120/0d1117/39d353?text=Mobile",
+    image: "/assets/Services/ciigus-mobile-app-development-android-ios.webp",
   },
   {
     icon: "🍽️",
     title: "Restaurant Systems",
     desc: "Digital menus, restaurant websites, and ordering systems that modernize how hospitality businesses operate.",
-    image: "https://placehold.co/320x120/0d1117/39d353?text=Restaurant",
+    image: "/assets/Services/restaurant-digital-menu-ordering-system.webp",
   },
   {
     icon: "📊",
     title: "Dashboard & Analytics",
     desc: "Business dashboards and data visualization tools that give teams the visibility they need to make smart decisions.",
-    image: "https://placehold.co/320x120/0d1117/39d353?text=Dashboards",
+    image: "/assets/Services/business-dashboard-analytics-software.webp",
   },
   {
     icon: "🏭",
     title: "Industry Management",
     desc: "Custom management systems built for specific industries — replacing manual workflows with clean, digital operations.",
-    image: "https://placehold.co/320x120/0d1117/39d353?text=Industry",
+    image: "/assets/Services/industry-management-system-software.webp",
   },
   {
     icon: "⚙️",
     title: "Custom Business Software",
     desc: "Payroll systems, HR tools, inventory management, and bespoke software tailored to your exact business needs.",
-    image: "https://placehold.co/320x120/0d1117/39d353?text=Custom+SW",
+    image: "/assets/Services/custom-business-software-payroll-hr.webp",
+  },
+  {
+    icon: "🔍",
+    title: "SEO & Search Visibility",
+    desc: "On-page SEO, technical audits, and content strategies that get your business ranking higher and found by the right people.",
+    image: "/assets/Services/seo-search-visibility-service-sri-lanka.webp",
+  },
+  {
+    icon: "📣",
+    title: "Digital Marketing",
+    desc: "Social media campaigns, ad management, and growth strategies that turn online attention into real business results.",
+    image: "/assets/Services/digital-marketing-social-media-campaigns.webp",
+  },
+  {
+    icon: "🖥️",
+    title: "Desktop Applications",
+    desc: "Cross-platform desktop software for Windows and macOS — built for businesses that need powerful tools running locally.",
+    image: "/assets/Services/desktop-application-development-windows-mac.webp",
+  },
+  {
+    icon: "🎨",
+    title: "Graphic Design",
+    desc: "Brand identities, marketing materials, UI assets, and visual content that make your business look as good as it works.",
+    image: "/assets/Services/graphic-design-branding-ui-assets.webp",
+  },
+  {
+    icon: "🎬",
+    title: "AI Video Creation",
+    desc: "Promotional videos, product demos, and social content produced with AI tools — fast, affordable, and visually compelling.",
+    image: "/assets/Services/ai-video-creation-promotional-content.webp",
   },
 ];
-
 export const journeySteps = [
   { id: 1, emoji: '💡', title: 'Client Idea', desc: 'You bring the vision.' },
   { id: 2, emoji: '🔍', title: 'Discovery & Requirements', desc: 'We learn your goals and map out exactly what to build.' },

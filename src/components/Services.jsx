@@ -67,23 +67,26 @@ export default function Services() {
         >
           {marqueeServices.map((svc, i) => (
             <div
-              className="group  w-56 h-75 flex-shrink-0 bg-bg border border-border rounded-xl py-5 px-4 transition-[background-color,transform] duration-200 ease-in-out relative overflow-hidden after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-linear-to-br after:from-green after:to-accent after:scale-x-0 after:origin-left after:transition-transform after:duration-300 after:ease-out hover:bg-surface hover:-translate-y-1 hover:after:scale-x-100"
+              className="group  w-56 h-75 flex-shrink-0 bg-bg border border-border rounded-xl transition-[background-color,transform] duration-200 ease-in-out relative overflow-hidden after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-linear-to-br after:from-green after:to-accent after:scale-x-0 after:origin-left after:transition-transform after:duration-300 after:ease-out hover:bg-surface hover:-translate-y-1 hover:after:scale-x-100"
               key={`${svc.title}-${i}`}
             >
-              <div className="relative w-full h-20 rounded-lg bg-surface border border-border/40 flex items-center justify-center mb-4 overflow-hidden">
-                <span className="text-2xl">{svc.icon}</span>
+              <div className="relative w-full h-32">
                 <img
                   src={svc.image}
                   alt={svc.title}
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="w-full h-32 object-cover"
                   onError={(e) => (e.target.style.display = 'none')}
                 />
+                <div className="absolute inset-0 bg-black/30" />
+                <div className="absolute bottom-0 left-0 w-full h-8 bg-gradient-to-t from-surface to-transparent" />
               </div>
-              <div className="font-head font-bold text-[0.9rem] mb-[0.6rem]">
-                {svc.title}
-              </div>
-              <div className="text-[0.78rem] text-muted leading-[1.7]">
-                {svc.desc}
+              <div className="pt-4 pb-5 px-4">
+                <div className="font-head font-bold text-[0.9rem] mb-[0.6rem]">
+                  {svc.title}
+                </div>
+                <div className="mt-3 text-[0.78rem] text-muted leading-[1.7]">
+                  {svc.desc}
+                </div>
               </div>
             </div>
           ))}
