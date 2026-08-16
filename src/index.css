@@ -1,21 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #04070f;
-  --color-surface: #0b1120;
-  --color-surface2: #111827;
-  --color-border: #1e2d45;
-  --color-accent: #1e9bd7;
-  --color-accent-d: #1580ba;
-  --color-accent2: #36c98a;
-  --color-green: #5bd17a;
-  --color-text: #f0f4ff;
-  --color-muted: #8899bb;
-  --color-faint: #1a2540;
+  --color-bg: #ffffff;
+  --color-surface: #f8f8f8;
+  --color-surface2: #f0f0f0;
+  --color-border: #e5e5e5;
+  --color-accent: #0095fc;
+  --color-accent-d: #0077c9;
+  --color-accent2: #00ba9c;
+  --color-green: #d5e73c;
+  --color-text: #0d0d0d;
+  --color-muted: #444444;
+  --color-faint: #f0f0f0;
 
-  --font-head: 'Syne', sans-serif;
   --font-head: 'Space Grotesk', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
 
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -24,6 +23,8 @@
   --animate-scroll: scroll 22s linear infinite;
   --animate-pulse-slow: pulse-animation 2s infinite;
   --animate-pulse-fast: pulse-animation 1.5s infinite;
+  --animate-marquee-vertical: marquee-vertical 22s linear infinite;
+  --animate-gradient-wave: gradient-wave 7s linear infinite;
 }
 
 @keyframes scroll {
@@ -39,6 +40,16 @@
 @keyframes marquee-scroll {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
+}
+
+@keyframes marquee-vertical {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+
+@keyframes gradient-wave {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 300% 50%; }
 }
 
 /* ─── Base Styles ──────────────────────────── */
@@ -88,7 +99,7 @@ button {
 }
 
 @utility btn-primary {
-  @apply inline-block bg-linear-to-br from-green to-accent text-[#03130d] py-3 px-8 rounded-sm font-semibold text-[0.95rem] transition-all duration-200 ease-in-out text-center cursor-pointer border-none hover:brightness-108 hover:-translate-y-px hover:scale-[1.02] hover:shadow-[0_8px_24px_-8px_rgba(54,201,138,0.45)] active:scale-[0.98];
+  @apply inline-block bg-linear-to-br from-green to-accent text-[#03130d] py-3 px-8 rounded-sm font-semibold text-[0.95rem] transition-all duration-200 ease-in-out text-center cursor-pointer border-none hover:brightness-108 hover:-translate-y-px hover:scale-[1.02] hover:shadow-[0_8px_24px_-8px_rgba(0,186,156,0.45)] active:scale-[0.98];
 }
 
 @utility btn-outline {

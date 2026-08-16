@@ -27,19 +27,19 @@ export default function Navbar() {
     <>
       <nav
         id="navbar"
-        className="fixed top-0 left-0 right-0 z-100 flex items-center justify-between py-[0.85rem] px-10 md:px-[1.2rem] bg-bg/85 backdrop-blur-md border-b border-border transition-all duration-200 ease-in-out"
+        className="fixed top-0 left-0 right-0 z-100 flex items-center justify-between py-[0.85rem] px-10 md:px-[1.2rem] bg-[#0a0f1e]/85 backdrop-blur-md border-b border-[#1e2d45] transition-all duration-200 ease-in-out"
       >
         <a href="#home" className="inline-flex items-center" onClick={closeMenu}>
           <Logo variant="mark" size={40} showText />
         </a>
 
-        <div className="hidden md:flex gap-8 text-[0.9rem] text-muted">
+        <div className="hidden md:flex gap-8 text-[0.9rem] text-[#a8b3cc]">
           {navItems.map((item) => (
             <a
               key={item.href}
               href={item.href}
-              className={`transition-colors duration-200 ease-in-out hover:text-text ${
-                activeId === item.href.slice(1) ? 'text-text' : ''
+              className={`transition-colors duration-200 ease-in-out hover:text-white ${
+                activeId === item.href.slice(1) ? 'text-white' : ''
               }`}
             >
               {item.label}
@@ -59,14 +59,14 @@ export default function Navbar() {
           aria-label="Open menu"
           onClick={() => setMenuOpen((o) => !o)}
         >
-          <span className="block w-5.5 h-0.5 bg-text rounded-xs transition-all duration-200 ease-in-out" />
-          <span className="block w-5.5 h-0.5 bg-text rounded-xs transition-all duration-200 ease-in-out" />
-          <span className="block w-5.5 h-0.5 bg-text rounded-xs transition-all duration-200 ease-in-out" />
+          <span className="block w-5.5 h-0.5 bg-white rounded-xs transition-all duration-200 ease-in-out" />
+          <span className="block w-5.5 h-0.5 bg-white rounded-xs transition-all duration-200 ease-in-out" />
+          <span className="block w-5.5 h-0.5 bg-white rounded-xs transition-all duration-200 ease-in-out" />
         </button>
       </nav>
 
       <div
-        className={`fixed top-15.5 left-0 right-0 z-99 flex-col bg-surface border-b border-border py-4 ${
+        className={`fixed top-15.5 left-0 right-0 z-99 flex-col bg-[#0a0f1e] border-b border-[#1e2d45] py-4 ${
           menuOpen ? 'flex' : 'hidden'
         } md:hidden`}
       >
@@ -74,7 +74,7 @@ export default function Navbar() {
           <a
             key={item.href}
             href={item.href}
-            className="py-3 px-8 text-muted text-[0.95rem] transition-all duration-200 ease-in-out hover:text-text hover:bg-faint"
+            className="py-3 px-8 text-[#a8b3cc] text-[0.95rem] transition-all duration-200 ease-in-out hover:text-white hover:bg-[#111827]"
             onClick={closeMenu}
           >
             {item.label}
