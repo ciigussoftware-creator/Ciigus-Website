@@ -33,7 +33,7 @@ export default function Services() {
       tweenRef.current = gsap.to(trackRef.current, {
         xPercent: -50,
         ease: 'none',
-        duration: 20,
+        duration: 50,
         repeat: -1,
       })
     }, sectionRef)
