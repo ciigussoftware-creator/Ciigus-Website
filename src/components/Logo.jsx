@@ -29,7 +29,7 @@ export default function Logo({ variant = 'mark', size = 36, showText = true }) {
         style={{ height: size }}
       />
       {showText && (
-       <span className="font-head font-bold text-[1.7rem] tracking-[-0.5px] text-text leading-none pb-[2px]">
+       <span className="font-head font-bold text-[1.7rem] tracking-[-0.5px] text-white leading-none pb-[2px]">
           Cii<span className="text-accent">gus</span>
       </span>
       )}

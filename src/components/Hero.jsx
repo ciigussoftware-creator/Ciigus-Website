@@ -31,7 +31,7 @@ function CounterStat({ value }) {
   }, [num, suffix])
 
   return (
-    <div ref={ref} className="font-head text-2xl sm:text-3xl font-bold text-text">
+    <div ref={ref} className="font-head text-2xl sm:text-3xl font-bold text-white">
       {`0${suffix}`}
     </div>
   )
@@ -110,30 +110,40 @@ export default function Hero() {
         style={{ backgroundColor: 'rgba(0,0,0,0.75)' }}
       />
 
-      <div className="relative z-10 flex flex-col justify-center min-h-screen pt-4 pb-6 px-6 md:pt-24 md:pb-8 md:px-[1.2rem] pb-24 md:pb-20">
-        <div data-hero="badge" className="inline-flex items-center gap-2 bg-accent2/10 border border-accent2/25 rounded-full py-[0.35rem] px-4 text-[0.8rem] text-green mb-5 w-fit">
-          <span className="w-1.5 h-1.5 rounded-full bg-green animate-pulse-slow" />
-          🇱🇰 Based in Sri Lanka · Building Globally
-        </div>
-
-        <h1 data-hero="heading" className="font-head text-[clamp(2.5rem,5vw,4.5rem)] font-extrabold leading-[1.08] tracking-[-2px] md:tracking-[-1px] max-w-205 mb-4">
+      <div className="relative z-10 flex flex-col justify-center min-h-screen pt-4 pb-6 px-6 md:pt-24 md:pb-8 md:px-[1.2rem] pb-24 md:pb-20 ml-3 md:w-[55%] min-w-0">
+        <h1 data-hero="heading" className="font-head text-white text-[clamp(2.5rem,5vw,4.5rem)] font-extrabold leading-[1.08] tracking-[-2px] md:tracking-[-1px] max-w-205 mb-4 -mt-2 ml-3">
           We build software<br />
-          that moves <span className="bg-linear-to-br from-green to-accent bg-clip-text text-transparent">businesses</span><br />
+          that moves <span
+            className="bg-clip-text text-transparent animate-gradient-wave"
+            style={{
+              backgroundImage: 'linear-gradient(90deg, #d5e73c, #00ba9c, #0095fc, #00ba9c, #d5e73c)',
+              backgroundSize: '300% 100%',
+            }}
+          >businesses</span><br />
           forward.
         </h1>
 
-        <p data-hero="desc" className="text-[1rem] md:text-[0.95rem] text-muted max-w-130 mb-0 font-light leading-[1.7]">
+        <p data-hero="desc" className="text-[1rem] md:text-[0.95rem] text-[#cccccc] md:text-muted max-w-130 mb-0 font-light leading-[1.7]">
           Ciigus develops modern digital products - from restaurant systems to
           enterprise management platforms - for businesses ready to grow.
         </p>
-      </div>
 
-      <div data-hero="stats" className="absolute bottom-0 left-0 right-0 z-10 border-t border-border">
-        <div className="flex justify-center gap-8 md:gap-16 py-5 px-6 md:px-12">
+        <div data-hero="stats" className="flex md:hidden justify-center gap-6 mt-6">
           {stats.map((s) => (
             <div key={s.lbl} className="text-center">
               <CounterStat value={s.val} />
-              <div className="text-[0.7rem] sm:text-[0.82rem] text-muted mt-0.5">{s.lbl}</div>
+              <div className="text-[0.7rem] sm:text-[0.82rem] text-[#cccccc] mt-0.5">{s.lbl}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div data-hero="stats" className="hidden md:flex self-center relative z-10 md:w-[40%] min-w-0 h-[300px] mr-8 lg:mr-16 ml-auto">
+        <div className="flex h-full w-full flex-col items-center justify-center gap-8">
+          {stats.map((s) => (
+            <div key={s.lbl} className="text-center">
+              <CounterStat value={s.val} />
+              <div className="text-[0.7rem] sm:text-[0.82rem] text-[#cccccc] mt-0.5">{s.lbl}</div>
             </div>
           ))}
         </div>

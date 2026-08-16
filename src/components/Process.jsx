@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 const SVG_WIDTH = 440
 const SVG_HEIGHT = 1180
-const NODE_RADIUS = 10
+const NODE_RADIUS = 7
 const CARD_GAP = 20
 const CARD_WIDTH = 130
 const MIN_X = 10
@@ -49,7 +49,7 @@ const NODE_POSITIONS = RAW_POSITIONS.map((pt, i) => ({
 // Narrow winding road for mobile screens, confined to x: 40–260.
 const MOBILE_SVG_WIDTH = 280
 const MOBILE_SVG_HEIGHT = 700
-const MOBILE_NODE_RADIUS = 7
+const MOBILE_NODE_RADIUS = 5
 const MOBILE_CARD_GAP = 10
 const MOBILE_CARD_WIDTH = 96
 const MOBILE_MIN_X = 10
@@ -226,7 +226,7 @@ export default function Process() {
               <path
                 d={PATH_D}
                 fill="none"
-                stroke="#1a2a1a"
+                stroke="#e0e0e0"
                 strokeWidth="6"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -245,7 +245,7 @@ export default function Process() {
                 <g key={journeySteps[i].id} ref={(el) => (nodesRef.current[i] = el)}>
                   {pt.isPin ? (
                     <g transform={`translate(${pt.x - 12}, ${pt.y - 22})`}>
-                      <path d={PIN_PATH} fill="var(--color-green)" />
+                      <path d={PIN_PATH} fill="#ef4444" />
                       <circle cx={12} cy={9} r={2.5} fill="var(--color-surface)" />
                     </g>
                   ) : (
@@ -281,7 +281,7 @@ export default function Process() {
                 <div key={step.id}>
                   <div
                     ref={(el) => (cardsRef.current[i] = el)}
-                    className="absolute -translate-y-1/2 text-sm bg-surface border border-green/30 rounded-xl p-3"
+                    className="absolute -translate-y-1/2 text-sm bg-surface border border-[#00ba9c] rounded-xl p-3"
                     style={cardStyle}
                   >
                     <div
@@ -324,7 +324,7 @@ export default function Process() {
               <path
                 d={MOBILE_PATH_D}
                 fill="none"
-                stroke="#1a2a1a"
+                stroke="#e0e0e0"
                 strokeWidth="4"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -343,7 +343,7 @@ export default function Process() {
                 <g key={journeySteps[i].id} ref={(el) => (mobileNodesRef.current[i] = el)}>
                   {pt.isPin ? (
                     <g transform={`translate(${pt.x - 12}, ${pt.y - 22})`}>
-                      <path d={PIN_PATH} fill="var(--color-green)" />
+                      <path d={PIN_PATH} fill="#ef4444" />
                       <circle cx={12} cy={9} r={2.5} fill="var(--color-surface)" />
                     </g>
                   ) : (
@@ -374,7 +374,7 @@ export default function Process() {
                 <div key={step.id}>
                   <div
                     ref={(el) => (mobileCardsRef.current[i] = el)}
-                    className="absolute -translate-y-1/2 w-24 h-auto bg-surface border border-green/30 rounded-xl px-2 py-2"
+                    className="absolute -translate-y-1/2 w-24 h-auto bg-surface border border-[#00ba9c] rounded-xl px-2 py-2"
                     style={cardStyle}
                   >
                     <div
@@ -395,7 +395,7 @@ export default function Process() {
                             }
                       }
                     />
-                    <div className="font-head font-bold text-[10px] text-white">{step.title}</div>
+                    <div className="font-head font-bold text-[10px] text-text">{step.title}</div>
                     <div className="text-[9px] text-muted leading-tight mt-0.5">{step.desc}</div>
                   </div>
                 </div>

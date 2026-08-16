@@ -40,7 +40,7 @@ export default function Contact() {
   }
 
   const inputClasses =
-    'bg-bg border border-border rounded-lg py-3 px-4 text-text font-body text-[0.9rem] transition-colors duration-200 ease-in-out outline-none w-full placeholder:text-muted focus:border-accent2'
+    'bg-bg border border-[#d0d0d0] rounded-lg py-3 px-4 text-text font-body text-[0.9rem] transition-colors duration-200 ease-in-out outline-none w-full placeholder:text-muted focus:border-accent2'
 
   return (
     <section
