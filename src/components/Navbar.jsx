@@ -66,7 +66,8 @@ export default function Navbar() {
       </nav>
 
       <div
-        className={`fixed top-15.5 left-0 right-0 z-99 flex-col bg-[#0a0f1e] border-b border-[#1e2d45] py-4 ${
+        style={{ backgroundColor: 'rgba(10, 15, 30, 0.92)', backdropFilter: 'blur(8px)' }}
+        className={`fixed top-15.5 left-0 right-0 z-99 flex-col border-b border-[#1e2d45] py-4 ${
           menuOpen ? 'flex' : 'hidden'
         } md:hidden`}
       >
@@ -74,7 +75,8 @@ export default function Navbar() {
           <a
             key={item.href}
             href={item.href}
-            className="py-3 px-8 text-[#a8b3cc] text-[0.95rem] transition-all duration-200 ease-in-out hover:text-white hover:bg-[#111827]"
+            style={{ color: '#ffffff' }}
+            className="py-3 px-8 text-[0.95rem] font-medium transition-all duration-200 ease-in-out hover:bg-white/10 block"
             onClick={closeMenu}
           >
             {item.label}
