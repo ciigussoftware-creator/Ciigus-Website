@@ -3,7 +3,7 @@ import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
-import Marquee from './components/Marquee'
+import TechMarquee from './components/TechMarquee'
 import Services from './components/Services'
 import Process from './components/Process'
 import Work from './components/Work'
@@ -44,7 +44,7 @@ export default function App() {
 
       <Navbar />
       <Hero />
-      <Marquee />
+      <TechMarquee />
       <Services />
       <Process />
       <Work />

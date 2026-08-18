@@ -51,6 +51,20 @@ export default function Hero() {
   // Direct DOM style writes (skipping React state) so the spotlight tracks
   // the cursor every frame without a re-render per mousemove.
   const handleMouseMove = (e) => {
+    const statsBoxes = sectionRef.current.querySelectorAll('[data-hero="stats"]')
+    for (const box of statsBoxes) {
+      const statsRect = box.getBoundingClientRect()
+      if (
+        e.clientX >= statsRect.left &&
+        e.clientX <= statsRect.right &&
+        e.clientY >= statsRect.top &&
+        e.clientY <= statsRect.bottom
+      ) {
+        glowRef.current.style.backgroundImage = GLOW_IDLE
+        return
+      }
+    }
+
     const rect = sectionRef.current.getBoundingClientRect()
     glowRef.current.style.backgroundImage = glowAt(
       e.clientX - rect.left,
@@ -123,7 +137,7 @@ export default function Hero() {
           forward.
         </h1>
 
-        <p data-hero="desc" className="text-[1rem] md:text-[0.95rem] text-[#cccccc] md:text-muted max-w-130 mb-0 font-light leading-[1.7]">
+        <p data-hero="desc" className="text-[1rem] md:text-[0.95rem] text-[#e2e8f0] opacity-100 max-w-130 mb-0 font-light leading-[1.7]">
           Ciigus develops modern digital products - from restaurant systems to
           enterprise management platforms - for businesses ready to grow.
         </p>
