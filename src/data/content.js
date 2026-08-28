@@ -204,14 +204,134 @@ export const values = [
 ];
 
 export const navItems = [
-  { href: "#services", label: "Services" },
-  { href: "#work", label: "Work" },
-  { href: "#about", label: "About" },
-  { href: "#contact", label: "Contact" },
+  { href: "/services", label: "Services" },
+  { href: "/work", label: "Work" },
+  { href: "/about", label: "About" },
+  { href: "/packages", label: "Packages" },
+  { href: "/contact", label: "Contact" },
+];
+
+export const packages = [
+  {
+    id: "starter",
+    name: "Starter Package",
+    price: "LKR 35,000–60,000",
+    popular: false,
+    bestFor: "Small businesses, startups",
+    features: [
+      "Business website (up to 5 pages)",
+      "Mobile responsive design",
+      "Basic SEO setup",
+      "Contact form",
+      "1 month free support",
+    ],
+  },
+  {
+    id: "growth",
+    name: "Growth Package",
+    price: "LKR 80,000–150,000",
+    popular: true,
+    bestFor: "Growing businesses",
+    features: [
+      "Everything in Starter",
+      "Custom web app or mobile app",
+      "Admin dashboard",
+      "Payment gateway integration",
+      "API integrations",
+      "3 months free support",
+    ],
+  },
+  {
+    id: "enterprise",
+    name: "Enterprise Package",
+    price: "Custom Pricing",
+    popular: false,
+    bestFor: "Large businesses, complex systems",
+    features: [
+      "Everything in Growth",
+      "Full custom software (ERP, payroll, SaaS)",
+      "Dedicated project manager",
+      "Multi-phase delivery",
+      "6 months support + SLA",
+    ],
+  },
+];
+
+export const packagesFaq = [
+  {
+    q: "How is pricing determined for a project?",
+    a: "Pricing depends on scope — number of pages or screens, custom features, integrations, and timeline. The ranges above cover most projects; we give an exact quote after a short discovery call.",
+  },
+  {
+    q: "Do I need to pay the full amount upfront?",
+    a: "No. We typically split payment into milestones — an initial deposit to start, and remaining payments tied to delivery stages.",
+  },
+  {
+    q: "What happens after the free support period ends?",
+    a: "You can continue on a maintenance retainer, or reach out on an as-needed basis for paid support and updates.",
+  },
+  {
+    q: "Can I upgrade from Starter to Growth later?",
+    a: "Yes — most projects are built to scale. We can extend an existing Starter site into a Growth-tier product without starting over.",
+  },
+  {
+    q: "How long does a typical project take?",
+    a: "A Starter site usually takes 1-3 weeks. Growth projects run 4-8 weeks. Enterprise systems are scoped in phases with timelines defined during planning.",
+  },
 ];
 
 // Contact details — update with your real info
 export const contact = {
   email: "ciigussoftware@gmail.com",
   whatsapp: "+94782612328", // international format, no + or spaces
+  location: "Colombo, Sri Lanka",
+  responseTime: "We typically respond within 24 hours",
 };
+
+// Social media — update with your real profile URLs
+export const social = {
+  youtube: "https://youtube.com/@ciigus",
+  facebook: "https://facebook.com/ciigus",
+  instagram: "https://instagram.com/ciigus",
+  tiktok: "https://tiktok.com/@ciigus",
+};
+
+export const footerServiceLinks = [
+  { label: "Web Development", to: "/services" },
+  { label: "Mobile Applications", to: "/services" },
+  { label: "Custom Business Software", to: "/services" },
+  { label: "Dashboard & Analytics", to: "/services" },
+  { label: "SEO & Search Visibility", to: "/services" },
+  { label: "Graphic Design", to: "/services" },
+];
+
+export const footerCompanyLinks = [
+  { label: "Home", to: "/" },
+  { label: "Work", to: "/work" },
+  { label: "About", to: "/about" },
+  { label: "Packages", to: "/packages" },
+  { label: "Contact", to: "/contact" },
+];
+
+export const contactServices = [
+  "Web Development",
+  "Mobile App",
+  "Custom Software",
+  "Restaurant System",
+  "Dashboard & Analytics",
+  "SEO & Marketing",
+  "Graphic Design",
+  "Other",
+];
+
+export const contactNextSteps = [
+  { step: 1, title: "We review your message" },
+  { step: 2, title: "We schedule a discovery call" },
+  { step: 3, title: "We send a proposal" },
+];
+
+export const officeHours = [
+  { day: "Monday – Friday", hours: "9:00 AM – 6:00 PM (Sri Lanka Time)" },
+  { day: "Saturday", hours: "10:00 AM – 2:00 PM" },
+  { day: "Sunday", hours: "Closed" },
+];
