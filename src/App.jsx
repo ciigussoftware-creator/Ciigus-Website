@@ -1,15 +1,14 @@
 import { useRef } from 'react'
+import { Routes, Route } from 'react-router-dom'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import TechMarquee from './components/TechMarquee'
-import Services from './components/Services'
-import Process from './components/Process'
-import Work from './components/Work'
-import About from './components/About'
-import Contact from './components/Contact'
-import Footer from './components/Footer'
+import RootLayout from './layouts/RootLayout'
+import HomePage from './pages/HomePage'
+import ServicesPage from './pages/ServicesPage'
+import WorkPage from './pages/WorkPage'
+import AboutPage from './pages/AboutPage'
+import PackagesPage from './pages/PackagesPage'
+import ContactPage from './pages/ContactPage'
 import Logo from './components/Logo'
 
 export default function App() {
@@ -42,15 +41,16 @@ export default function App() {
         </span>
       </div>
 
-      <Navbar />
-      <Hero />
-      <TechMarquee />
-      <Services />
-      <Process />
-      <Work />
-      <About />
-      <Contact />
-      <Footer />
+      <Routes>
+        <Route element={<RootLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/work" element={<WorkPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/packages" element={<PackagesPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+        </Route>
+      </Routes>
     </div>
   )
 }
