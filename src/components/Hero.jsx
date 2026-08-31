@@ -100,6 +100,7 @@ export default function Hero() {
       </video>
 
       <div
+        className="hidden md:block"
         style={{
           position: 'absolute',
           inset: 0,
@@ -113,7 +114,7 @@ export default function Hero() {
           position: 'absolute',
           inset: 0,
           zIndex: 1,
-          background: 'rgba(10,15,30,0.4)',
+          background: 'rgba(10,15,30,0.60)',
         }}
       />
 

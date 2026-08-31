@@ -83,10 +83,10 @@ export default function Work() {
         </div>
 
         <div className="flex-1 min-h-0 w-full flex flex-col items-center justify-center gap-4">
-          <div className="w-full max-w-[900px] flex flex-col items-center gap-6">
+          <div className="w-full max-w-[900px] flex flex-col items-center gap-6 px-4 md:px-0">
             <div className="flex items-center justify-center w-full mt-6">
               <div
-                className="relative w-full max-w-[860px] h-[360px] sm:h-[400px] md:h-[440px]"
+                className="relative w-[calc(100%-2rem)] md:w-full max-w-[860px] mx-4 md:mx-0 h-[360px] sm:h-[400px] md:h-[440px]"
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
               >
