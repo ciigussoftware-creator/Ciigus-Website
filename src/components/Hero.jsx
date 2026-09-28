@@ -44,26 +44,22 @@ export default function Hero() {
   useGSAP(() => {
     const tl = gsap.timeline({ defaults: { ease: 'power3.inOut' } })
 
-    tl.from('[data-hero="badge"]', {
-      y: 20,
-      opacity: 0,
-      duration: 0.7,
-    })
-    .from('[data-hero="heading"]', {
+    tl.from('[data-hero="heading"]', {
       y: 40,
       opacity: 0,
       duration: 0.9,
-    }, '-=0.35')
+    })
     .from('[data-hero="desc"]', {
       y: 30,
       opacity: 0,
       duration: 0.7,
     }, '-=0.45')
-    .from('[data-hero="cta"] > *', {
+    // Animate the wrapper, not the buttons: btn-primary/btn-outline carry a
+    // CSS `transition-all` that makes GSAP record opacity ~0 as the end value.
+    .from('[data-hero="cta"]', {
       y: 25,
       opacity: 0,
       duration: 0.6,
-      stagger: 0.1,
     }, '-=0.4')
     .from('[data-hero="stats"] > *', {
       y: 25,

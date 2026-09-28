@@ -148,8 +148,8 @@ export default function Footer() {
             mobile solutions, and business systems for clients worldwide.
           </p>
           <div className="flex gap-3">
-            {socialLinks.map((item) => (
-              <SocialButton key={item.key} {...item} />
+            {socialLinks.map(({ key, ...item }) => (
+              <SocialButton key={key} {...item} />
             ))}
           </div>
         </div>
