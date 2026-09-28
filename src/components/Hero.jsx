@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
@@ -38,8 +38,19 @@ function CounterStat({ value }) {
   )
 }
 
+// navigator.connection is Chromium-only; other browsers always autoplay.
+// Don't treat '3g' as slow: Chrome derives it mostly from round-trip time, so
+// ordinary broadband with ~300ms international RTT (common in Sri Lanka)
+// reports '3g' and the video would never play.
+function shouldAutoplayVideo() {
+  const conn = navigator.connection
+  if (!conn) return true
+  return !conn.saveData && !['slow-2g', '2g'].includes(conn.effectiveType)
+}
+
 export default function Hero() {
   const sectionRef = useRef(null)
+  const [autoplayVideo] = useState(shouldAutoplayVideo)
 
   useGSAP(() => {
     const tl = gsap.timeline({ defaults: { ease: 'power3.inOut' } })
@@ -85,7 +96,9 @@ export default function Hero() {
       }}
     >
       <video
-        autoPlay
+        autoPlay={autoplayVideo}
+        preload={autoplayVideo ? 'auto' : 'none'}
+        poster="/assets/Video/Ciigus_hero_poster.webp"
         muted
         loop
         playsInline
