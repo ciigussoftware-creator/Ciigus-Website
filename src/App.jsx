@@ -9,6 +9,7 @@ import WorkPage from './pages/WorkPage'
 import AboutPage from './pages/AboutPage'
 import PackagesPage from './pages/PackagesPage'
 import ContactPage from './pages/ContactPage'
+import NotFoundPage from './pages/NotFoundPage'
 import Logo from './components/Logo'
 
 export default function App() {
@@ -49,6 +50,7 @@ export default function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/packages" element={<PackagesPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </div>

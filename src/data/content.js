@@ -330,6 +330,14 @@ export const contactNextSteps = [
   { step: 3, title: "We send a proposal" },
 ];
 
+export const notFound = {
+  label: "Error 404",
+  title: "This page took a wrong turn.",
+  desc: "The page you're looking for doesn't exist or has moved. Try one of these instead:",
+  primaryCta: { label: "Back to Home", to: "/" },
+  secondaryCta: { label: "Contact Us", to: "/contact" },
+};
+
 export const officeHours = [
   { day: "Monday – Friday", hours: "9:00 AM – 6:00 PM (Sri Lanka Time)" },
   { day: "Saturday", hours: "10:00 AM – 2:00 PM" },
