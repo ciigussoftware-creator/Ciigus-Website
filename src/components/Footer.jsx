@@ -4,7 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Logo from './Logo'
 import BrandIcon from './BrandIcon'
-import { contact, socialLinks, footerServiceLinks, footerCompanyLinks } from '../data/content'
+import { contact, socialLinks, footerServiceLinks, footerCompanyLinks, footerLegalLinks } from '../data/content'
 import { whatsappUrl } from '../lib/contact'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -157,9 +157,21 @@ export default function Footer() {
         <div style={{ color: FAINT, fontSize: '0.875rem' }}>
           © {year} Ciigus · Modern Digital Solutions · Sri Lanka
         </div>
-        <div style={{ color: FAINT, fontSize: '0.875rem' }}>
-          Privacy Policy&nbsp;&nbsp;·&nbsp;&nbsp;Terms of Service
-        </div>
+        <nav aria-label="Legal" className="flex items-center gap-3" style={{ fontSize: '0.875rem' }}>
+          {footerLegalLinks.map((item, i) => (
+            <span key={item.to} className="flex items-center gap-3">
+              {i > 0 && <span aria-hidden="true" style={{ color: FAINT }}>·</span>}
+              <Link
+                to={item.to}
+                style={{ color: MUTED }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = WHITE)}
+                onMouseLeave={(e) => (e.currentTarget.style.color = MUTED)}
+              >
+                {item.label}
+              </Link>
+            </span>
+          ))}
+        </nav>
       </div>
     </footer>
   )

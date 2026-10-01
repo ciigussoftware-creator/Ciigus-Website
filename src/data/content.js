@@ -319,6 +319,147 @@ export const socialLinks = [
   { key: "instagram", label: "Instagram", href: "https://www.instagram.com/ciigussoftware/", brand: "#bc1888" },
 ];
 
+export const footerLegalLinks = [
+  { label: "Privacy Policy", to: "/privacy" },
+  { label: "Terms of Service", to: "/terms" },
+];
+
+const legalReviewNote =
+  "This page is a general template provided for convenience. It is not legal advice and should be reviewed by a qualified professional before you rely on it.";
+
+export const privacyPolicy = {
+  label: "Legal",
+  title: "Privacy Policy",
+  updated: "1 October 2026",
+  reviewNote: legalReviewNote,
+  intro:
+    "Ciigus Software (\"Ciigus\", \"we\", \"us\") is a software development business based in Sri Lanka. This policy explains what information we collect through this website, how we use it, and the choices you have.",
+  sections: [
+    {
+      heading: "Information we collect",
+      body: ["When you send us an enquiry through a contact form on this website, we collect the details you enter:"],
+      list: [
+        "Your name",
+        "Your email address",
+        "Your phone number (optional)",
+        "The service you're interested in (optional)",
+        "Your message",
+      ],
+      after: [
+        "If you contact us on WhatsApp or by email instead, we receive the details you choose to share through those services.",
+      ],
+    },
+    {
+      heading: "How your enquiry is delivered",
+      body: [
+        "Contact form submissions are sent through Web3Forms, a third-party form-delivery service, which forwards them by email to our inbox at ciigussoftware@gmail.com (a Google Gmail account). Web3Forms and Google handle your message only to deliver and store it for us, under their own privacy policies.",
+      ],
+    },
+    {
+      heading: "How we use your information",
+      body: [
+        "We use the information you send only to reply to your enquiry and, if you decide to work with us, to discuss and deliver your project.",
+        "We do not add you to marketing lists, and we do not sell, rent or share your personal information with third parties. It passes only through the services needed to deliver your message, described above.",
+      ],
+    },
+    {
+      heading: "Cookies and analytics",
+      body: [
+        "This website does not use analytics or advertising cookies, and it does not track you across other websites.",
+        "Like most websites, it loads some resources from third-party providers (for example Google Fonts and the jsDelivr content network), and our hosting provider keeps standard server logs. These providers receive technical information such as your IP address and browser type as part of normal web requests.",
+      ],
+    },
+    {
+      heading: "How long we keep your information",
+      body: [
+        "We keep enquiry emails for as long as we need them to respond to you and to maintain normal business records. You can ask us to delete your enquiry at any time.",
+      ],
+    },
+    {
+      heading: "Your rights",
+      body: [
+        "You can ask us to access, correct or delete the personal information you have sent us, or to stop contacting you. Email us and we will respond within a reasonable time. Sri Lanka's Personal Data Protection Act, No. 9 of 2022, may give you additional rights.",
+      ],
+    },
+    {
+      heading: "Changes to this policy",
+      body: ["We may update this policy from time to time. The \"Last updated\" date above shows when it last changed."],
+    },
+    {
+      heading: "Contact us",
+      body: ["If you have any questions about this policy or your information, contact us:"],
+      showContact: true,
+    },
+  ],
+};
+
+export const termsOfService = {
+  label: "Legal",
+  title: "Terms of Service",
+  updated: "1 October 2026",
+  reviewNote: legalReviewNote,
+  intro:
+    "These terms apply to your use of the Ciigus Software website. By using the website, you agree to them. If you don't agree, please don't use the website.",
+  sections: [
+    {
+      heading: "About this website",
+      body: [
+        "This website provides information about Ciigus Software and our services. Its content is for general information only and may change without notice.",
+      ],
+    },
+    {
+      heading: "Quotes and pricing",
+      body: [
+        "Package prices and timelines shown on this website are indicative ranges, not binding offers. A project is confirmed only by a written proposal or agreement that sets out its scope, price and timeline.",
+      ],
+    },
+    {
+      heading: "Intellectual property",
+      body: [
+        "The website's content, including its text, graphics, logos and design, belongs to Ciigus Software or is used with permission. You may not copy or reuse it for commercial purposes without our written consent. Third-party names and logos, such as technology logos, belong to their respective owners.",
+      ],
+    },
+    {
+      heading: "Acceptable use",
+      body: [
+        "Please don't misuse the website or its contact forms, for example by sending spam, attempting to gain unauthorised access, or interfering with how the website works.",
+      ],
+    },
+    {
+      heading: "Third-party links",
+      body: [
+        "The website links to third-party services such as WhatsApp, Facebook, LinkedIn and Instagram. We are not responsible for their content or practices; their own terms and privacy policies apply.",
+      ],
+    },
+    {
+      heading: "Limitation of liability",
+      body: [
+        "We work to keep the website accurate and available, but it is provided \"as is\", without warranties of any kind. To the extent permitted by law, Ciigus Software is not liable for any loss arising from your use of the website or your reliance on its content.",
+      ],
+    },
+    {
+      heading: "Privacy",
+      body: ["How we handle the information you send us is explained in our Privacy Policy."],
+      links: [{ label: "Read the Privacy Policy", to: "/privacy" }],
+    },
+    {
+      heading: "Governing law",
+      body: [
+        "These terms are governed by the laws of Sri Lanka, and any disputes are subject to the jurisdiction of the courts of Sri Lanka.",
+      ],
+    },
+    {
+      heading: "Changes to these terms",
+      body: ["We may update these terms from time to time. The \"Last updated\" date above shows when they last changed."],
+    },
+    {
+      heading: "Contact us",
+      body: ["If you have any questions about these terms, contact us:"],
+      showContact: true,
+    },
+  ],
+};
+
 export const footerServiceLinks = [
   { label: "Web Development", to: "/services" },
   { label: "Mobile Applications", to: "/services" },

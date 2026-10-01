@@ -10,7 +10,9 @@ import AboutPage from './pages/AboutPage'
 import PackagesPage from './pages/PackagesPage'
 import ContactPage from './pages/ContactPage'
 import NotFoundPage from './pages/NotFoundPage'
+import LegalPage from './pages/LegalPage'
 import Logo from './components/Logo'
+import { privacyPolicy, termsOfService } from './data/content'
 
 export default function App() {
   const rootRef = useRef(null)
@@ -50,6 +52,8 @@ export default function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/packages" element={<PackagesPage />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/privacy" element={<LegalPage key="privacy" doc={privacyPolicy} />} />
+          <Route path="/terms" element={<LegalPage key="terms" doc={termsOfService} />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
