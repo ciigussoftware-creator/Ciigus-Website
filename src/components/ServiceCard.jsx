@@ -108,22 +108,22 @@ export default function ServiceCard({ service, number }) {
             </p>
           )}
 
-          <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-white/10 pt-5 text-[0.85rem] font-semibold">
+          <div className="mt-6 flex flex-col gap-4 border-t border-white/10 pt-5 text-[0.85rem] font-semibold sm:flex-row sm:items-center sm:justify-between">
             {projectsLink && (
               <Link
                 to={projectsLink}
                 aria-label={`${seeProjects}: ${service.title}`}
-                className="text-accent2 transition-colors hover:text-green"
+                className="link-underline self-start rounded-sm text-accent2 sm:self-auto focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent2"
               >
-                {seeProjects} →
+                {seeProjects}
               </Link>
             )}
             <Link
               to={askLinkFor(service)}
               aria-label={`${askAbout}: ${service.title}`}
-              className="text-white/90 transition-colors hover:text-white"
+              className="inline-flex w-full items-center justify-center rounded-full border border-accent2/70 px-4 py-2 whitespace-nowrap text-accent2 transition-colors duration-300 hover:border-accent2 hover:bg-accent2 hover:text-[#03130d] focus-visible:bg-accent2 focus-visible:text-[#03130d] focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-accent2 motion-reduce:transition-none sm:w-auto"
             >
-              {askAbout} →
+              {askAbout}
             </Link>
           </div>
         </div>

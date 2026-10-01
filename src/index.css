@@ -125,6 +125,23 @@
   paint-order: stroke fill;
 }
 
+/* Text link whose underline slides in from left to right on hover/focus */
+@utility link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1.5px;
+  padding-bottom: 2px;
+  transition: background-size 0.3s ease;
+  &:hover,
+  &:focus-visible {
+    background-size: 100% 1.5px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
 @utility no-scrollbar {
   scrollbar-width: none;
   &::-webkit-scrollbar {
