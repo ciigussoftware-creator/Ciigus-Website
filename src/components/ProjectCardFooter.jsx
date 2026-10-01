@@ -10,7 +10,7 @@ export default function ProjectCardFooter({ item, onView, className = 'mt-5 pt-5
         aria-label={`View Project: ${item.title}`}
         className="text-accent2 font-medium text-[0.85rem] hover:translate-x-1 transition-transform duration-200 inline-block cursor-pointer"
       >
-        View Project →
+        View Project
       </button>
     </div>
   )

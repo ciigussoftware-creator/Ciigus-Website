@@ -184,7 +184,7 @@ export default function WorkPage() {
                   <span className="font-head font-bold text-[0.95rem] mb-1.5">{entry.title}</span>
                   <span className="text-[0.83rem] text-muted leading-relaxed flex-1">{entry.desc}</span>
                   <span className="mt-4 text-[0.82rem] font-medium text-accent2 group-hover:translate-x-1 transition-transform duration-200">
-                    {industryFocus.viewLabel} →
+                    {industryFocus.viewLabel}
                   </span>
                 </button>
               )

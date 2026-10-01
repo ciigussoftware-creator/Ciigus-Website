@@ -121,7 +121,7 @@ export default function PackagesPage() {
                       : 'inline-block border border-[#2a3a55] text-white py-3 px-8 rounded-sm font-medium text-[0.95rem] transition-all duration-200 ease-in-out text-center hover:border-accent2 hover:-translate-y-px hover:scale-[1.02] active:scale-[0.98]'
                   }
                 >
-                  Get Started →
+                  Get Started
                 </Link>
               </div>
             </div>

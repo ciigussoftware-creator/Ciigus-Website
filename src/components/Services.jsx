@@ -173,7 +173,7 @@ export default function Services() {
                 <h3 className="font-head text-[1.02rem] font-bold leading-snug">{service.title}</h3>
                 <p className="mt-2 flex-1 text-[0.82rem] leading-relaxed text-muted">{service.desc}</p>
                 <span className="mt-4 text-[0.82rem] font-semibold text-accent-d">
-                  {servicesSection.learnMore} →
+                  {servicesSection.learnMore}
                 </span>
               </div>
             </Link>
