@@ -39,6 +39,20 @@ _Analysis date: 2026-09-28 · Commit analysed: `179962a` (main, clean) · Analys
 >
 > **Before deploying:** add `VITE_WEB3FORMS_KEY` in Vercel → Project → Settings → Environment Variables (Production and Preview), then redeploy. Without it the forms show the error and WhatsApp fallback instead of sending.
 
+> ## ✅ Fix log: 2026-10-01 (launch prep)
+>
+> All committed and pushed to `main`.
+>
+> | # | Change | Files |
+> |---|---|---|
+> | 10 | **Floating WhatsApp button** on every page: round WhatsApp green, fixed bottom-right (safe-area aware), opens `wa.me/94782612328` in a new tab with "Hi Ciigus Software, I'd like to know more about your services.", and has an accessible label. Its entrance animation runs only when the visitor hasn't asked for reduced motion (`gsap.matchMedia`), and the hover zoom is `motion-safe`. It sits below modals (z-40), and the footer gained bottom padding, so it never covers the last row. Verified at 390, 1024 and 1440px: it covers no link, button or text at the bottom of the page | new `FloatingWhatsApp.jsx`, `BrandIcon.jsx`; `RootLayout.jsx`, `Footer.jsx`, `content.js` |
+> | 11 | **Phone and service optional** on /contact, labelled "(optional)". Empty fields are no longer sent, so enquiry emails have no blank lines | `ContactPage.jsx`, `lib/contact.js`, `content.js` |
+> | 12 | **Real social profiles:** Facebook, LinkedIn and Instagram (YouTube and TikTok removed; placeholder comment removed). One `socialLinks` list now drives both the footer and the Contact page, through the shared `BrandIcon` (the duplicated SVG sets are gone) | `content.js`, `Footer.jsx`, `ContactPage.jsx` |
+> | 13 | **Privacy Policy (/privacy) and Terms of Service (/terms)**, each with a visible "general template, please review" notice. The footer links to both (they were plain text before) | new `pages/LegalPage.jsx`; `App.jsx`, `Footer.jsx`, `content.js` (`privacyPolicy`, `termsOfService`) |
+> | 14 | **SEO:** unique title and description per route, canonical URLs, Open Graph and Twitter `summary_large_image` tags, a 1200×630 share image (`og-image.jpg`, 85 KB) and the theme colour. Link-preview crawlers don't run JS, so a Vite plugin **prerenders one HTML file per route** with its tags baked in, and `vercel.json` `cleanUrls` serves `/services` from `services.html`. `usePageMeta` keeps tags in sync during in-app navigation, and the 404 is `noindex`. Square favicons (`favicon.ico` 16/32/48, 192px `favicon.png`, 180px `apple-touch-icon.png`). `robots.txt` and `sitemap.xml` are generated at build time with `https://www.ciigus.com` URLs | new `lib/seo.js`, `hooks/usePageMeta.js`, `public/og-image.jpg`, `public/favicon.ico`, `public/apple-touch-icon.png`; `vite.config.js`, `vercel.json`, `index.html`, `public/favicon.png`, `content.js` (`site`, `pageMeta`) |
+>
+> **Verified:** `npm run build` passes. **0 console warnings/errors on all 9 routes (including /privacy, /terms and a 404 URL) at 1440px and 390px, in both dev and the production build.** The contact-form suite passed 56/56 (Web3Forms mocked). All 8 page titles are unique and ≤ 60 characters, descriptions are ≤ 160 characters, and `sitemap.xml` is valid XML.
+
 **Method:** I read every file in `src/`, plus `index.html`, the config files, `README.md` and `CLAUDE.md`. I ran a production build, ran the dev server, and loaded every route in headless Chrome at desktop (1440px) and mobile (390px) widths. That run captured console output, network failures, computed styles and screenshots. I also checked every external image URL, measured all asset sizes, and ran `npm audit`.
 
 ---
@@ -102,7 +116,10 @@ Ciigus-Website/
 ├── CLAUDE.md                   Coding conventions (partly outdated: says "no routing")
 ├── dist/                       Old build output (git-ignored)
 ├── public/                     Served as-is at the site root
-│   ├── favicon.png             Tab icon (64×84, not square)
+│   ├── favicon.png             Tab icon (✅ now square 192×192)
+│   ├── favicon.ico             ✅ 16/32/48px icon
+│   ├── apple-touch-icon.png    ✅ 180×180 iOS home-screen icon
+│   ├── og-image.jpg            ✅ 1200×630 share image for WhatsApp/Facebook/LinkedIn
 │   ├── circuit-bg.jpg          Hero fallback background (176 KB)
 │   ├── logo-full.png           ⚠ Unused
 │   ├── logo-mark.png           ⚠ Unused
@@ -125,6 +142,7 @@ Ciigus-Website/
     │   ├── AboutPage.jsx       /about: roles, values, process, CTA
     │   ├── PackagesPage.jsx    /packages: pricing cards + FAQ
     │   ├── ContactPage.jsx     /contact: details, socials, form, office hours (✅ form sends via Web3Forms)
+    │   ├── LegalPage.jsx       ✅ /privacy and /terms (content from content.js)
     │   └── NotFoundPage.jsx    Catch-all 404 page (✅ added)
     ├── components/             Reusable sections and widgets
     │   ├── Navbar.jsx          Floating pill navbar + mobile hamburger menu
@@ -179,7 +197,7 @@ Ciigus-Website/
 | `/packages` | PackagesPage | ✅ | Content complete; ✅ FIXED: the invisible "Get Started" buttons (§5 bug #1) |
 | `/contact` | ContactPage | ✅ | ✅ FIXED: form sends via Web3Forms, with validation, loading/error states and WhatsApp fallback |
 | `*` (unknown) | NotFoundPage | ✅ | ✅ FIXED: styled 404 with quick links and CTAs (was a blank page). Note: hosts still answer these URLs with HTTP 200 (an SPA "soft 404") |
-| Privacy / Terms | — | ❌ | Named in the footer as plain text; no pages, no links |
+| `/privacy`, `/terms` | LegalPage | ✅ | ✅ ADDED 2026-10-01: template pages with a review notice; linked from the footer |
 
 ### Home page sections (in order)
 
@@ -194,14 +212,14 @@ Ciigus-Website/
 | Work carousel | 🟡 | Swipe, arrows and dots work. Projects use emoji placeholders. The "View Project" modal adds nothing new |
 | About | ✅ | Roles and value cards |
 | Contact (short form) | ✅ | ✅ FIXED: sends via Web3Forms; "Send via WhatsApp" button added |
-| Footer | 🟡 | Links work. Privacy/Terms are dead text. Social URLs are unverified placeholders |
+| Footer | ✅ | ✅ FIXED: Privacy/Terms are real links; real Facebook, LinkedIn and Instagram profiles |
 
 ### Placeholder, dummy and dead content found
 - ~~**Contact forms (both):** fake submission.~~ ✅ FIXED (2026-09-30). Was: `Contact.jsx:22-38` has a commented Formspree example with `https://formspree.io/f/XXXX`. `ContactPage.jsx:122-132` only calls `setSent(true)`. **Every lead is lost.**
-- **Social links** (`content.js:291-297`): `youtube.com/@ciigus`, `facebook.com/ciigus`, `instagram.com/ciigus`, `tiktok.com/@ciigus`. The source comment says _"update with your real profile URLs"_. Confirm they are really Ciigus's accounts.
+- ✅ FIXED (2026-10-01): real Facebook, LinkedIn and Instagram links; YouTube and TikTok removed. Was: **Social links** (`content.js:291-297`): `youtube.com/@ciigus`, `facebook.com/ciigus`, `instagram.com/ciigus`, `tiktok.com/@ciigus`. The source comment says _"update with your real profile URLs"_. Confirm they are really Ciigus's accounts.
 - ✅ FIXED (2026-09-30): WhatsApp is now `94782612328` (wa.me format) with display `078 261 2328`, and `formatPhone()` is removed. Was: **Contact info** (`content.js:283-289`): the comment says _"update with your real info"_. The WhatsApp comment says "no + or spaces", but the value is `+94782612328`. wa.me links officially expect the number without the `+`. `formatPhone()` depends on the `+`, so fix both together.
 - **Work items:** emoji thumbnails (🏔️📋🪵💰) instead of screenshots. No client names or links. The `tech` field that `ProjectModal` supports is never filled, so the modal's "Tech Stack" block never appears.
-- **Footer:** `Privacy Policy · Terms of Service` is plain text (`Footer.jsx:203`), not links.
+- ✅ FIXED (2026-10-01). **Footer:** `Privacy Policy · Terms of Service` was plain text (`Footer.jsx:203`), not links.
 - **Footer service links:** all 6 go to `/services`. None deep-link to the specific service.
 - **Hero stats:** "2+ Products Shipped / 3+ Active Projects / 100% Client Focused". Check these are the numbers you want to publish.
 - **Unused content:** `marqueeItems` (only used by the unused `Marquee.jsx`) and the `invert` flag on tech logos.
@@ -223,13 +241,13 @@ Ciigus-Website/
 | Contact form (home) | ✅ | ✅ FIXED: Web3Forms, validation, loading, success/error, honeypot, WhatsApp button |
 | Contact form (/contact) | ✅ | ✅ FIXED: same as home; `?package=` prefill from Packages still works |
 | WhatsApp / email links | ✅ | ✅ All `wa.me` links use `94782612328`; number shown as 078 261 2328; email is a `mailto:` link |
-| Floating WhatsApp button | ❌ | Not present; pending the owner's decision |
+| Floating WhatsApp button | ✅ | ✅ ADDED 2026-10-01: every page, accessible, reduced-motion aware |
 | Project filtering | ❌ | Not built (only 4 projects, so it isn't needed yet) |
 | Project detail | 🟡 | Modal opens and closes on backdrop/✕. No Escape-key close, no focus trap, no `role="dialog"`, no body scroll lock |
 | Work carousel | ✅ | Arrows (desktop), swipe and dots (mobile), counter |
 | 404 page | ✅ | ✅ FIXED: `NotFoundPage` via `<Route path="*">` |
 | Legal pages | ❌ | Missing |
-| Per-page titles / SEO | ❌ | Every route shares one `<title>` and description |
+| Per-page titles / SEO | ✅ | ✅ FIXED 2026-10-01: unique title, description, OG/Twitter tags per route, prerendered for crawlers |
 | Analytics | ❌ | None |
 
 ---
@@ -263,7 +281,7 @@ Ciigus-Website/
 - All npm dependencies are used. Minor/patch updates are available; Vite 8 and React 19 are major upgrades and not required.
 
 ### Consistency and maintainability
-- **Duplicate code:** ~~`formatPhone` (Footer and ContactPage)~~ (✅ removed), four social SVG icons (Footer and ContactPage), `accentColors` plus the whole roles/values block (About and AboutPage), and project-card markup (Work, WorkPage, ProjectModal).
+- **Duplicate code:** ~~`formatPhone` (Footer and ContactPage)~~ (✅ removed), ~~four social SVG icons (Footer and ContactPage)~~ (✅ shared `BrandIcon`), `accentColors` plus the whole roles/values block (About and AboutPage), and project-card markup (Work, WorkPage, ProjectModal).
 - **Convention drift from `CLAUDE.md`:** lots of copy is hardcoded in JSX (page headings, CTAs, hero text, footer tagline, office hours in the footer vs `officeHours` in content.js). Heavy inline `style={{}}` in Hero, Footer, ContactPage, Marquee and TechMarquee. Hardcoded hex colours (`#0a0f1e`, `#1e2d45`, `#a8b3cc`, `#0d1626`) that belong in `@theme` tokens.
 - `index.html` contains an inline `<style>` for `.ticker-track`; it belongs in `index.css`.
 - `README.md` and `CLAUDE.md` are out of date (README describes `.css` files per component and `--accent`/`--brand-grad` variables; CLAUDE.md says "no routing").
@@ -291,12 +309,12 @@ Ciigus-Website/
 
 | Item | Status |
 |---|---|
-| `<title>` | ✅ present, but the **same on every route** |
+| `<title>` | ✅ unique per route (2026-10-01) |
 | Meta description | ✅ present, same on every route |
-| Favicon | 🟡 PNG only, 64×84 (non-square); no `apple-touch-icon`, no SVG/ICO |
-| Open Graph / Twitter tags | ❌ none, so link previews on WhatsApp/Facebook/LinkedIn will be bare |
-| Canonical URL | ❌ |
-| `robots.txt` / `sitemap.xml` | ❌ |
+| Favicon | ✅ `favicon.ico` 16/32/48, square 192px PNG, 180px `apple-touch-icon` (2026-10-01) |
+| Open Graph / Twitter tags | ✅ per route, with a 1200×630 share image, prerendered into static HTML (2026-10-01) |
+| Canonical URL | ✅ `https://www.ciigus.com/...` per route |
+| `robots.txt` / `sitemap.xml` | ✅ generated at build time |
 | Structured data (`LocalBusiness` JSON-LD) | ❌ worthwhile for a Sri Lankan agency |
 | Rendering | Client-side only; content is invisible until JS runs (Google handles this, but other crawlers and link previewers won't) |
 
@@ -321,16 +339,16 @@ Ciigus-Website/
 | 1 | ✅ **DONE (2026-09-30)**: ~~Wire up both contact forms~~ (Web3Forms, loading/error/success states, honeypot, validation, WhatsApp fallback) | The site's main job is lead capture, and it currently loses every submission | Small–Medium |
 | 2 | ✅ **DONE**: ~~Fix the unlayered base CSS (`@layer base`)~~ | Invisible Packages buttons; broken link colours | Small |
 | 3 | ✅ **DONE**: ~~Compress the 73 MB hero video; add a poster~~ (4.33 MB, poster, slow-connection check) | Huge mobile data cost and slow first load | Small–Medium |
-| 4 | ✅ Contact info and WhatsApp format **DONE**. **Still open:** verify the social media URLs | Wrong links = lost trust and leads | Small |
+| 4 | ✅ **DONE**: contact info, WhatsApp format and real social media URLs (2026-10-01) | Wrong links = lost trust and leads | Small |
 | 5 | **Real Work content**: screenshots, client/industry, tech stack (`tech` field), live links for finished projects | The portfolio is the key trust signal; emoji look unfinished | Medium |
 | 6 | ✅ **DONE**: ~~Add a 404 route~~ | Unknown URLs are blank | Small |
-| 7 | **SEO pass**: per-route `<title>`/description (small `useEffect` hook), Open Graph and Twitter tags plus a share image, `robots.txt`, `sitemap.xml`, square favicon and apple-touch-icon, LocalBusiness JSON-LD | Discoverability and link previews | Medium |
-| 8 | **Privacy Policy page** (⚠ now more urgent: the forms really collect name/email/phone and send them to Web3Forms) plus Terms, linked from the footer | Legal and trust | Small–Medium |
+| 7 | ✅ **DONE (2026-10-01)** except the optional LocalBusiness JSON-LD: ~~per-route title/description, Open Graph/Twitter + share image, robots.txt, sitemap.xml, square favicon and apple-touch-icon~~ | Discoverability and link previews | Medium |
+| 8 | ✅ **DONE (2026-10-01)** as templates: ~~Privacy Policy and Terms pages, linked from the footer~~. **Still open:** have them reviewed, then remove the template notice | Legal and trust | Small–Medium |
 | 9 | ✅ **DONE**: ~~Fix console warnings~~ (footer key, `badge` target), plus the invisible hero CTAs | Clean console | Small |
 | 10 | ✅ **DONE**: ~~Fix the wrong "ClickUp" (Discord) logo~~. Still open: self-host the other 24 tech logos | Correctness and reliability | Small |
 | 11 | **Accessibility pass**: ~~label/`id` pairs~~ ✅, contrast fixes (~~success message~~ ✅, section labels, footer legal), menu `aria-expanded` and focus handling, modal dialog semantics and Escape key, `prefers-reduced-motion` | Usability and compliance | Medium |
 | 12 | **Clean-up**: delete `Marquee.jsx`, unused logos, unused keyframes, `bun.lockb`, the Vite timestamp file; remove the unused `markLogo` import | Hygiene | Small |
-| 13 | **Refactor duplication** (shared social icons, ~~`formatPhone`~~ ✅, project card) and move hardcoded copy and colours into `content.js` and `@theme` per `CLAUDE.md` | Maintainability | Medium |
+| 13 | **Refactor duplication** (~~shared social icons~~ ✅, ~~`formatPhone`~~ ✅, project card) and move hardcoded copy and colours into `content.js` and `@theme` per `CLAUDE.md` | Maintainability | Medium |
 | 14 | **Update `README.md` and `CLAUDE.md`** to match the current router and page architecture | Onboarding | Small |
 | 15 | Shorten or skip the intro overlay on repeat visits; optimise the logo PNG | Perceived performance | Small |
 | 16 | Add analytics (Vercel Analytics / GA4 / Plausible) | Measure leads | Small |
@@ -343,14 +361,22 @@ Ciigus-Website/
 
 **Verdict: it is technically deployable today but not ready to launch.** It builds cleanly and works on desktop and mobile, and `vercel.json` already exists (likely already connected to Vercel, given the "fix 404 on route refresh" commit).
 
-**Blocking items before a public launch** (updated 2026-09-28):
-1. ~~The contact forms don't send anything (#1)~~. ✅ Fixed 2026-09-30 (requires `VITE_WEB3FORMS_KEY` in Vercel).
-2. Unverified social media URLs (#4). **Still open** (contact email and WhatsApp are now confirmed).
-3. ~~The Packages "Get Started" buttons are invisible~~. ✅ Fixed.
-4. ~~The 73 MB hero video~~. ✅ Fixed (4.33 MB).
-5. ~~Invisible hero CTA buttons~~. ✅ Fixed (found during the fixes).
+**Status (2026-10-01): all code-side launch blockers are fixed.** The site is live on Vercel at **https://www.ciigus.com** (`ciigus.com` 308-redirects there).
 
-The next tier to fix before promoting the site: Open Graph tags and a privacy policy. (The 404 page is ✅ done.)
+Fixed: contact forms, invisible Packages and hero buttons, the 73 MB video, social links, 404 page, Privacy/Terms pages, per-page SEO and share previews, favicons, robots.txt and sitemap.
+
+**What's still left before launch, in priority order:**
+
+| # | Item | Who | Effort |
+|---|---|---|---|
+| 1 | **Add `VITE_WEB3FORMS_KEY` in Vercel** (Settings → Environment Variables, Production + Preview) and **redeploy**, then send one real test enquiry from www.ciigus.com and check Gmail (and Spam) | Owner | 5 min |
+| 2 | **Have the Privacy Policy and Terms reviewed**, then delete the `reviewNote` lines in `content.js` to remove the template notice | Owner / adviser | Small |
+| 3 | After deploying, **check link previews** (paste www.ciigus.com/services into WhatsApp; use the Facebook Sharing Debugger and LinkedIn Post Inspector to refresh their caches) and **submit `https://www.ciigus.com/sitemap.xml` in Google Search Console** | Owner | Small |
+| 4 | **Real Work content**: screenshots instead of emoji, live links, and the `tech` field (#5) | Dev | Medium |
+| 5 | **Remaining accessibility**: section-label contrast (`#00ba9c` on white, 2.47:1), footer copyright contrast (2.54:1), mobile menu `aria-expanded` and focus handling, project modal dialog semantics and Escape key, reduced motion for the marquees, intro overlay and hero video (#11) | Dev | Medium |
+| 6 | **Clean-up**: unused `Marquee.jsx`, unused logos, `circuit-bg.jpg` (now redundant), unused keyframes, stale `bun.lockb`, the committed `vite.config.js.timestamp-….mjs`; optimise the 83 KB logo PNG (#12, #15) | Dev | Small |
+| 7 | **Update `README.md` and `CLAUDE.md`** (routing, `src/lib`, `src/hooks`, SEO plugin, `.env`) (#14) | Dev | Small |
+| 8 | Optional: LocalBusiness JSON-LD, analytics (if added, **update the Privacy Policy**, which currently says there are no analytics cookies), self-host the remaining tech logos, rewrite git history to drop the old 73 MB video | Dev | Small–Medium |
 
 ### Recommended hosting: Vercel
 It fits Vite + React out of the box, the repo already has `vercel.json` for SPA routing, the free tier is enough, it gives HTTPS and a global CDN, and serverless functions can later handle the contact form.
@@ -358,7 +384,7 @@ It fits Vite + React out of the box, the repo already has `vercel.json` for SPA 
 **Steps:**
 1. Push `main` to GitHub (`ciigussoftware-creator/Ciigus-Website`, already the remote).
 2. At vercel.com, choose **Add New → Project → Import** this repository.
-3. Framework preset: **Vite**. Build command: `npm run build`. Output directory: `dist`. Install command: `npm install`.
+3. Framework preset: **Vite**. Build command: `npm run build`. Output directory: `dist`. Install command: `npm install`. (`vercel.json` has `cleanUrls: true`, which the prerendered per-route HTML files rely on; keep it.)
 4. **Add the environment variable `VITE_WEB3FORMS_KEY`** (your Web3Forms access key) under Settings → Environment Variables, for Production and Preview. Vite inlines it at build time, so **redeploy after adding or changing it**.
 5. Deploy. Every push to `main` then redeploys, and every PR gets a preview URL.
 6. **Settings → Domains**: add your domain (e.g. `ciigus.com`) and set the DNS records Vercel shows.
