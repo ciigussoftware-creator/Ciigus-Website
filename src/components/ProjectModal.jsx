@@ -28,12 +28,12 @@ export default function ProjectModal({ item, onClose }) {
     <div
       ref={overlayRef}
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm px-4 py-8"
+      className="fixed inset-0 z-[150] flex items-center justify-center bg-black/80 backdrop-blur-sm px-4 py-8"
     >
       <div
         ref={panelRef}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto bg-surface border border-border rounded-lg shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)]"
+        className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-surface border border-border rounded-lg shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)]"
       >
         <button
           onClick={onClose}
@@ -43,8 +43,8 @@ export default function ProjectModal({ item, onClose }) {
           ✕
         </button>
 
-        <div className="h-44 sm:h-52">
-          <WorkCover item={item} size="md" />
+        <div className={item.image ? '' : 'aspect-video overflow-hidden'}>
+          <WorkCover item={item} size="md" natural />
         </div>
 
         <div className="p-6 sm:p-8">

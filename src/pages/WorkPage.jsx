@@ -137,7 +137,7 @@ export default function WorkPage() {
               ref={(el) => (cardsRef.current[i] = el)}
               className="bg-surface border border-border rounded-lg overflow-hidden shadow-[0_30px_60px_-20px_rgba(0,0,0,0.3)] flex flex-col"
             >
-              <div className="h-44 shrink-0">
+              <div className="aspect-video shrink-0 overflow-hidden">
                 <WorkCover item={item} />
               </div>
               <div className="p-6 flex flex-col flex-1">
@@ -160,7 +160,7 @@ export default function WorkPage() {
         </div>
       </section>
 
-      <section id="timber-plywood" className="section-alt py-20 px-6 md:px-10 scroll-mt-20">
+      <section id="timber-plywood" className="section-alt py-20 px-6 md:px-10">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
             <div className="section-label mx-auto">{industryFocus.label}</div>

@@ -54,8 +54,8 @@ export default function Work() {
   }
 
   return (
-    <section id="work" className="relative overflow-hidden min-h-screen md:h-screen" ref={sectionRef}>
-      <div className="relative min-h-screen md:h-screen w-full flex flex-col px-4 md:px-10 pt-6 md:pt-10 pb-6 md:pb-8 overflow-hidden">
+    <section id="work" className="relative overflow-hidden min-h-screen" ref={sectionRef}>
+      <div className="relative min-h-screen w-full flex flex-col px-4 md:px-10 pt-24 md:pt-28 pb-10 md:pb-12">
         {/* mobile: compact header, small fixed gap above the card */}
         <div className="md:hidden shrink-0 max-w-xl text-left mb-3">
           <div data-work-header className="section-label !text-[0.72rem] !mb-2">Recent Work</div>
@@ -84,7 +84,7 @@ export default function Work() {
           <div className="w-full max-w-[900px] flex flex-col items-center gap-6 px-4 md:px-0">
             <div className="flex items-center justify-center w-full mt-6">
               <div
-                className="relative w-[calc(100%-2rem)] md:w-full max-w-[860px] mx-4 md:mx-0 h-[360px] sm:h-[400px] md:h-[440px]"
+                className="relative grid w-[calc(100%-2rem)] md:w-full max-w-[640px] mx-4 md:mx-0"
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
               >
@@ -97,14 +97,14 @@ export default function Work() {
                       if (i === currentIndex) cardRef.current = el
                     }}
                     style={getCardStyle(offset)}
-                    className={`absolute inset-0 bg-surface border border-border rounded-lg overflow-hidden shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] flex flex-col ${
+                    className={`col-start-1 row-start-1 bg-surface border border-border rounded-lg overflow-hidden shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] flex flex-col ${
                       offset === 0 ? '' : 'transition-[transform,opacity] duration-300'
                     }`}
                   >
-                    <div className="h-36 sm:h-44 md:h-60 shrink-0">
+                    <div className="aspect-video shrink-0 overflow-hidden">
                       <WorkCover item={cardItem} size="md" />
                     </div>
-                    <div className="p-3 sm:p-4 md:p-5 flex flex-col flex-1 min-h-0">
+                    <div className="p-4 md:p-5 flex flex-col flex-1">
                       <h3 className={`font-head font-bold text-base sm:text-lg md:text-xl mb-1.5 md:mb-2 shrink-0 ${cardItem.image ? '' : 'sr-only'}`}>
                         {cardItem.title}
                       </h3>

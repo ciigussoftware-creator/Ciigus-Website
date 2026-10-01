@@ -12,16 +12,29 @@ const titleSizes = {
 }
 
 // Designed placeholder cover. Setting `image` on the project swaps in a real
-// screenshot with no other changes.
-export default function WorkCover({ item, size = 'sm' }) {
+// screenshot with no other changes. Screenshots are never cropped: they use
+// object-contain over a blurred copy of themselves (same file, one download).
+// `natural` lets the image keep its own aspect ratio (used in the popup).
+export default function WorkCover({ item, size = 'sm', natural = false }) {
   if (item.image) {
     return (
-      <img
-        src={item.image}
-        alt={`Screenshot of ${item.title}`}
-        loading="lazy"
-        className="w-full h-full object-cover"
-      />
+      <div className={`relative isolate overflow-hidden bg-[#0a0f1e] ${natural ? '' : 'h-full w-full'}`}>
+        <img
+          src={item.image}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          className="absolute inset-0 -z-10 h-full w-full scale-125 object-cover opacity-70 blur-2xl"
+        />
+        <img
+          src={item.image}
+          alt={`Screenshot of ${item.title}`}
+          loading="lazy"
+          decoding="async"
+          className={natural ? 'mx-auto block h-auto max-h-[60vh] w-auto max-w-full object-contain' : 'h-full w-full object-contain'}
+        />
+      </div>
     )
   }
 
