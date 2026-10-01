@@ -182,7 +182,7 @@ export default function ServicesPage() {
 
           <div data-service-grid className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
             {services.map((service, i) => (
-              <div key={service.id} id={service.id} data-service-card className={`scroll-mt-28 ${spanFor(service, i)}`}>
+              <div key={service.id} id={service.id} data-service-card className={spanFor(service, i)}>
                 <ServiceCard service={service} number={numberFor(i)} />
               </div>
             ))}

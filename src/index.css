@@ -70,6 +70,8 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Keep anchor targets clear of the fixed navbar (~78px tall). */
+    scroll-padding-top: 6.5rem;
   }
 
   body {
