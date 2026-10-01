@@ -198,7 +198,8 @@ export const workStatuses = {
 // Each project: category is one of workCategories, status a key of workStatuses.
 // tech: list of technologies (the popup's Tech Stack section appears once filled).
 // link: live URL (adds a "Visit Live Site" button). image: screenshot path that
-// replaces the designed cover, e.g. "/assets/Work/logmaster.webp".
+// replaces the designed cover, e.g. "/assets/work/logmaster-01-dashboard.webp"
+// (optimized WebP only; PNG originals stay out of git).
 // featured: shown first in the home page carousel. industry: used for the
 // "industries served" count. No client names.
 export const workItems = [
@@ -211,7 +212,7 @@ export const workItems = [
     desc: "An ERP system for managing construction sites: projects, materials, labour, costs and reporting in one place.",
     tech: [],
     link: "",
-    image: "",
+    image: "/assets/work/construction-erp-01-dashboard.webp",
     featured: false,
   },
   {
@@ -259,7 +260,7 @@ export const workItems = [
     desc: "An online store for a greenhouse business, with product catalogue, cart and order management.",
     tech: [],
     link: "",
-    image: "",
+    image: "/assets/work/greenhouse-store-01-home.webp",
     featured: false,
   },
   {
@@ -271,7 +272,7 @@ export const workItems = [
     desc: "An online shop for a printer and printing supplies store, with product categories, search and ordering.",
     tech: [],
     link: "",
-    image: "",
+    image: "/assets/work/printer-store-01-home.webp",
     featured: false,
   },
   {
@@ -283,7 +284,7 @@ export const workItems = [
     desc: "A company website for a plywood manufacturer, with search engine optimisation to improve Google rankings and bring in enquiries.",
     tech: [],
     link: "",
-    image: "",
+    image: "/assets/work/plywood-website-01-home.webp",
     featured: false,
   },
   {
@@ -295,7 +296,7 @@ export const workItems = [
     desc: "A restaurant website with branding and a QR-based digital menu that replaces printed menus and can be updated anytime.",
     tech: [],
     link: "",
-    image: "",
+    image: "/assets/work/restaurant-ella-01-website.webp",
     featured: false,
   },
   {
@@ -307,7 +308,7 @@ export const workItems = [
     desc: "An AI-based system that verifies vaccine certificates automatically, reducing manual checking and errors.",
     tech: [],
     link: "",
-    image: "",
+    image: "/assets/work/vaccine-verification-01-result.webp",
     featured: true,
   },
   {
@@ -331,7 +332,7 @@ export const workItems = [
     desc: "A computer vision system that identifies which side of a cream bottle is facing the camera on a production line, for correct labelling and packaging.",
     tech: [],
     link: "",
-    image: "",
+    image: "/assets/work/cream-bottle-01-detection.webp",
     featured: false,
   },
   {

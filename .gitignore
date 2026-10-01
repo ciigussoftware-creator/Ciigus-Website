@@ -33,3 +33,6 @@ pnpm-debug.log*
 
 # Vite config bundling temp files
 *.timestamp-*.mjs
+
+# Original project screenshots: only the optimized .webp copies are committed
+public/assets/work/*.png
