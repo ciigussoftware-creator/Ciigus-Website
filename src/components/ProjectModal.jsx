@@ -1,7 +1,9 @@
 import { useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { variantGradient } from './Work'
+import { whatsappUrl } from '../lib/contact'
+import WorkCover from './WorkCover'
+import StatusBadge from './StatusBadge'
 
 export default function ProjectModal({ item, onClose }) {
   const overlayRef = useRef(null)
@@ -41,43 +43,56 @@ export default function ProjectModal({ item, onClose }) {
           ✕
         </button>
 
-        <div
-          className={`h-40 sm:h-48 flex items-center justify-center text-[4rem] sm:text-[5rem] bg-linear-to-br ${
-            variantGradient[item.variant] || variantGradient.blue
-          }`}
-        >
-          {item.emoji}
+        <div className="h-44 sm:h-52">
+          <WorkCover item={item} size="md" />
         </div>
 
         <div className="p-6 sm:p-8">
-          <div className="inline-block text-[0.7rem] uppercase tracking-[0.08em] text-accent2 bg-accent2/10 py-[0.2rem] px-[0.6rem] rounded-[4px] mb-3 font-medium">
-            {item.tag}
+          <div className={`inline-block text-[0.7rem] uppercase tracking-[0.08em] text-accent2 bg-accent2/10 py-[0.2rem] px-[0.6rem] rounded-[4px] mb-3 font-medium ${item.image ? '' : 'sr-only'}`}>
+            {item.category}
           </div>
 
-          <h3 className="font-head font-bold text-xl sm:text-2xl mb-3">{item.title}</h3>
+          <h3 className={`font-head font-bold text-xl sm:text-2xl mb-3 ${item.image ? '' : 'sr-only'}`}>{item.title}</h3>
 
-          <p className="text-[0.9rem] sm:text-[0.95rem] text-muted leading-relaxed mb-6">{item.desc}</p>
+          <p className="text-[0.9rem] sm:text-[0.95rem] text-muted leading-relaxed mb-5">{item.desc}</p>
 
-          <div className="flex items-center gap-2 text-[0.8rem] text-muted mb-6">
-            <div
-              className={`w-1.5 h-1.5 rounded-full shrink-0 ${item.status === 'done' ? 'bg-green' : 'bg-[#f59e0b]'}`}
-            />
-            {item.statusLabel}
+          <div className="mb-6">
+            <StatusBadge status={item.status} />
           </div>
 
-          {item.tech && item.tech.length > 0 && (
-            <div className="pt-6 border-t border-border">
+          {item.tech?.length > 0 && (
+            <div className="pt-6 mb-6 border-t border-border">
               <div className="text-[0.72rem] uppercase tracking-[0.08em] text-muted mb-3">Tech Stack</div>
-              <div className="flex flex-wrap gap-2">
+              <ul className="flex flex-wrap gap-2">
                 {item.tech.map((t) => (
-                  <span
+                  <li
                     key={t}
                     className="text-[0.78rem] text-text bg-bg border border-border py-1 px-3 rounded-[4px]"
                   >
                     {t}
-                  </span>
+                  </li>
                 ))}
-              </div>
+              </ul>
+            </div>
+          )}
+
+          {(item.link || item.cta) && (
+            <div className="flex flex-col sm:flex-row gap-3">
+              {item.link && (
+                <a href={item.link} target="_blank" rel="noopener noreferrer" className="btn-primary flex-1">
+                  Visit Live Site ↗
+                </a>
+              )}
+              {item.cta && (
+                <a
+                  href={whatsappUrl(item.cta.message)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`${item.link ? 'btn-outline' : 'btn-primary'} flex-1`}
+                >
+                  {item.cta.label}
+                </a>
+              )}
             </div>
           )}
         </div>

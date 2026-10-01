@@ -2,12 +2,10 @@ import { useRef, useEffect, useState } from 'react'
 import gsap from 'gsap'
 import { workItems } from '../data/content'
 import ProjectModal from './ProjectModal'
+import WorkCover from './WorkCover'
+import ProjectCardFooter from './ProjectCardFooter'
 
-export const variantGradient = {
-  blue: 'from-[#07182a] to-[#103a52]',
-  green: 'from-[#0a1f14] to-[#154a31]',
-  purple: 'from-[#0a1a28] to-[#1a3a4a]',
-}
+const projects = [...workItems.filter((p) => p.featured), ...workItems.filter((p) => !p.featured)]
 
 export default function Work() {
   const sectionRef = useRef(null)
@@ -28,7 +26,7 @@ export default function Work() {
   }, [currentIndex])
 
   const goTo = (index, direction) => {
-    if (index < 0 || index >= workItems.length || index === currentIndex) return
+    if (index < 0 || index >= projects.length || index === currentIndex) return
     directionRef.current = direction
     setCurrentIndex(index)
   }
@@ -90,11 +88,11 @@ export default function Work() {
                 onTouchStart={handleTouchStart}
                 onTouchEnd={handleTouchEnd}
               >
-                {workItems.map((cardItem, i) => {
+                {projects.map((cardItem, i) => {
                 const offset = i - currentIndex
                 return (
                   <div
-                    key={i}
+                    key={cardItem.id}
                     ref={(el) => {
                       if (i === currentIndex) cardRef.current = el
                     }}
@@ -103,37 +101,21 @@ export default function Work() {
                       offset === 0 ? '' : 'transition-[transform,opacity] duration-300'
                     }`}
                   >
-                    <div
-                      className={`h-44 sm:h-48 md:h-52 flex items-center justify-center text-[4rem] sm:text-[5rem] md:text-[6rem] shrink-0 bg-linear-to-br ${
-                        variantGradient[cardItem.variant] || variantGradient.blue
-                      }`}
-                    >
-                      {cardItem.emoji}
+                    <div className="h-36 sm:h-44 md:h-60 shrink-0">
+                      <WorkCover item={cardItem} size="md" />
                     </div>
-                    <div className="p-3 sm:p-3 md:p-5 flex flex-col h-full">
-                      <div className="font-head font-bold text-base sm:text-lg md:text-2xl mb-1.5 sm:mb-2 md:mb-3 shrink-0">
+                    <div className="p-3 sm:p-4 md:p-5 flex flex-col flex-1 min-h-0">
+                      <h3 className={`font-head font-bold text-base sm:text-lg md:text-xl mb-1.5 md:mb-2 shrink-0 ${cardItem.image ? '' : 'sr-only'}`}>
                         {cardItem.title}
-                      </div>
-                      <div className="text-[0.75rem] sm:text-[0.82rem] md:text-[0.92rem] text-muted leading-relaxed overflow-hidden line-clamp-2 md:line-clamp-3">
+                      </h3>
+                      <p className="text-[0.75rem] sm:text-[0.82rem] md:text-[0.92rem] text-muted leading-relaxed overflow-hidden line-clamp-4">
                         {cardItem.desc}
-                      </div>
-                      <div className="flex flex-wrap items-center justify-between gap-2 mt-auto pt-3 sm:pt-4 md:pt-6 border-t border-border shrink-0">
-                        <div className="flex items-center gap-2 text-[0.68rem] sm:text-[0.75rem] md:text-[0.78rem] text-muted">
-                          <div
-                            className={`w-1.5 h-1.5 rounded-full shrink-0 ${
-                              cardItem.status === 'done' ? 'bg-green' : 'bg-[#f59e0b]'
-                            }`}
-                          />
-                          {cardItem.statusLabel}
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => setActiveItem(cardItem)}
-                          className="text-accent2 font-medium text-[0.78rem] sm:text-[0.85rem] md:text-[0.9rem] hover:translate-x-1 transition-transform duration-200 inline-block cursor-pointer"
-                        >
-                          View Project 
-                        </button>
-                      </div>
+                      </p>
+                      <ProjectCardFooter
+                        item={cardItem}
+                        onView={() => setActiveItem(cardItem)}
+                        className="mt-auto pt-3 sm:pt-4"
+                      />
                     </div>
                   </div>
                 )
@@ -152,7 +134,7 @@ export default function Work() {
                 <button
                   type="button"
                   onClick={handleNext}
-                  disabled={currentIndex === workItems.length - 1}
+                  disabled={currentIndex === projects.length - 1}
                   className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-25 z-20 text-4xl text-muted hover:text-accent2 transition-colors duration-200 disabled:opacity-20 disabled:cursor-not-allowed"
                   aria-label="Next project"
                 >
@@ -162,12 +144,12 @@ export default function Work() {
             </div>
 
             <div className="text-muted text-sm">
-              {String(currentIndex + 1).padStart(2, '0')} / {String(workItems.length).padStart(2, '0')}
+              {String(currentIndex + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
             </div>
           </div>
 
           <div className="flex md:hidden items-center justify-center gap-2 shrink-0">
-            {workItems.map((_, i) => (
+            {projects.map((_, i) => (
               <button
                 key={i}
                 type="button"

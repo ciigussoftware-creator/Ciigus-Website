@@ -3,17 +3,30 @@ import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { workItems } from '../data/content'
-import { variantGradient } from '../components/Work'
+import { workItems, workCategories, workFilterAll, industryFocus } from '../data/content'
+import { whatsappUrl } from '../lib/contact'
 import ProjectModal from '../components/ProjectModal'
+import WorkCover from '../components/WorkCover'
+import ProjectCardFooter from '../components/ProjectCardFooter'
+import CategoryIcon from '../components/CategoryIcon'
 
 gsap.registerPlugin(ScrollTrigger)
+
+const filters = [workFilterAll, ...workCategories]
+const countFor = (filter) =>
+  filter === workFilterAll ? workItems.length : workItems.filter((p) => p.category === filter).length
+const logmaster = workItems.find((p) => p.id === 'logmaster')
 
 export default function WorkPage() {
   const heroRef = useRef(null)
   const gridRef = useRef(null)
   const cardsRef = useRef([])
+  const introTweenRef = useRef(null)
+  const shownFilterRef = useRef(workFilterAll)
+  const [filter, setFilter] = useState(workFilterAll)
   const [activeItem, setActiveItem] = useState(null)
+
+  const visible = filter === workFilterAll ? workItems : workItems.filter((p) => p.category === filter)
 
   useGSAP(() => {
     gsap.from('[data-work-hero]', {
@@ -27,11 +40,11 @@ export default function WorkPage() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.from(cardsRef.current, {
+      introTweenRef.current = gsap.from(cardsRef.current.filter(Boolean), {
         y: 40,
         opacity: 0,
         duration: 0.6,
-        stagger: 0.1,
+        stagger: 0.08,
         ease: 'power3.out',
         scrollTrigger: {
           trigger: gridRef.current,
@@ -44,71 +57,149 @@ export default function WorkPage() {
     return () => ctx.revert()
   }, [])
 
+  // On a filter change, finish the scroll-in intro (so no card is left hidden)
+  // and fade the newly visible cards in, unless the visitor prefers reduced motion.
+  useEffect(() => {
+    if (shownFilterRef.current === filter) return
+    shownFilterRef.current = filter
+    introTweenRef.current?.progress(1)
+    ScrollTrigger.refresh()
+
+    const mm = gsap.matchMedia()
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      gsap.fromTo(
+        cardsRef.current.filter(Boolean),
+        { y: 16, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.35, stagger: 0.04, ease: 'power2.out' }
+      )
+    })
+    return () => mm.revert()
+  }, [filter])
+
   return (
     <>
-      <section ref={heroRef} className="pt-36 pb-16 px-6 md:px-10 text-center">
+      <section ref={heroRef} className="pt-36 pb-12 px-6 md:px-10 text-center">
         <div data-work-hero className="section-label mx-auto">Portfolio</div>
         <h1 data-work-hero className="section-title mx-auto max-w-3xl">
           Our work.
         </h1>
         <p data-work-hero className="section-sub mx-auto">
-          From live client projects to industry-changing platforms currently
-          in development — here's what we've built and what we're building.
+          Business systems, e-commerce websites and AI solutions: projects
+          we've delivered, and platforms we're building now.
         </p>
       </section>
 
       <section className="pb-24 px-6 md:px-10">
         <div
+          role="group"
+          aria-label="Filter projects by category"
+          className="flex flex-wrap justify-center gap-2 max-w-5xl mx-auto mb-10"
+        >
+          {filters.map((f) => {
+            const active = f === filter
+            return (
+              <button
+                key={f}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setFilter(f)}
+                className={`rounded-full border py-2 px-4 text-[0.85rem] transition-colors duration-200 cursor-pointer ${
+                  active
+                    ? 'bg-linear-to-br from-green to-accent border-transparent text-[#03130d] font-semibold'
+                    : 'bg-faint border-border text-muted hover:border-accent2/50 hover:text-text'
+                }`}
+              >
+                {f} <span className={active ? 'opacity-70' : 'opacity-60'}>({countFor(f)})</span>
+              </button>
+            )
+          })}
+        </div>
+        <p aria-live="polite" className="sr-only">
+          Showing {visible.length} {visible.length === 1 ? 'project' : 'projects'}
+          {filter === workFilterAll ? '' : ` in ${filter}`}
+        </p>
+
+        <div
           ref={gridRef}
           className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto"
         >
-          {workItems.map((item, i) => (
-            <div
-              key={item.title}
+          {visible.map((item, i) => (
+            <article
+              key={item.id}
               ref={(el) => (cardsRef.current[i] = el)}
               className="bg-surface border border-border rounded-lg overflow-hidden shadow-[0_30px_60px_-20px_rgba(0,0,0,0.3)] flex flex-col"
             >
-              <div
-                className={`h-40 flex items-center justify-center text-[3rem] shrink-0 bg-linear-to-br ${
-                  variantGradient[item.variant] || variantGradient.blue
-                }`}
-              >
-                {item.emoji}
+              <div className="h-44 shrink-0">
+                <WorkCover item={item} />
               </div>
               <div className="p-6 flex flex-col flex-1">
-                <div className="inline-block self-start text-[0.7rem] uppercase tracking-[0.08em] text-accent2 bg-accent2/10 py-[0.2rem] px-[0.6rem] rounded-[4px] mb-3 font-medium">
-                  {item.tag}
-                </div>
-                <div className="font-head font-bold text-lg mb-2">
-                  {item.title}
-                </div>
-                <div className="text-[0.85rem] text-muted leading-relaxed flex-1">
-                  {item.desc}
-                </div>
-                <div className="flex flex-wrap items-center justify-between gap-2 mt-5 pt-5 border-t border-border">
-                  <div className="flex items-center gap-2 text-[0.78rem] text-muted">
-                    <div
-                      className={`w-1.5 h-1.5 rounded-full shrink-0 ${
-                        item.status === 'done' ? 'bg-green' : 'bg-[#f59e0b]'
-                      }`}
-                    />
-                    {item.statusLabel}
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setActiveItem(item)}
-                    className="text-accent2 font-medium text-[0.85rem] hover:translate-x-1 transition-transform duration-200 inline-block cursor-pointer"
+                <h2 className={`font-head font-bold text-lg mb-2 ${item.image ? '' : 'sr-only'}`}>{item.title}</h2>
+                <p className="text-[0.85rem] text-muted leading-relaxed flex-1">{item.desc}</p>
+                {item.cta && (
+                  <a
+                    href={whatsappUrl(item.cta.message)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-outline self-start mt-4 py-2 px-5 text-[0.85rem]"
                   >
-                    View Project →
-                  </button>
-                </div>
+                    {item.cta.label}
+                  </a>
+                )}
+                <ProjectCardFooter item={item} onView={() => setActiveItem(item)} />
               </div>
-            </div>
+            </article>
           ))}
         </div>
       </section>
 
-      <section className="section-alt py-20 px-6 md:px-10 text-center">
+      <section className="section-alt py-20 px-6 md:px-10">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10">
+            <div className="section-label mx-auto">{industryFocus.label}</div>
+            <h2 className="section-title mx-auto max-w-2xl">{industryFocus.title}</h2>
+            <p className="section-sub mx-auto">{industryFocus.desc}</p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {industryFocus.items.map((entry) => {
+              const project = workItems.find((p) => p.id === entry.projectId)
+              return (
+                <button
+                  key={entry.projectId}
+                  type="button"
+                  onClick={() => setActiveItem(project)}
+                  className="group text-left bg-bg border border-border rounded-lg p-5 flex flex-col transition-colors duration-200 hover:border-accent2 cursor-pointer"
+                >
+                  <span className="flex items-center justify-center w-10 h-10 rounded-lg bg-accent2/10 text-accent2 mb-4">
+                    <CategoryIcon category={project.category} className="w-5 h-5" />
+                  </span>
+                  <span className="font-head font-bold text-[0.95rem] mb-1.5">{entry.title}</span>
+                  <span className="text-[0.83rem] text-muted leading-relaxed flex-1">{entry.desc}</span>
+                  <span className="mt-4 text-[0.82rem] font-medium text-accent2 group-hover:translate-x-1 transition-transform duration-200">
+                    {industryFocus.viewLabel} →
+                  </span>
+                </button>
+              )
+            })}
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-4 mt-10">
+            <a
+              href={whatsappUrl(logmaster.cta.message)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary"
+            >
+              {industryFocus.demoLabel}
+            </a>
+            <Link to="/contact" className="btn-outline">
+              {industryFocus.contactLabel}
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-6 md:px-10 text-center">
         <h2 className="section-title mx-auto max-w-2xl">
           Got a project in mind?
         </h2>

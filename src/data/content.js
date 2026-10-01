@@ -24,7 +24,7 @@ export const pageMeta = {
   },
   "/work": {
     title: "Our Work & Projects | Ciigus Software",
-    description: "Restaurant websites, a digital menu system, LogMaster for the timber industry and a payroll platform: what Ciigus Software has built and is building.",
+    description: "Business systems, e-commerce websites and AI solutions by Ciigus Software, from a construction ERP and LogMaster to AI defect detection and tea clone ID.",
   },
   "/about": {
     title: "About Us | Ciigus Software",
@@ -54,8 +54,8 @@ export const notFoundMeta = {
 };
 
 export const stats = [
-  { val: "2+", lbl: "Products Shipped" },
-  { val: "3+", lbl: "Active Projects" },
+  { val: "10", lbl: "Projects Delivered" },
+  { val: "2", lbl: "In Development" },
   { val: "100%", lbl: "Client Focused" },
 ];
 
@@ -188,44 +188,171 @@ export const journeySteps = [
   { id: 8, emoji: '🛠️', title: 'Maintenance & Support', desc: 'We stay with you after launch.' },
 ];
 
+export const workCategories = ["Business Systems", "E-commerce & Web", "AI Solutions"];
+
+export const workStatuses = {
+  completed: "Completed",
+  live: "Live",
+  "in-development": "In Development",
+};
+
+// Each project: category is one of workCategories, status a key of workStatuses.
+// tech: list of technologies (the popup's Tech Stack section appears once filled).
+// link: live URL (adds a "Visit Live Site" button). image: screenshot path that
+// replaces the designed cover, e.g. "/assets/Work/logmaster.webp".
+// featured: shown first in the home page carousel. No client names.
 export const workItems = [
   {
-    variant: "blue",
-    emoji: "🏔️",
-    tag: "Hospitality",
-    title: "Restaurant Website — Ella, Sri Lanka",
-    desc: "A full restaurant website with online presence, branding, and digital menu system for a client in Ella.",
-    status: "done",
-    statusLabel: "Completed & Live",
+    id: "construction-erp",
+    title: "Construction ERP System",
+    category: "Business Systems",
+    status: "completed",
+    desc: "An ERP system for managing construction sites: projects, materials, labour, costs and reporting in one place.",
+    tech: [],
+    link: "",
+    image: "",
+    featured: false,
   },
   {
-    variant: "blue",
-    emoji: "📋",
-    tag: "Hospitality",
-    title: "Digital Menu System",
-    desc: "A QR-based digital menu system for the same Ella restaurant — replacing printed menus with a modern, updatable interface.",
-    status: "done",
-    statusLabel: "Completed & Live",
+    id: "plywood-inventory",
+    title: "Plywood Inventory Management System",
+    category: "Business Systems",
+    status: "completed",
+    desc: "Inventory system for a plywood manufacturer to track raw materials, production stock and sales.",
+    tech: [],
+    link: "",
+    image: "",
+    featured: false,
   },
   {
-    variant: "green",
-    emoji: "🪵",
-    tag: "Industry · SaaS",
+    id: "logmaster",
     title: "LogMaster — Timber Industry Platform",
+    category: "Business Systems",
+    status: "in-development",
     desc: "A digital management system for Sri Lankan timber and plywood businesses — replacing pen-and-paper with smart workflows for log tracking, supplier management, and billing.",
-    status: "active",
-    statusLabel: "In Development",
+    tech: [],
+    link: "",
+    image: "",
+    featured: true,
+    cta: { label: "Request a demo", message: "Hi, I'm interested in a LogMaster demo." },
   },
   {
-    variant: "purple",
-    emoji: "💰",
-    tag: "HR & Finance",
+    id: "payroll",
     title: "Payroll Management System",
-    desc: "A modern payroll platform that automates salary computation, deductions, and reporting for businesses of all sizes.",
-    status: "active",
-    statusLabel: "In Development",
+    category: "Business Systems",
+    status: "in-development",
+    desc: "A payroll platform for Sri Lankan businesses that automates salary, EPF/ETF and APIT calculations.",
+    tech: [],
+    link: "",
+    image: "",
+    featured: false,
+  },
+  {
+    id: "greenhouse-ecommerce",
+    title: "Greenhouse E-commerce Website",
+    category: "E-commerce & Web",
+    status: "completed",
+    desc: "An online store for a greenhouse business, with product catalogue, cart and order management.",
+    tech: [],
+    link: "",
+    image: "",
+    featured: false,
+  },
+  {
+    id: "printer-supplies-ecommerce",
+    title: "Printer Supplies E-commerce Website",
+    category: "E-commerce & Web",
+    status: "completed",
+    desc: "An online shop for a printer and printing supplies store, with product categories, search and ordering.",
+    tech: [],
+    link: "",
+    image: "",
+    featured: false,
+  },
+  {
+    id: "plywood-website-seo",
+    title: "Plywood Company Website + SEO",
+    category: "E-commerce & Web",
+    status: "completed",
+    desc: "A company website for a plywood manufacturer, with search engine optimisation to improve Google rankings and bring in enquiries.",
+    tech: [],
+    link: "",
+    image: "",
+    featured: false,
+  },
+  {
+    id: "restaurant-ella",
+    title: "Restaurant Website + QR Digital Menu — Ella",
+    category: "E-commerce & Web",
+    status: "live",
+    desc: "A restaurant website with branding and a QR-based digital menu that replaces printed menus and can be updated anytime.",
+    tech: [],
+    link: "",
+    image: "",
+    featured: false,
+  },
+  {
+    id: "ai-vaccine-verification",
+    title: "AI Vaccine Verification System",
+    category: "AI Solutions",
+    status: "completed",
+    desc: "An AI-based system that verifies vaccine certificates automatically, reducing manual checking and errors.",
+    tech: [],
+    link: "",
+    image: "",
+    featured: true,
+  },
+  {
+    id: "plywood-defect-detection",
+    title: "AI Plywood Sheet Defect Detection",
+    category: "AI Solutions",
+    status: "completed",
+    desc: "A computer vision system that inspects plywood sheets and detects surface defects such as cracks, knots and holes, helping quality control.",
+    tech: [],
+    link: "",
+    image: "",
+    featured: true,
+  },
+  {
+    id: "cream-bottle-side-identification",
+    title: "Cream Bottle Side Identification System",
+    category: "AI Solutions",
+    status: "completed",
+    desc: "A computer vision system that identifies which side of a cream bottle is facing the camera on a production line, for correct labelling and packaging.",
+    tech: [],
+    link: "",
+    image: "",
+    featured: false,
+  },
+  {
+    id: "tea-clone-identification",
+    title: "AI Tea Clone Identification System",
+    category: "AI Solutions",
+    status: "completed",
+    desc: "An AI system that identifies tea plant clone varieties from leaf images, supporting Sri Lanka's tea industry.",
+    tech: [],
+    link: "",
+    image: "",
+    featured: true,
   },
 ];
+
+export const workFilterAll = "All";
+
+export const industryFocus = {
+  label: "Industry Focus",
+  title: "Digital solutions for the timber & plywood industry",
+  desc: "From the log yard to Google search, we build software for every stage of a timber and plywood business.",
+  items: [
+    { projectId: "logmaster", title: "LogMaster platform", desc: "Log tracking, supplier management and billing in one system." },
+    { projectId: "plywood-inventory", title: "Inventory management", desc: "Raw materials, production stock and sales, tracked in one place." },
+    { projectId: "plywood-defect-detection", title: "AI defect detection", desc: "Computer vision that spots cracks, knots and holes in plywood sheets." },
+    { projectId: "plywood-website-seo", title: "Website + SEO", desc: "A company website built to rank on Google and bring in enquiries." },
+  ],
+  viewLabel: "View project",
+  demoLabel: "Request a LogMaster demo",
+  contactLabel: "Talk to us",
+};
 
 export const roles = [
   "Developers",
