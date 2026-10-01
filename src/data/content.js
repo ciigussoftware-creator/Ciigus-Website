@@ -20,7 +20,7 @@ export const pageMeta = {
   },
   "/services": {
     title: "Software Development Services | Ciigus Software",
-    description: "Web and mobile apps, restaurant systems, dashboards, industry and business software, plus SEO, digital marketing, graphic design and AI video.",
+    description: "Web and mobile apps, business systems, AI and computer vision, dashboards and restaurant systems, plus SEO, digital marketing, design and AI video.",
   },
   "/work": {
     title: "Our Work & Projects | Ciigus Software",
@@ -139,6 +139,12 @@ export const services = [
     title: "Custom Business Software",
     desc: "Payroll systems, HR tools, inventory management, and bespoke software tailored to your exact business needs.",
     image: "/assets/Services/custom-business-software-payroll-hr.webp",
+  },
+  {
+    icon: "🤖",
+    title: "AI & Computer Vision Solutions",
+    desc: "Custom AI systems for automated quality inspection, document and certificate verification, and image recognition trained on your own products.",
+    image: "/assets/Services/ai-computer-vision-quality-inspection.webp",
   },
   {
     icon: "🔍",
@@ -513,6 +519,7 @@ export const footerServiceLinks = [
   { label: "Web Development", to: "/services" },
   { label: "Mobile Applications", to: "/services" },
   { label: "Custom Business Software", to: "/services" },
+  { label: "AI & Computer Vision", to: "/services" },
   { label: "Dashboard & Analytics", to: "/services" },
   { label: "SEO & Search Visibility", to: "/services" },
   { label: "Graphic Design", to: "/services" },
@@ -530,6 +537,7 @@ export const contactServices = [
   "Web Development",
   "Mobile App",
   "Custom Software",
+  "AI & Computer Vision",
   "Restaurant System",
   "Dashboard & Analytics",
   "SEO & Marketing",
