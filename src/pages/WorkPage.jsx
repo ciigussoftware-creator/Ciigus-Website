@@ -1,9 +1,9 @@
 import { useRef, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { workItems, workCategories, workFilterAll, industryFocus } from '../data/content'
+import { workItems, workCategories, workCategorySlugs, workFilterAll, industryFocus } from '../data/content'
 import { whatsappUrl } from '../lib/contact'
 import ProjectModal from '../components/ProjectModal'
 import WorkCover from '../components/WorkCover'
@@ -16,15 +16,23 @@ const filters = [workFilterAll, ...workCategories]
 const countFor = (filter) =>
   filter === workFilterAll ? workItems.length : workItems.filter((p) => p.category === filter).length
 const logmaster = workItems.find((p) => p.id === 'logmaster')
+const categoryBySlug = Object.fromEntries(Object.entries(workCategorySlugs).map(([label, slug]) => [slug, label]))
 
 export default function WorkPage() {
   const heroRef = useRef(null)
   const gridRef = useRef(null)
   const cardsRef = useRef([])
   const introTweenRef = useRef(null)
-  const shownFilterRef = useRef(workFilterAll)
-  const [filter, setFilter] = useState(workFilterAll)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const initialFilter = categoryBySlug[searchParams.get('category')] ?? workFilterAll
+  const shownFilterRef = useRef(initialFilter)
+  const [filter, setFilter] = useState(initialFilter)
   const [activeItem, setActiveItem] = useState(null)
+
+  const chooseFilter = (f) => {
+    setFilter(f)
+    setSearchParams(f === workFilterAll ? {} : { category: workCategorySlugs[f] }, { replace: true })
+  }
 
   const visible = filter === workFilterAll ? workItems : workItems.filter((p) => p.category === filter)
 
@@ -102,7 +110,7 @@ export default function WorkPage() {
                 key={f}
                 type="button"
                 aria-pressed={active}
-                onClick={() => setFilter(f)}
+                onClick={() => chooseFilter(f)}
                 className={`rounded-full border py-2 px-4 text-[0.85rem] transition-colors duration-200 cursor-pointer ${
                   active
                     ? 'bg-linear-to-br from-green to-accent border-transparent text-[#03130d] font-semibold'
@@ -152,7 +160,7 @@ export default function WorkPage() {
         </div>
       </section>
 
-      <section className="section-alt py-20 px-6 md:px-10">
+      <section id="timber-plywood" className="section-alt py-20 px-6 md:px-10 scroll-mt-20">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-10">
             <div className="section-label mx-auto">{industryFocus.label}</div>

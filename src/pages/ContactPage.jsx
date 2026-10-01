@@ -62,13 +62,14 @@ const inputClasses = (hasError) =>
 export default function ContactPage() {
   const [searchParams] = useSearchParams()
   const pkg = searchParams.get('package')
+  const requestedService = searchParams.get('service')
 
   const { values, errors, status, field, idFor, errorIdFor, honeypot, handleSubmit } = useEnquiryForm({
     initialValues: {
       name: '',
       email: '',
       phone: '',
-      service: '',
+      service: contactServices.includes(requestedService) ? requestedService : '',
       message: pkg ? `Hi, I'm interested in the ${pkg}. ` : '',
     },
     requiredFields: ['name', 'email', 'message'],

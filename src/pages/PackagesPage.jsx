@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { packages, packagesFaq } from '../data/content'
+import { packages, packagesFaq, packagesNote } from '../data/content'
 import FadeUp from '../components/FadeUp'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -93,8 +93,12 @@ export default function PackagesPage() {
                 <div className="font-head font-bold text-2xl mb-1 bg-clip-text text-transparent bg-linear-to-br from-green to-accent">
                   {pkg.price}
                 </div>
-                <div className="text-[0.78rem] text-[#8899bb] mb-6">
+                <div className="text-[0.78rem] text-[#8899bb] mb-2">
                   Best for: {pkg.bestFor}
+                </div>
+                <div className="text-[0.78rem] text-[#c8d1e0] mb-6">
+                  <span className="text-white font-medium">Covers: </span>
+                  {pkg.covers.join(' · ')}
                 </div>
 
                 <ul className="flex flex-col gap-3 mb-8 flex-1">
@@ -123,6 +127,9 @@ export default function PackagesPage() {
             </div>
           ))}
         </div>
+        <p className="max-w-3xl mx-auto mt-10 text-center text-[0.88rem] text-muted leading-relaxed">
+          {packagesNote}
+        </p>
       </section>
 
       <section ref={faqRef} className="section-alt py-20 px-6 md:px-10">

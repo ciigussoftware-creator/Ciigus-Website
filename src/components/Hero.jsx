@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
-import { stats } from '../data/content'
+import { stats, heroDesc } from '../data/content'
 
 function CounterStat({ value }) {
   const ref = useRef(null)
@@ -142,8 +142,7 @@ export default function Hero() {
           </h1>
 
           <p data-hero="desc" className="text-[1rem] md:text-[0.95rem] text-[#a8b3cc] max-w-130 mb-0 font-light leading-[1.7]">
-            Ciigus develops modern digital products - from restaurant systems to
-            enterprise management platforms - for businesses ready to grow.
+            {heroDesc}
           </p>
 
           <div data-hero="cta" className="flex flex-wrap gap-4 mt-6">

@@ -16,11 +16,11 @@ export const site = {
 export const pageMeta = {
   "/": {
     title: "Ciigus Software | Web & Mobile App Development in Sri Lanka",
-    description: "Ciigus Software builds websites, mobile apps, dashboards and custom business software for growing businesses in Sri Lanka and worldwide.",
+    description: "Ciigus Software builds ERP & business systems, AI & computer vision, and websites & e-commerce for growing businesses in Sri Lanka and worldwide.",
   },
   "/services": {
     title: "Software Development Services | Ciigus Software",
-    description: "Web and mobile apps, business systems, AI and computer vision, dashboards and restaurant systems, plus SEO, digital marketing, design and AI video.",
+    description: "ERP & business systems, AI & computer vision, websites & e-commerce, restaurant systems, SEO, mobile & desktop apps, and branding & marketing.",
   },
   "/work": {
     title: "Our Work & Projects | Ciigus Software",
@@ -53,28 +53,6 @@ export const notFoundMeta = {
   description: "The page you're looking for doesn't exist or has moved.",
 };
 
-export const stats = [
-  { val: "10", lbl: "Projects Delivered" },
-  { val: "2", lbl: "In Development" },
-  { val: "100%", lbl: "Client Focused" },
-];
-
-export const marqueeItems = [
-  "Web Development",
-  "Mobile Apps",
-  "SaaS Products",
-  "Restaurant Systems",
-  "Business Software",
-  "Dashboard Systems",
-  "Payroll Solutions",
-  "Industry Management",
-  "Digital Marketing",
-  "SEO & Search Visibility",
-  "Graphic Design",
-  "AI Video Creation",
-  "Desktop Applications",
-];
-
 export const techStack = [
   { name: 'React', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg' },
   { name: 'Node.js', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg' },
@@ -103,80 +81,101 @@ export const techStack = [
   { name: 'OpenCV', logo: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/opencv/opencv-original.svg' },
 ];
 
+export const heroDesc =
+  "From ERP & business systems to AI & computer vision and websites & e-commerce, Ciigus builds software for businesses ready to grow.";
+
+export const footerAbout =
+  "A Sri Lanka-based software company building ERP & business systems, AI & computer vision, and websites & e-commerce for clients worldwide.";
+
+// The single source for service names: the footer, contact form, Packages
+// page and both services sections all read from this list.
+// workCategory links "See projects" to /work?category=…; projectsLink overrides it.
 export const services = [
   {
-    icon: "🌐",
-    title: "Web Development",
-    desc: "Business websites, promotional pages, booking systems, and fully custom web platforms built for speed and reliability.",
-    image: "/assets/Services/ciigus-web-development-sri-lanka.webp",
+    id: "erp-business-systems",
+    title: "ERP & Business Systems",
+    desc: "Replace spreadsheets and paperwork with one system for projects, stock, payroll and costs, with live dashboards and reports to run on. We've delivered ERP and inventory systems for construction and plywood businesses.",
+    features: ["ERP", "Inventory", "Payroll & HR", "Dashboards & reports"],
+    proof: "Construction ERP, Plywood Inventory System, LogMaster, Payroll System",
+    workCategory: "Business Systems",
+    image: "/assets/Services/business-dashboard-analytics-software.webp",
+    featured: true,
   },
   {
-    icon: "📱",
-    title: "Mobile Applications",
-    desc: "Android and iOS apps designed for real users — with smooth experiences that drive engagement and retention.",
-    image: "/assets/Services/ciigus-mobile-app-development-android-ios.webp",
+    id: "ai-computer-vision",
+    title: "AI & Computer Vision",
+    desc: "Cameras and AI that check what people check by hand: defects on a production line, certificates in a stack, products on a conveyor. Each model is trained on your own images, so it recognises your products, not a demo set.",
+    features: ["Quality inspection", "Defect detection", "Document verification", "Image identification"],
+    proof: "Plywood Defect Detection, Vaccine Verification, Tea Clone Identification, Cream Bottle Side Identification",
+    workCategory: "AI Solutions",
+    image: "/assets/Services/ai-computer-vision-quality-inspection.webp",
+    featured: true,
   },
   {
-    icon: "🍽️",
-    title: "Restaurant Systems",
-    desc: "Digital menus, restaurant websites, and ordering systems that modernize how hospitality businesses operate.",
+    id: "websites-ecommerce",
+    title: "Websites & E-commerce",
+    desc: "Business websites and online stores with product catalogues, carts, payments and order management you can run yourself.",
+    features: ["Online stores", "Product catalogues", "Payments", "Order management"],
+    proof: "Greenhouse store, Printer Supplies store, Plywood company website",
+    workCategory: "E-commerce & Web",
+    image: "/assets/Services/websites-ecommerce-online-store.webp",
+  },
+  {
+    id: "restaurant-hospitality",
+    title: "Restaurant & Hospitality Systems",
+    desc: "Restaurant websites, QR digital menus you can update anytime, and ordering systems that cut printing costs and keep prices current.",
+    features: ["Restaurant websites", "QR digital menus", "Online ordering"],
+    proof: "Ella restaurant website + QR menu",
+    workCategory: "E-commerce & Web",
     image: "/assets/Services/restaurant-digital-menu-ordering-system.webp",
   },
   {
-    icon: "📊",
-    title: "Dashboard & Analytics",
-    desc: "Business dashboards and data visualization tools that give teams the visibility they need to make smart decisions.",
-    image: "/assets/Services/business-dashboard-analytics-software.webp",
-  },
-  {
-    icon: "🏭",
-    title: "Industry Management",
-    desc: "Custom management systems built for specific industries — replacing manual workflows with clean, digital operations.",
-    image: "/assets/Services/industry-management-system-software.webp",
-  },
-  {
-    icon: "⚙️",
-    title: "Custom Business Software",
-    desc: "Payroll systems, HR tools, inventory management, and bespoke software tailored to your exact business needs.",
-    image: "/assets/Services/custom-business-software-payroll-hr.webp",
-  },
-  {
-    icon: "🤖",
-    title: "AI & Computer Vision Solutions",
-    desc: "Custom AI systems for automated quality inspection, document and certificate verification, and image recognition trained on your own products.",
-    image: "/assets/Services/ai-computer-vision-quality-inspection.webp",
-  },
-  {
-    icon: "🔍",
+    id: "seo-search-visibility",
     title: "SEO & Search Visibility",
-    desc: "On-page SEO, technical audits, and content strategies that get your business ranking higher and found by the right people.",
+    desc: "Technical audits, on-page SEO and site structure that lift your Google rankings for the searches your customers actually make.",
+    features: ["On-page SEO", "Technical audits", "Google rankings"],
+    proof: "Plywood company website + SEO",
+    workCategory: "E-commerce & Web",
     image: "/assets/Services/seo-search-visibility-service-sri-lanka.webp",
   },
   {
-    icon: "📣",
-    title: "Digital Marketing",
-    desc: "Social media campaigns, ad management, and growth strategies that turn online attention into real business results.",
-    image: "/assets/Services/digital-marketing-social-media-campaigns.webp",
+    id: "mobile-desktop-apps",
+    title: "Mobile & Desktop Applications",
+    desc: "Android and iOS apps for your customers and staff, and Windows or macOS software for teams that work on their own machines.",
+    features: ["Android", "iOS", "Windows", "macOS"],
+    image: "/assets/Services/ciigus-mobile-app-development-android-ios.webp",
   },
   {
-    icon: "🖥️",
-    title: "Desktop Applications",
-    desc: "Cross-platform desktop software for Windows and macOS — built for businesses that need powerful tools running locally.",
-    image: "/assets/Services/desktop-application-development-windows-mac.webp",
+    id: "branding-content-marketing",
+    title: "Branding, Content & Marketing",
+    desc: "Brand identities, graphic design, social media campaigns and AI-produced promo videos, so your launch looks as strong as the product behind it.",
+    features: ["Brand identity", "Graphic design", "Social media", "AI video"],
+    proof: "Ella restaurant branding",
+    image: "/assets/Services/branding-content-marketing.webp",
   },
   {
-    icon: "🎨",
-    title: "Graphic Design",
-    desc: "Brand identities, marketing materials, UI assets, and visual content that make your business look as good as it works.",
-    image: "/assets/Services/graphic-design-branding-ui-assets.webp",
-  },
-  {
-    icon: "🎬",
-    title: "AI Video Creation",
-    desc: "Promotional videos, product demos, and social content produced with AI tools — fast, affordable, and visually compelling.",
-    image: "/assets/Services/ai-video-creation-promotional-content.webp",
+    id: "timber-plywood",
+    title: "Industry Solutions: Timber & Plywood",
+    desc: "Software for every stage of a timber and plywood business: LogMaster for the log yard, inventory for the factory, AI defect detection on the line, and a website that brings in enquiries.",
+    features: ["LogMaster", "Inventory", "Defect detection", "Website + SEO"],
+    proof: "LogMaster, Plywood Inventory System, Plywood Defect Detection, Plywood company website",
+    projectsLink: "/work#timber-plywood",
+    image: "/assets/Services/industry-management-system-software.webp",
+    highlight: true,
   },
 ];
+
+const serviceName = (id) => services.find((s) => s.id === id).title;
+
+export const servicesSection = {
+  label: "What We Do",
+  titleLines: ["Everything your business", "needs, built right."],
+  desc: "ERP and business systems, AI and computer vision, websites and online stores, plus the apps, SEO and branding around them.",
+  viewAll: "View all services",
+  learnMore: "Learn more",
+  pause: "Pause scrolling",
+  play: "Resume scrolling",
+};
 export const journeySteps = [
   { id: 1, emoji: '💡', title: 'Client Idea', desc: 'You bring the vision.' },
   { id: 2, emoji: '🔍', title: 'Discovery & Requirements', desc: 'We learn your goals and map out exactly what to build.' },
@@ -200,10 +199,12 @@ export const workStatuses = {
 // tech: list of technologies (the popup's Tech Stack section appears once filled).
 // link: live URL (adds a "Visit Live Site" button). image: screenshot path that
 // replaces the designed cover, e.g. "/assets/Work/logmaster.webp".
-// featured: shown first in the home page carousel. No client names.
+// featured: shown first in the home page carousel. industry: used for the
+// "industries served" count. No client names.
 export const workItems = [
   {
     id: "construction-erp",
+    industry: "Construction",
     title: "Construction ERP System",
     category: "Business Systems",
     status: "completed",
@@ -215,6 +216,7 @@ export const workItems = [
   },
   {
     id: "plywood-inventory",
+    industry: "Timber & Plywood",
     title: "Plywood Inventory Management System",
     category: "Business Systems",
     status: "completed",
@@ -226,6 +228,7 @@ export const workItems = [
   },
   {
     id: "logmaster",
+    industry: "Timber & Plywood",
     title: "LogMaster — Timber Industry Platform",
     category: "Business Systems",
     status: "in-development",
@@ -249,6 +252,7 @@ export const workItems = [
   },
   {
     id: "greenhouse-ecommerce",
+    industry: "Agriculture",
     title: "Greenhouse E-commerce Website",
     category: "E-commerce & Web",
     status: "completed",
@@ -260,6 +264,7 @@ export const workItems = [
   },
   {
     id: "printer-supplies-ecommerce",
+    industry: "Retail",
     title: "Printer Supplies E-commerce Website",
     category: "E-commerce & Web",
     status: "completed",
@@ -271,6 +276,7 @@ export const workItems = [
   },
   {
     id: "plywood-website-seo",
+    industry: "Timber & Plywood",
     title: "Plywood Company Website + SEO",
     category: "E-commerce & Web",
     status: "completed",
@@ -282,6 +288,7 @@ export const workItems = [
   },
   {
     id: "restaurant-ella",
+    industry: "Hospitality",
     title: "Restaurant Website + QR Digital Menu — Ella",
     category: "E-commerce & Web",
     status: "live",
@@ -293,6 +300,7 @@ export const workItems = [
   },
   {
     id: "ai-vaccine-verification",
+    industry: "Healthcare",
     title: "AI Vaccine Verification System",
     category: "AI Solutions",
     status: "completed",
@@ -304,6 +312,7 @@ export const workItems = [
   },
   {
     id: "plywood-defect-detection",
+    industry: "Timber & Plywood",
     title: "AI Plywood Sheet Defect Detection",
     category: "AI Solutions",
     status: "completed",
@@ -315,6 +324,7 @@ export const workItems = [
   },
   {
     id: "cream-bottle-side-identification",
+    industry: "Manufacturing",
     title: "Cream Bottle Side Identification System",
     category: "AI Solutions",
     status: "completed",
@@ -326,6 +336,7 @@ export const workItems = [
   },
   {
     id: "tea-clone-identification",
+    industry: "Agriculture",
     title: "AI Tea Clone Identification System",
     category: "AI Solutions",
     status: "completed",
@@ -336,6 +347,27 @@ export const workItems = [
     featured: true,
   },
 ];
+
+const deliveredProjects = workItems.filter((p) => p.status !== "in-development");
+
+export const workStats = {
+  delivered: deliveredProjects.length,
+  aiBuilt: deliveredProjects.filter((p) => p.category === "AI Solutions").length,
+  industries: new Set(workItems.map((p) => p.industry).filter(Boolean)).size,
+  inDevelopment: workItems.length - deliveredProjects.length,
+};
+
+export const stats = [
+  { val: String(workStats.delivered), lbl: "Projects Delivered" },
+  { val: String(workStats.inDevelopment), lbl: "In Development" },
+  { val: "100%", lbl: "Client Focused" },
+];
+
+export const workCategorySlugs = {
+  "Business Systems": "business-systems",
+  "E-commerce & Web": "ecommerce-web",
+  "AI Solutions": "ai-solutions",
+};
 
 export const workFilterAll = "All";
 
@@ -352,6 +384,58 @@ export const industryFocus = {
   viewLabel: "View project",
   demoLabel: "Request a LogMaster demo",
   contactLabel: "Talk to us",
+};
+
+export const servicesPage = {
+  hero: {
+    label: "Services",
+    title: "Software that runs",
+    highlight: "real businesses.",
+    desc: "ERP systems that replace the paperwork, AI that inspects and verifies, and online stores that sell. Designed, built and supported by one team in Sri Lanka.",
+    primaryCta: { label: "Start a Project", to: "/contact" },
+    secondaryCta: { label: "See Our Work", to: "/work" },
+    indexLabel: "What we build",
+  },
+  grid: {
+    label: "What we do",
+    title: "Eight ways we build for your business",
+    desc: "Each card shows the projects behind the service. Ask about any of them and we'll tell you how it would work for you.",
+  },
+  card: { builtFor: "Built for", seeProjects: "See projects", askAbout: "Ask about this", highlightLabel: "Industry focus" },
+  spotlight: {
+    label: "Industry spotlight",
+    title: industryFocus.title,
+    desc: industryFocus.desc,
+    demoLabel: industryFocus.demoLabel,
+    projectsLabel: "See timber projects",
+    projectsLink: "/work#timber-plywood",
+  },
+  process: {
+    label: "How we work",
+    title: "From first call to long-term support",
+    steps: [
+      { title: "Discover", desc: "We learn how your business runs today, map the workflows and agree a clear scope, timeline and quote." },
+      { title: "Design", desc: "Wireframes and screen designs you can click through and approve before development starts." },
+      { title: "Build", desc: "We develop in short sprints with regular demos, then test every feature before launch." },
+      { title: "Support", desc: "We launch, train your team and stay on for fixes and improvements as you grow." },
+    ],
+  },
+  why: {
+    label: "Why Ciigus",
+    title: "Proof, not promises",
+    points: [
+      { value: workStats.delivered, label: "Projects delivered", desc: "ERP systems, AI tools, websites and online stores." },
+      { value: workStats.aiBuilt, label: "AI systems built", desc: "Computer vision for inspection, verification and identification." },
+      { value: workStats.industries, label: "Industries served", desc: "Including construction, timber & plywood, tea, healthcare and hospitality." },
+      { value: workStats.inDevelopment, label: "Platforms in development", desc: "LogMaster for the timber industry and a Sri Lankan payroll system." },
+    ],
+  },
+  finalCta: {
+    title: "Have a process that still runs on paper?",
+    desc: "Tell us how it works today and we'll show you what it could look like.",
+    primary: { label: "Start a Project", to: "/contact" },
+    whatsapp: { label: "Chat on WhatsApp", message: "Hi Ciigus Software, I'd like to discuss a project." },
+  },
 };
 
 export const roles = [
@@ -400,6 +484,7 @@ export const packages = [
     price: "LKR 35,000–60,000",
     popular: false,
     bestFor: "Small businesses, startups",
+    covers: [serviceName("websites-ecommerce"), serviceName("seo-search-visibility")],
     features: [
       "Business website (up to 5 pages)",
       "Mobile responsive design",
@@ -414,6 +499,7 @@ export const packages = [
     price: "LKR 80,000–150,000",
     popular: true,
     bestFor: "Growing businesses",
+    covers: [serviceName("websites-ecommerce"), serviceName("mobile-desktop-apps"), serviceName("erp-business-systems")],
     features: [
       "Everything in Starter",
       "Custom web app or mobile app",
@@ -429,6 +515,7 @@ export const packages = [
     price: "Custom Pricing",
     popular: false,
     bestFor: "Large businesses, complex systems",
+    covers: [serviceName("erp-business-systems"), serviceName("timber-plywood")],
     features: [
       "Everything in Growth",
       "Full custom software (ERP, payroll, SaaS)",
@@ -438,6 +525,8 @@ export const packages = [
     ],
   },
 ];
+
+export const packagesNote = `${serviceName("ai-computer-vision")} and ${serviceName("branding-content-marketing")} projects are quoted individually. Tell us what you need and we'll send a proposal.`;
 
 export const packagesFaq = [
   {
@@ -642,15 +731,7 @@ export const termsOfService = {
   ],
 };
 
-export const footerServiceLinks = [
-  { label: "Web Development", to: "/services" },
-  { label: "Mobile Applications", to: "/services" },
-  { label: "Custom Business Software", to: "/services" },
-  { label: "AI & Computer Vision", to: "/services" },
-  { label: "Dashboard & Analytics", to: "/services" },
-  { label: "SEO & Search Visibility", to: "/services" },
-  { label: "Graphic Design", to: "/services" },
-];
+export const footerServiceLinks = services.map((s) => ({ label: s.title, to: `/services#${s.id}` }));
 
 export const footerCompanyLinks = [
   { label: "Home", to: "/" },
@@ -660,17 +741,7 @@ export const footerCompanyLinks = [
   { label: "Contact", to: "/contact" },
 ];
 
-export const contactServices = [
-  "Web Development",
-  "Mobile App",
-  "Custom Software",
-  "AI & Computer Vision",
-  "Restaurant System",
-  "Dashboard & Analytics",
-  "SEO & Marketing",
-  "Graphic Design",
-  "Other",
-];
+export const contactServices = [...services.map((s) => s.title), "Other"];
 
 export const contactNextSteps = [
   { step: 1, title: "We review your message" },

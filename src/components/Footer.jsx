@@ -4,7 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Logo from './Logo'
 import BrandIcon from './BrandIcon'
-import { contact, socialLinks, footerServiceLinks, footerCompanyLinks, footerLegalLinks } from '../data/content'
+import { contact, socialLinks, footerServiceLinks, footerCompanyLinks, footerLegalLinks, footerAbout } from '../data/content'
 import { whatsappUrl } from '../lib/contact'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -102,8 +102,7 @@ export default function Footer() {
             We build software that moves businesses forward.
           </p>
           <p style={{ color: MUTED, fontSize: '0.85rem', lineHeight: 1.7, maxWidth: '20rem', marginBottom: '1.5rem' }}>
-            A Sri Lanka-based software agency delivering custom web apps,
-            mobile solutions, and business systems for clients worldwide.
+            {footerAbout}
           </p>
           <div className="flex gap-3">
             {socialLinks.map(({ key, ...item }) => (
