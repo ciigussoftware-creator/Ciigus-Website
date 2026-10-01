@@ -313,13 +313,11 @@ export const enquiryForm = {
   },
 };
 
-// Social media — update with your real profile URLs
-export const social = {
-  youtube: "https://youtube.com/@ciigus",
-  facebook: "https://facebook.com/ciigus",
-  instagram: "https://instagram.com/ciigus",
-  tiktok: "https://tiktok.com/@ciigus",
-};
+export const socialLinks = [
+  { key: "facebook", label: "Facebook", href: "https://www.facebook.com/profile.php?id=61560167747196", brand: "#1877F2" },
+  { key: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/in/ciigus-software-8362a241b/", brand: "#0A66C2" },
+  { key: "instagram", label: "Instagram", href: "https://www.instagram.com/ciigussoftware/", brand: "#bc1888" },
+];
 
 export const footerServiceLinks = [
   { label: "Web Development", to: "/services" },
