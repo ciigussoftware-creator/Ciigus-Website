@@ -25,6 +25,18 @@
   --animate-pulse-fast: pulse-animation 1.5s infinite;
   --animate-marquee-vertical: marquee-vertical 22s linear infinite;
   --animate-gradient-wave: gradient-wave 7s linear infinite;
+  --animate-glow-drift: glow-drift 16s ease-in-out infinite alternate;
+  --animate-grid-pan: grid-pan 24s linear infinite;
+}
+
+@keyframes glow-drift {
+  from { transform: translate3d(-6%, -4%, 0) scale(1); }
+  to   { transform: translate3d(8%, 6%, 0) scale(1.15); }
+}
+
+@keyframes grid-pan {
+  from { background-position: 0 0; }
+  to   { background-position: 56px 56px; }
 }
 
 @keyframes scroll {
@@ -104,6 +116,24 @@
 
 @utility btn-primary {
   @apply inline-block bg-linear-to-br from-green to-accent text-[#03130d] py-3 px-8 rounded-sm font-semibold text-[0.95rem] transition-all duration-200 ease-in-out text-center cursor-pointer border-none hover:brightness-108 hover:-translate-y-px hover:scale-[1.02] hover:shadow-[0_8px_24px_-8px_rgba(0,186,156,0.45)] active:scale-[0.98];
+}
+
+/* Large outlined service numbers (01, 02…) */
+@utility number-outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgb(255 255 255 / 0.5);
+  paint-order: stroke fill;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility btn-outline-light {
+  @apply inline-block border border-white/30 text-white py-3 px-8 rounded-sm font-medium text-[0.95rem] text-center transition-all duration-200 ease-in-out hover:border-white/70 hover:bg-white/5 hover:-translate-y-px active:scale-[0.98];
 }
 
 @utility btn-outline {
