@@ -4,17 +4,13 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Logo from './Logo'
 import { contact, social, footerServiceLinks, footerCompanyLinks } from '../data/content'
+import { whatsappUrl } from '../lib/contact'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const MUTED = '#a8b3cc'
 const WHITE = '#ffffff'
 const FAINT = '#4a5568'
-
-function formatPhone(raw) {
-  const match = raw.match(/^(\+\d{2})(\d{2})(\d{3})(\d{4})$/)
-  return match ? match.slice(1).join(' ') : raw
-}
 
 function FooterLink({ to, children }) {
   return (
@@ -182,8 +178,8 @@ export default function Footer() {
             <ContactLink href={`mailto:${contact.email}`}>
               Email: {contact.email}
             </ContactLink>
-            <ContactLink href={`https://wa.me/${contact.whatsapp}`} target="_blank">
-              WhatsApp: {formatPhone(contact.whatsapp)}
+            <ContactLink href={whatsappUrl()} target="_blank">
+              WhatsApp: {contact.whatsappDisplay}
             </ContactLink>
             <div className="flex items-start gap-2" style={{ color: MUTED, fontSize: '0.875rem' }}>
               <span>📍</span> {contact.location}

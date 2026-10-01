@@ -280,12 +280,33 @@ export const packagesFaq = [
   },
 ];
 
-// Contact details — update with your real info
 export const contact = {
   email: "ciigussoftware@gmail.com",
-  whatsapp: "+94782612328", // international format, no + or spaces
+  whatsapp: "94782612328", // wa.me format: country code + number, no "+", spaces or leading 0
+  whatsappDisplay: "078 261 2328",
   location: "Colombo, Sri Lanka",
   responseTime: "We typically respond within 24 hours",
+};
+
+export const enquiryForm = {
+  subject: "New enquiry from Ciigus website",
+  fromName: "Ciigus Website",
+  submitLabel: "Send Message",
+  sendingLabel: "Sending…",
+  whatsappLabel: "Send via WhatsApp",
+  success: "Thanks! Your message has been sent. We'll get back to you soon.",
+  error: "Sorry, your message couldn't be sent. Please try again in a moment.",
+  errorFallback: "Or message us on WhatsApp",
+  whatsappIntro: "Hi Ciigus!",
+  whatsappDefault: "I'd like to talk about a project.",
+  validation: {
+    name: "Please enter your name.",
+    email: "Please enter your email address.",
+    emailInvalid: "Please enter a valid email address.",
+    phone: "Please enter your phone number.",
+    service: "Please choose a service.",
+    message: "Please tell us a little about your project.",
+  },
 };
 
 // Social media — update with your real profile URLs

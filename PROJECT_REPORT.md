@@ -23,6 +23,22 @@ _Analysis date: 2026-09-28 · Commit analysed: `179962a` (main, clean) · Analys
 > - `navigator.connection` only exists in Chromium browsers; Safari and Firefox always autoplay.
 > - `public/circuit-bg.jpg` (176 KB) is now redundant behind the poster and could be removed.
 
+> ## ✅ Fix log: 2026-09-30 (contact forms)
+>
+> These changes are in the working tree (uncommitted).
+>
+> | # | Fix | Files |
+> |---|---|---|
+> | 7 | **Both contact forms now send email via Web3Forms.** They POST JSON to `https://api.web3forms.com/submit` with `subject: "New enquiry from Ciigus website"`, `from_name`, `replyto` (the sender's email, so Gmail's Reply goes straight to them) and a `form` field saying which form was used. The access key comes from `VITE_WEB3FORMS_KEY` in `.env` (git-ignored), and `.env.example` documents it. There is a Web3Forms `botcheck` honeypot, a loading state ("Sending…", disabled and `aria-busy`, double submits blocked), and a 15 s timeout. "Thanks!" shows only when Web3Forms returns `success: true`. On failure, an error appears with an "Or message us on WhatsApp" fallback link (pre-filled, so the typed message isn't lost), and the typed values are kept. The form clears after success. Inline validation covers name required, valid email and a non-empty message (the Contact page also keeps phone and service required, as before), with errors linked via `aria-describedby` and focus moved to the first invalid field | new `src/lib/contact.js`, `src/hooks/useEnquiryForm.js`, `src/components/EnquiryActions.jsx`, `src/components/FieldError.jsx`, `.env.example`; `src/components/Contact.jsx`, `src/pages/ContactPage.jsx`, `src/data/content.js` (`enquiryForm`) |
+> | 8 | **WhatsApp:** every link now uses `https://wa.me/94782612328` through one helper, `whatsappUrl()`. A new **"Send via WhatsApp"** button next to each submit button opens WhatsApp with the name and message pre-filled (URL-encoded). The number displays as **078 261 2328** on the Contact page, the footer and the home contact section. The duplicate `formatPhone()` helpers were removed, and the old "Or reach us directly on WhatsApp" text link on /contact was replaced by the new button. There is **no floating WhatsApp button**; adding one is pending the owner's decision | `src/data/content.js` (`contact.whatsapp`, `contact.whatsappDisplay`), `src/components/Footer.jsx`, `src/pages/ContactPage.jsx`, `src/components/Contact.jsx` |
+> | 9 | **Form accessibility:** every field has a `<label htmlFor>` matching its `id` (via `useId`; the home form uses visually hidden labels to keep its placeholder design). Success text changed from lime `text-green` (1.37:1 contrast) to `text-emerald-700` (readable) | same files |
+>
+> **Verified:** `npm run build` passes. An end-to-end browser test with **Web3Forms mocked** (no real emails sent) passed **53/53 checks** on both forms (home at 1440px, /contact at 390px). It covered labels, validation, focus, the exact request payload, loading and disabled state, triple click sending exactly one request, success clearing the form, failure showing the WhatsApp fallback, the honeypot, the WhatsApp pre-fill encoding, and every WhatsApp/mailto link on the site. The full route sweep still shows 0 console warnings.
+>
+> **Note:** Web3Forms access keys are public by design. Any `VITE_*` value is inlined into the built JavaScript, so `.env` keeps the key out of git but not out of the live site. That's expected for Web3Forms; to limit abuse, turn on domain restriction and spam protection in the Web3Forms dashboard if your plan offers it.
+>
+> **Before deploying:** add `VITE_WEB3FORMS_KEY` in Vercel → Project → Settings → Environment Variables (Production and Preview), then redeploy. Without it the forms show the error and WhatsApp fallback instead of sending.
+
 **Method:** I read every file in `src/`, plus `index.html`, the config files, `README.md` and `CLAUDE.md`. I ran a production build, ran the dev server, and loaded every route in headless Chrome at desktop (1440px) and mobile (390px) widths. That run captured console output, network failures, computed styles and screenshots. I also checked every external image URL, measured all asset sizes, and ran `npm audit`.
 
 ---
@@ -80,6 +96,8 @@ Ciigus-Website/
 ├── vite.config.js              Vite + React + Tailwind plugins
 ├── vite.config.js.timestamp-…mjs  ⚠ Vite temp artifact accidentally committed; delete it
 ├── vercel.json                 SPA rewrite so /services etc. don't 404 on refresh
+├── .env                        VITE_WEB3FORMS_KEY (✅ git-ignored, never committed)
+├── .env.example                Placeholder for VITE_WEB3FORMS_KEY (✅ added)
 ├── README.md                   ⚠ Outdated (describes per-component .css files and old CSS variable names)
 ├── CLAUDE.md                   Coding conventions (partly outdated: says "no routing")
 ├── dist/                       Old build output (git-ignored)
@@ -106,7 +124,7 @@ Ciigus-Website/
     │   ├── WorkPage.jsx        /work grid + modal
     │   ├── AboutPage.jsx       /about: roles, values, process, CTA
     │   ├── PackagesPage.jsx    /packages: pricing cards + FAQ
-    │   ├── ContactPage.jsx     /contact: details, socials, form, office hours
+    │   ├── ContactPage.jsx     /contact: details, socials, form, office hours (✅ form sends via Web3Forms)
     │   └── NotFoundPage.jsx    Catch-all 404 page (✅ added)
     ├── components/             Reusable sections and widgets
     │   ├── Navbar.jsx          Floating pill navbar + mobile hamburger menu
@@ -120,10 +138,16 @@ Ciigus-Website/
     │   ├── ProjectModal.jsx    Project detail modal (used by Work and WorkPage)
     │   ├── About.jsx           Home: team roles + value cards
     │   ├── ValueCard.jsx       3D-tilt value card
-    │   ├── Contact.jsx         Home: short contact form
+    │   ├── Contact.jsx         Home: short contact form (✅ sends via Web3Forms)
+    │   ├── EnquiryActions.jsx  Submit + "Send via WhatsApp" buttons, success/error messages (✅ added)
+    │   ├── FieldError.jsx      Inline field error text (✅ added)
     │   ├── FadeUp.jsx          Scroll-triggered fade-up wrapper
     │   ├── ScrollToTop.jsx     Resets scroll on route change
     │   └── Logo.jsx            Logo mark/full renderer
+    ├── hooks/
+    │   └── useEnquiryForm.js   Form state, validation, submit/loading/success/error (✅ added)
+    ├── lib/
+    │   └── contact.js          sendEnquiry (Web3Forms), validateEnquiry, whatsappUrl (✅ added)
     ├── data/
     │   └── content.js          Single source of truth for services, work, packages, FAQ, contact, socials…
     └── assets/
@@ -148,12 +172,12 @@ Ciigus-Website/
 
 | Route | Page | Status | Notes |
 |---|---|---|---|
-| `/` | HomePage | 🟡 | All sections render; the contact form doesn't send (see below) |
+| `/` | HomePage | ✅ | All sections render; ✅ FIXED: contact form now sends via Web3Forms |
 | `/services` | ServicesPage | ✅ | Hero, 11-card image grid, CTA |
 | `/work` | WorkPage | 🟡 | 4 projects, but emoji instead of real screenshots, no live links, modal repeats the card text |
 | `/about` | AboutPage | ✅ | Roles, value cards, process map, CTA (mostly the same content as the home About section) |
 | `/packages` | PackagesPage | ✅ | Content complete; ✅ FIXED: the invisible "Get Started" buttons (§5 bug #1) |
-| `/contact` | ContactPage | 🟡 | Looks finished, but **the form sends nothing** |
+| `/contact` | ContactPage | ✅ | ✅ FIXED: form sends via Web3Forms, with validation, loading/error states and WhatsApp fallback |
 | `*` (unknown) | NotFoundPage | ✅ | ✅ FIXED: styled 404 with quick links and CTAs (was a blank page). Note: hosts still answer these URLs with HTTP 200 (an SPA "soft 404") |
 | Privacy / Terms | — | ❌ | Named in the footer as plain text; no pages, no links |
 
@@ -169,13 +193,13 @@ Ciigus-Website/
 | Process road map | ✅ | Separate desktop and mobile SVGs with scroll-scrubbed path |
 | Work carousel | 🟡 | Swipe, arrows and dots work. Projects use emoji placeholders. The "View Project" modal adds nothing new |
 | About | ✅ | Roles and value cards |
-| Contact (short form) | ❌ functionally | Shows "Thanks!" but submits nowhere (Formspree example left in a comment) |
+| Contact (short form) | ✅ | ✅ FIXED: sends via Web3Forms; "Send via WhatsApp" button added |
 | Footer | 🟡 | Links work. Privacy/Terms are dead text. Social URLs are unverified placeholders |
 
 ### Placeholder, dummy and dead content found
-- **Contact forms (both):** fake submission. `Contact.jsx:22-38` has a commented Formspree example with `https://formspree.io/f/XXXX`. `ContactPage.jsx:122-132` only calls `setSent(true)`. **Every lead is lost.**
+- ~~**Contact forms (both):** fake submission.~~ ✅ FIXED (2026-09-30). Was: `Contact.jsx:22-38` has a commented Formspree example with `https://formspree.io/f/XXXX`. `ContactPage.jsx:122-132` only calls `setSent(true)`. **Every lead is lost.**
 - **Social links** (`content.js:291-297`): `youtube.com/@ciigus`, `facebook.com/ciigus`, `instagram.com/ciigus`, `tiktok.com/@ciigus`. The source comment says _"update with your real profile URLs"_. Confirm they are really Ciigus's accounts.
-- **Contact info** (`content.js:283-289`): the comment says _"update with your real info"_. The WhatsApp comment says "no + or spaces", but the value is `+94782612328`. wa.me links officially expect the number without the `+`. `formatPhone()` depends on the `+`, so fix both together.
+- ✅ FIXED (2026-09-30): WhatsApp is now `94782612328` (wa.me format) with display `078 261 2328`, and `formatPhone()` is removed. Was: **Contact info** (`content.js:283-289`): the comment says _"update with your real info"_. The WhatsApp comment says "no + or spaces", but the value is `+94782612328`. wa.me links officially expect the number without the `+`. `formatPhone()` depends on the `+`, so fix both together.
 - **Work items:** emoji thumbnails (🏔️📋🪵💰) instead of screenshots. No client names or links. The `tech` field that `ProjectModal` supports is never filled, so the modal's "Tech Stack" block never appears.
 - **Footer:** `Privacy Policy · Terms of Service` is plain text (`Footer.jsx:203`), not links.
 - **Footer service links:** all 6 go to `/services`. None deep-link to the specific service.
@@ -196,9 +220,10 @@ Ciigus-Website/
 | Responsive layout | ✅ | Tested at 390px and 1440px: no horizontal overflow; mobile-specific Process map and Work carousel |
 | Dark mode | ❌ | Not implemented. The site is a fixed light theme with dark navbar, hero and footer. Recent commits deliberately removed dark styling, so this may be intentional |
 | Animations | ✅ | Intro overlay, hero timeline, counters, marquees, scroll reveals, road-map scrub, 3D tilt cards, modal. No `prefers-reduced-motion` support |
-| Contact form (home) | ❌ | UI only; no submission backend |
-| Contact form (/contact) | ❌ | UI only. Validation works (HTML `required`). `?package=` prefill from Packages works |
-| WhatsApp / email links | ✅ | `mailto:` and `wa.me` links present (see the `+` note above) |
+| Contact form (home) | ✅ | ✅ FIXED: Web3Forms, validation, loading, success/error, honeypot, WhatsApp button |
+| Contact form (/contact) | ✅ | ✅ FIXED: same as home; `?package=` prefill from Packages still works |
+| WhatsApp / email links | ✅ | ✅ All `wa.me` links use `94782612328`; number shown as 078 261 2328; email is a `mailto:` link |
+| Floating WhatsApp button | ❌ | Not present; pending the owner's decision |
 | Project filtering | ❌ | Not built (only 4 projects, so it isn't needed yet) |
 | Project detail | 🟡 | Modal opens and closes on backdrop/✕. No Escape-key close, no focus trap, no `role="dialog"`, no body scroll lock |
 | Work carousel | ✅ | Arrows (desktop), swipe and dots (mobile), counter |
@@ -219,7 +244,7 @@ Ciigus-Website/
    - `/contact` "Or reach us directly on WhatsApp" renders black instead of teal.
    - This is likely why `Footer.jsx`, `TechMarquee.jsx` and the mobile menu use inline `style={{color}}` and JS `onMouseEnter` hover handlers: they were workarounds.
    - **Fix:** wrap the base rules (`html`, `body`, `a`, `img`, `button`) in `@layer base { … }`. Then check pages that relied on the old behaviour. Effort: small.
-2. **🟠 No contact form backend.** Both forms show a success message while sending nothing. Effort: small–medium.
+2. **✅ FIXED (2026-09-30). 🟠 No contact form backend.** Both forms show a success message while sending nothing. Effort: small–medium.
 3. **✅ FIXED. 🟠 React key-spread warning** (`Footer.jsx:152`). `key` is now destructured out of `item`.
 4. **✅ FIXED. 🟡 Dead GSAP target** (`Hero.jsx:47-51`): the `[data-hero="badge"]` step was removed.
    - **4b. ✅ FIXED (found during this fix). 🔴 Hero CTA buttons were invisible in production.** `.from('[data-hero="cta"] > *')` tweened the buttons themselves, and their `transition-all` class made GSAP record opacity ~0 and y 25px as the end state. The timeline now animates the wrapper.
@@ -238,7 +263,7 @@ Ciigus-Website/
 - All npm dependencies are used. Minor/patch updates are available; Vite 8 and React 19 are major upgrades and not required.
 
 ### Consistency and maintainability
-- **Duplicate code:** `formatPhone` (Footer and ContactPage), four social SVG icons (Footer and ContactPage), `accentColors` plus the whole roles/values block (About and AboutPage), and project-card markup (Work, WorkPage, ProjectModal).
+- **Duplicate code:** ~~`formatPhone` (Footer and ContactPage)~~ (✅ removed), four social SVG icons (Footer and ContactPage), `accentColors` plus the whole roles/values block (About and AboutPage), and project-card markup (Work, WorkPage, ProjectModal).
 - **Convention drift from `CLAUDE.md`:** lots of copy is hardcoded in JSX (page headings, CTAs, hero text, footer tagline, office hours in the footer vs `officeHours` in content.js). Heavy inline `style={{}}` in Hero, Footer, ContactPage, Marquee and TechMarquee. Hardcoded hex colours (`#0a0f1e`, `#1e2d45`, `#a8b3cc`, `#0d1626`) that belong in `@theme` tokens.
 - `index.html` contains an inline `<style>` for `.ticker-track`; it belongs in `index.css`.
 - `README.md` and `CLAUDE.md` are out of date (README describes `.css` files per component and `--accent`/`--brand-grad` variables; CLAUDE.md says "no routing").
@@ -250,11 +275,11 @@ Ciigus-Website/
   | Element | Ratio |
   |---|---|
   | Packages "Get Started" link on card | ~~1.07:1~~ ✅ FIXED (now white on navy) |
-  | Form success message `text-green` (#d5e73c) on white | **1.37:1** |
+  | Form success message `text-green` (#d5e73c) on white | ~~1.37:1~~ ✅ FIXED (now `text-emerald-700`) |
   | Section labels `text-accent2` (#00ba9c) on white, small text | **2.47:1** |
   | Footer copyright/legal (#4a5568 on #0a0f1e) | **2.54:1** |
   | `text-accent` (#0095fc) on white | 3.13:1 |
-- **Form labels not linked to inputs:** `ContactPage.jsx` `<label>`s have no `htmlFor`, and the inputs have no `id`. The home `Contact.jsx` form has no labels at all (placeholder only).
+- ✅ FIXED (2026-09-30). **Form labels not linked to inputs:** `ContactPage.jsx` `<label>`s have no `htmlFor`, and the inputs have no `id`. The home `Contact.jsx` form has no labels at all (placeholder only).
 - **Mobile menu:** no `aria-expanded`/`aria-controls`. The label is always "Open menu". Links remain tabbable while collapsed (it hides via `max-height`/`opacity`).
 - **Modal:** no `role="dialog"`/`aria-modal`, no Escape key, no focus management.
 - **Motion:** no `prefers-reduced-motion` handling. The autoplaying video, infinite marquees, 3D tilt and intro overlay all always run.
@@ -293,19 +318,19 @@ Ciigus-Website/
 
 | # | Task | Why | Effort |
 |---|---|---|---|
-| 1 | **Wire up both contact forms** (Formspree/EmailJS/Web3Forms or a Vercel serverless function), with loading, error and success states | The site's main job is lead capture, and it currently loses every submission | Small–Medium |
+| 1 | ✅ **DONE (2026-09-30)**: ~~Wire up both contact forms~~ (Web3Forms, loading/error/success states, honeypot, validation, WhatsApp fallback) | The site's main job is lead capture, and it currently loses every submission | Small–Medium |
 | 2 | ✅ **DONE**: ~~Fix the unlayered base CSS (`@layer base`)~~ | Invisible Packages buttons; broken link colours | Small |
 | 3 | ✅ **DONE**: ~~Compress the 73 MB hero video; add a poster~~ (4.33 MB, poster, slow-connection check) | Huge mobile data cost and slow first load | Small–Medium |
-| 4 | **Verify real contact info and social URLs**; fix the WhatsApp `+` format | Wrong links = lost trust and leads | Small |
+| 4 | ✅ Contact info and WhatsApp format **DONE**. **Still open:** verify the social media URLs | Wrong links = lost trust and leads | Small |
 | 5 | **Real Work content**: screenshots, client/industry, tech stack (`tech` field), live links for finished projects | The portfolio is the key trust signal; emoji look unfinished | Medium |
 | 6 | ✅ **DONE**: ~~Add a 404 route~~ | Unknown URLs are blank | Small |
 | 7 | **SEO pass**: per-route `<title>`/description (small `useEffect` hook), Open Graph and Twitter tags plus a share image, `robots.txt`, `sitemap.xml`, square favicon and apple-touch-icon, LocalBusiness JSON-LD | Discoverability and link previews | Medium |
-| 8 | **Privacy Policy page** (needed once forms collect name/email/phone) plus Terms, linked from the footer | Legal and trust | Small–Medium |
+| 8 | **Privacy Policy page** (⚠ now more urgent: the forms really collect name/email/phone and send them to Web3Forms) plus Terms, linked from the footer | Legal and trust | Small–Medium |
 | 9 | ✅ **DONE**: ~~Fix console warnings~~ (footer key, `badge` target), plus the invisible hero CTAs | Clean console | Small |
 | 10 | ✅ **DONE**: ~~Fix the wrong "ClickUp" (Discord) logo~~. Still open: self-host the other 24 tech logos | Correctness and reliability | Small |
-| 11 | **Accessibility pass**: label/`id` pairs, contrast fixes (success message, section labels, footer legal), menu `aria-expanded` and focus handling, modal dialog semantics and Escape key, `prefers-reduced-motion` | Usability and compliance | Medium |
+| 11 | **Accessibility pass**: ~~label/`id` pairs~~ ✅, contrast fixes (~~success message~~ ✅, section labels, footer legal), menu `aria-expanded` and focus handling, modal dialog semantics and Escape key, `prefers-reduced-motion` | Usability and compliance | Medium |
 | 12 | **Clean-up**: delete `Marquee.jsx`, unused logos, unused keyframes, `bun.lockb`, the Vite timestamp file; remove the unused `markLogo` import | Hygiene | Small |
-| 13 | **Refactor duplication** (shared social icons, `formatPhone`, project card) and move hardcoded copy and colours into `content.js` and `@theme` per `CLAUDE.md` | Maintainability | Medium |
+| 13 | **Refactor duplication** (shared social icons, ~~`formatPhone`~~ ✅, project card) and move hardcoded copy and colours into `content.js` and `@theme` per `CLAUDE.md` | Maintainability | Medium |
 | 14 | **Update `README.md` and `CLAUDE.md`** to match the current router and page architecture | Onboarding | Small |
 | 15 | Shorten or skip the intro overlay on repeat visits; optimise the logo PNG | Perceived performance | Small |
 | 16 | Add analytics (Vercel Analytics / GA4 / Plausible) | Measure leads | Small |
@@ -319,8 +344,8 @@ Ciigus-Website/
 **Verdict: it is technically deployable today but not ready to launch.** It builds cleanly and works on desktop and mobile, and `vercel.json` already exists (likely already connected to Vercel, given the "fix 404 on route refresh" commit).
 
 **Blocking items before a public launch** (updated 2026-09-28):
-1. The contact forms don't send anything (#1). **Still open.**
-2. Unverified contact and social details (#4). **Still open.**
+1. ~~The contact forms don't send anything (#1)~~. ✅ Fixed 2026-09-30 (requires `VITE_WEB3FORMS_KEY` in Vercel).
+2. Unverified social media URLs (#4). **Still open** (contact email and WhatsApp are now confirmed).
 3. ~~The Packages "Get Started" buttons are invisible~~. ✅ Fixed.
 4. ~~The 73 MB hero video~~. ✅ Fixed (4.33 MB).
 5. ~~Invisible hero CTA buttons~~. ✅ Fixed (found during the fixes).
@@ -334,7 +359,7 @@ It fits Vite + React out of the box, the repo already has `vercel.json` for SPA 
 1. Push `main` to GitHub (`ciigussoftware-creator/Ciigus-Website`, already the remote).
 2. At vercel.com, choose **Add New → Project → Import** this repository.
 3. Framework preset: **Vite**. Build command: `npm run build`. Output directory: `dist`. Install command: `npm install`.
-4. Add environment variables if the form service needs them (e.g. `VITE_FORMSPREE_ID`).
+4. **Add the environment variable `VITE_WEB3FORMS_KEY`** (your Web3Forms access key) under Settings → Environment Variables, for Production and Preview. Vite inlines it at build time, so **redeploy after adding or changing it**.
 5. Deploy. Every push to `main` then redeploys, and every PR gets a preview URL.
 6. **Settings → Domains**: add your domain (e.g. `ciigus.com`) and set the DNS records Vercel shows.
 7. After launch, submit `sitemap.xml` in Google Search Console and test link previews (e.g. in WhatsApp).

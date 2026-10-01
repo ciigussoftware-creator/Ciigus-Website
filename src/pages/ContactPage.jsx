@@ -1,12 +1,10 @@
-import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { contact, social, contactServices, officeHours } from '../data/content'
+import { whatsappUrl } from '../lib/contact'
+import useEnquiryForm from '../hooks/useEnquiryForm'
 import FadeUp from '../components/FadeUp'
-
-function formatPhone(raw) {
-  const match = raw.match(/^(\+\d{2})(\d{2})(\d{3})(\d{4})$/)
-  return match ? match.slice(1).join(' ') : raw
-}
+import FieldError from '../components/FieldError'
+import EnquiryActions from '../components/EnquiryActions'
 
 function MailIcon() {
   return (
@@ -82,8 +80,8 @@ const contactDetails = [
   {
     key: 'whatsapp',
     Icon: PhoneIcon,
-    label: formatPhone(contact.whatsapp),
-    href: `https://wa.me/${contact.whatsapp}`,
+    label: contact.whatsappDisplay,
+    href: whatsappUrl(),
     external: true,
   },
   { key: 'location', Icon: LocationIcon, label: contact.location },
@@ -98,38 +96,24 @@ const socialLinks = [
 ]
 
 const labelClasses = 'text-sm font-medium text-gray-700 mb-1 block'
-const inputClasses =
-  'w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 font-body text-[0.9rem] transition-colors duration-200 ease-in-out outline-none focus:ring-2 focus:ring-accent'
+const inputClasses = (hasError) =>
+  `w-full border ${hasError ? 'border-red-500' : 'border-gray-300'} rounded-lg px-4 py-3 text-gray-900 font-body text-[0.9rem] transition-colors duration-200 ease-in-out outline-none focus:ring-2 focus:ring-accent`
 
 export default function ContactPage() {
   const [searchParams] = useSearchParams()
   const pkg = searchParams.get('package')
 
-  const [form, setForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    service: '',
-    message: pkg ? `Hi, I'm interested in the ${pkg}. ` : '',
+  const { values, errors, status, field, idFor, errorIdFor, honeypot, handleSubmit } = useEnquiryForm({
+    initialValues: {
+      name: '',
+      email: '',
+      phone: '',
+      service: '',
+      message: pkg ? `Hi, I'm interested in the ${pkg}. ` : '',
+    },
+    requiredFields: ['name', 'email', 'phone', 'service', 'message'],
+    source: 'Contact page',
   })
-  const [sent, setSent] = useState(false)
-
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value })
-    setSent(false)
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const { name, email, phone, service, message } = form
-    if (!name.trim() || !email.trim() || !phone.trim() || !service || !message.trim()) {
-      alert('Please fill in all fields.')
-      return
-    }
-
-    setSent(true)
-    setForm({ name: '', email: '', phone: '', service: '', message: '' })
-  }
 
   return (
     <div className="bg-white min-h-screen">
@@ -220,51 +204,30 @@ export default function ContactPage() {
 
       <FadeUp as="section" delay={0.1} className="bg-white py-12 px-6">
         <div className="max-w-2xl mx-auto">
-          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
             <div>
-              <label className={labelClasses}>Name</label>
-              <input
-                type="text"
-                name="name"
-                className={inputClasses}
-                value={form.name}
-                onChange={handleChange}
-                required
-              />
+              <label htmlFor={idFor('name')} className={labelClasses}>Name</label>
+              <input type="text" autoComplete="name" className={inputClasses(errors.name)} {...field('name')} />
+              <FieldError id={errorIdFor('name')} message={errors.name} />
             </div>
 
             <div>
-              <label className={labelClasses}>Email Address</label>
-              <input
-                type="email"
-                name="email"
-                className={inputClasses}
-                value={form.email}
-                onChange={handleChange}
-                required
-              />
+              <label htmlFor={idFor('email')} className={labelClasses}>Email Address</label>
+              <input type="email" autoComplete="email" className={inputClasses(errors.email)} {...field('email')} />
+              <FieldError id={errorIdFor('email')} message={errors.email} />
             </div>
 
             <div>
-              <label className={labelClasses}>Phone Number</label>
-              <input
-                type="tel"
-                name="phone"
-                className={inputClasses}
-                value={form.phone}
-                onChange={handleChange}
-                required
-              />
+              <label htmlFor={idFor('phone')} className={labelClasses}>Phone Number</label>
+              <input type="tel" autoComplete="tel" className={inputClasses(errors.phone)} {...field('phone')} />
+              <FieldError id={errorIdFor('phone')} message={errors.phone} />
             </div>
 
             <div>
-              <label className={labelClasses}>Service you're interested in</label>
+              <label htmlFor={idFor('service')} className={labelClasses}>Service you're interested in</label>
               <select
-                name="service"
-                className={`${inputClasses} ${form.service ? 'text-gray-900' : 'text-gray-400'}`}
-                value={form.service}
-                onChange={handleChange}
-                required
+                className={`${inputClasses(errors.service)} ${values.service ? 'text-gray-900' : 'text-gray-400'}`}
+                {...field('service')}
               >
                 <option value="" disabled className="text-gray-400">
                   Select a service
@@ -275,40 +238,17 @@ export default function ContactPage() {
                   </option>
                 ))}
               </select>
+              <FieldError id={errorIdFor('service')} message={errors.service} />
             </div>
 
             <div>
-              <label className={labelClasses}>Tell us about your project</label>
-              <textarea
-                name="message"
-                rows={5}
-                className={`${inputClasses} resize-y`}
-                value={form.message}
-                onChange={handleChange}
-                required
-              />
+              <label htmlFor={idFor('message')} className={labelClasses}>Tell us about your project</label>
+              <textarea rows={5} className={`${inputClasses(errors.message)} resize-y`} {...field('message')} />
+              <FieldError id={errorIdFor('message')} message={errors.message} />
             </div>
+            <input {...honeypot} />
 
-            <button
-              type="submit"
-              className="btn-primary w-full border-none cursor-pointer font-body text-[0.95rem] text-center"
-            >
-              Send Message 
-            </button>
-            {sent && (
-              <p className="text-green text-[0.88rem] text-center">
-                Thanks! We'll get back to you soon.
-              </p>
-            )}
-
-            <a
-              href={`https://wa.me/${contact.whatsapp}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-center text-[0.85rem] font-medium text-accent2 transition-colors duration-200 ease-in-out hover:text-accent-d"
-            >
-              Or reach us directly on WhatsApp
-            </a>
+            <EnquiryActions status={status} name={values.name} message={values.message} />
           </form>
         </div>
       </FadeUp>
