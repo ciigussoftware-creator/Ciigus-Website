@@ -30,3 +30,6 @@ pnpm-debug.log*
 .env
 .env.local
 .env.*.local
+
+# Vite config bundling temp files
+*.timestamp-*.mjs

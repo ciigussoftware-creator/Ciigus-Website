@@ -4,6 +4,55 @@
    Change text, add services / work / values etc.
 ═══════════════════════════════════════════════ */
 
+export const site = {
+  name: "Ciigus Software",
+  url: "https://www.ciigus.com", // canonical production domain (ciigus.com redirects here)
+  ogImage: "/og-image.jpg",
+  ogImageAlt: "Ciigus Software — We build software that moves businesses forward.",
+};
+
+// Per-route <title> and meta description. Also drives the sitemap and the
+// prerendered HTML files that link-preview crawlers read.
+export const pageMeta = {
+  "/": {
+    title: "Ciigus Software | Web & Mobile App Development in Sri Lanka",
+    description: "Ciigus Software builds websites, mobile apps, dashboards and custom business software for growing businesses in Sri Lanka and worldwide.",
+  },
+  "/services": {
+    title: "Software Development Services | Ciigus Software",
+    description: "Web and mobile apps, restaurant systems, dashboards, industry and business software, plus SEO, digital marketing, graphic design and AI video.",
+  },
+  "/work": {
+    title: "Our Work & Projects | Ciigus Software",
+    description: "Restaurant websites, a digital menu system, LogMaster for the timber industry and a payroll platform: what Ciigus Software has built and is building.",
+  },
+  "/about": {
+    title: "About Us | Ciigus Software",
+    description: "Ciigus Software is a Sri Lankan team of developers, QA engineers, business analysts and project managers building clean, scalable software.",
+  },
+  "/packages": {
+    title: "Pricing & Packages | Ciigus Software",
+    description: "Website and software packages from LKR 35,000. Compare the Starter, Growth and Enterprise packages to find the right fit for your business.",
+  },
+  "/contact": {
+    title: "Contact Us | Ciigus Software",
+    description: "Tell us about your project. Email ciigussoftware@gmail.com or WhatsApp 078 261 2328. We typically respond within 24 hours.",
+  },
+  "/privacy": {
+    title: "Privacy Policy | Ciigus Software",
+    description: "How Ciigus Software collects, uses and protects the information you send through the contact forms on this website.",
+  },
+  "/terms": {
+    title: "Terms of Service | Ciigus Software",
+    description: "The terms that apply to your use of the Ciigus Software website, including pricing information, intellectual property and liability.",
+  },
+};
+
+export const notFoundMeta = {
+  title: "Page Not Found | Ciigus Software",
+  description: "The page you're looking for doesn't exist or has moved.",
+};
+
 export const stats = [
   { val: "2+", lbl: "Products Shipped" },
   { val: "3+", lbl: "Active Projects" },
