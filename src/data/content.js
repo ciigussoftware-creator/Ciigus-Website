@@ -309,8 +309,6 @@ export const enquiryForm = {
     name: "Please enter your name.",
     email: "Please enter your email address.",
     emailInvalid: "Please enter a valid email address.",
-    phone: "Please enter your phone number.",
-    service: "Please choose a service.",
     message: "Please tell us a little about your project.",
   },
 };

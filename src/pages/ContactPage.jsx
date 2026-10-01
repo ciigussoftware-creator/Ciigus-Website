@@ -111,7 +111,7 @@ export default function ContactPage() {
       service: '',
       message: pkg ? `Hi, I'm interested in the ${pkg}. ` : '',
     },
-    requiredFields: ['name', 'email', 'phone', 'service', 'message'],
+    requiredFields: ['name', 'email', 'message'],
     source: 'Contact page',
   })
 
@@ -218,18 +218,22 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <label htmlFor={idFor('phone')} className={labelClasses}>Phone Number</label>
+              <label htmlFor={idFor('phone')} className={labelClasses}>
+                Phone Number <span className="font-normal text-gray-500">(optional)</span>
+              </label>
               <input type="tel" autoComplete="tel" className={inputClasses(errors.phone)} {...field('phone')} />
               <FieldError id={errorIdFor('phone')} message={errors.phone} />
             </div>
 
             <div>
-              <label htmlFor={idFor('service')} className={labelClasses}>Service you're interested in</label>
+              <label htmlFor={idFor('service')} className={labelClasses}>
+                Service you're interested in <span className="font-normal text-gray-500">(optional)</span>
+              </label>
               <select
                 className={`${inputClasses(errors.service)} ${values.service ? 'text-gray-900' : 'text-gray-400'}`}
                 {...field('service')}
               >
-                <option value="" disabled className="text-gray-400">
+                <option value="" className="text-gray-400">
                   Select a service
                 </option>
                 {contactServices.map((s) => (

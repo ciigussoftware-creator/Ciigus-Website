@@ -28,9 +28,13 @@ export function validateEnquiry(values, requiredFields) {
 
 // Web3Forms access keys are public by design: VITE_* values are inlined into
 // the client bundle, so .env only keeps the key out of git, not out of the site.
-export async function sendEnquiry({ botcheck, ...fields }) {
+export async function sendEnquiry({ botcheck, ...values }) {
   const accessKey = import.meta.env.VITE_WEB3FORMS_KEY
   if (!accessKey) throw new Error('VITE_WEB3FORMS_KEY is not set')
+
+  const fields = Object.fromEntries(
+    Object.entries(values).filter(([, value]) => String(value).trim() !== '')
+  )
 
   const res = await fetch(WEB3FORMS_URL, {
     method: 'POST',
