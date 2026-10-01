@@ -67,6 +67,21 @@ _Analysis date: 2026-09-28 · Commit analysed: `179962a` (main, clean) · Analys
 >
 > **Still to fill in `content.js`:** each project's `tech` list, `link` for live sites (likely the greenhouse, printer supplies, plywood and Ella restaurant websites), and `image` once screenshots exist (e.g. `/assets/Work/logmaster.webp`).
 
+> ## ✅ Fix log: 2026-10-01 (Services redesign)
+>
+> All committed and pushed to `main`. Screenshots: `E:\Ciigus\Ciigus_wesite\screenshots\services-redesign-2026-10-01\` (outside the repo).
+>
+> | # | Change | Files |
+> |---|---|---|
+> | 17 | **New service line-up, one name everywhere.** 8 services in `content.js` (`services`, each with `id`, `features`, `proof`, linked Work category and image): 01 ERP & Business Systems · 02 AI & Computer Vision · 03 Websites & E-commerce · 04 Restaurant & Hospitality Systems · 05 SEO & Search Visibility · 06 Mobile & Desktop Applications · 07 Branding, Content & Marketing (merges Graphic Design, Digital Marketing and AI Video) · 08 Industry Solutions: Timber & Plywood. Descriptions rewritten around real project types. The footer links (now deep links to each card), contact dropdown (8 + Other), Packages "Covers" lines and quote note are **derived from this list**, so names can't drift. Home hero text, home and /services meta descriptions and the footer tagline name AI and e-commerce. The hero stats and the "Why Ciigus" numbers are **computed from `workItems`** (10 delivered, 4 AI systems, 7 industries from a new `industry` field, 2 in development). `Marquee.jsx` and `marqueeItems` are deleted, and the /services hero copy moved into `content.js` | `content.js`, `Footer.jsx`, `Hero.jsx`, `ContactPage.jsx` (reads `?service=`), `PackagesPage.jsx`, `WorkPage.jsx` (reads and updates `?category=`; `#timber-plywood` anchor), `ScrollToTop.jsx` (scrolls to `#hash` targets) |
+> | 18 | **/services redesigned:** a dark animated hero (drifting glows and a panning grid, both motion-safe) with a numbered service index; a **bento grid** (ERP and AI as large featured cards, then 4 + 2) of image cards with big outlined numbers, `<h3>` titles, feature tags, a "Built for" proof line, a lift, glow and zoom hover, and **"See projects"** (to `/work?category=…`, or `/work#timber-plywood`) plus **"Ask about this"** (to `/contact?service=…`, pre-selected). Mobile & Desktop and Branding have no projects yet, so they only show "Ask about this". Then a **Timber & Plywood spotlight** (4 projects with status, a LogMaster demo WhatsApp button), **How we work** (Discover, Design, Build, Support; horizontal timeline on desktop, vertical on mobile, with a drawn line), **Why Ciigus** (count-up numbers) and a **final CTA** (Start a Project and Chat on WhatsApp). **No emoji anywhere.** GSAP reveals run once, under `prefers-reduced-motion: no-preference` only, on wrapper elements without CSS transitions | `pages/ServicesPage.jsx`, new `ServiceCard.jsx`, `index.css` (`number-outline`, `no-scrollbar`, `btn-outline-light`, glow/grid keyframes) |
+> | 19 | **Home services strip rebuilt:** the same 8 services; cards size to their text (**the AI card is no longer cut off**); a "View all services" link and a visible pause/resume button; **natively swipeable**, auto-scrolled via `gsap.ticker` and paused on hover, touch (resumes 2.5 s after the finger lifts) and keyboard focus. **No auto-scroll and no duplicate cards under reduced motion.** Loop copies are `aria-hidden` and untabbable. It no longer leaves a big empty gap on phones (`min-h-screen` removed) | `Services.jsx` |
+> | 20 | **Images:** decorative images have `alt=""`, lazy loading and async decoding. Two new on-brand images come from the original hero footage (browser wireframe for Websites & E-commerce, the Sri Lanka world map for Branding). **Removed:** the Digital Marketing photo (old Twitter logo), the Graphic Design image (baked-in text), the tech-logo collage and three unused photos. The remaining service images were recompressed (319 KB to 265 KB in total) | `public/assets/Services/*` |
+>
+> **Verified:** `npm run build` passes; **0 console warnings/errors** on all 9 routes at 1440px and 390px in dev and production; no horizontal scroll at 390, 768 and 1440px. Automated checks: services 47/48 (the one miss is a selector in my test that also matched the hero's index links; the two buttons are correct), Work 22/22, contact forms 56/56. **Contrast** was measured by hiding the text, screenshotting the real backgrounds and comparing each of 111 text elements (94 on mobile) with the brightest pixel behind it: the lowest is **6.4:1** (AA needs 4.5:1).
+>
+> **Not changed (outside services):** the Process journey steps, value cards and footer location/hours lines still use emoji; the `section-label` teal on white is still 2.47:1 site-wide (#11).
+
 **Method:** I read every file in `src/`, plus `index.html`, the config files, `README.md` and `CLAUDE.md`. I ran a production build, ran the dev server, and loaded every route in headless Chrome at desktop (1440px) and mobile (390px) widths. That run captured console output, network failures, computed styles and screenshots. I also checked every external image URL, measured all asset sizes, and ran `npm audit`.
 
 ---
@@ -151,7 +166,7 @@ Ciigus-Website/
     │   └── RootLayout.jsx      ScrollToTop + Navbar + <Outlet/> + Footer
     ├── pages/                  One file per route
     │   ├── HomePage.jsx        Composes the home sections
-    │   ├── ServicesPage.jsx    /services grid
+    │   ├── ServicesPage.jsx    /services: hero, bento grid, timber spotlight, process, why, CTA (✅ redesigned)
     │   ├── WorkPage.jsx        /work grid + modal
     │   ├── AboutPage.jsx       /about: roles, values, process, CTA
     │   ├── PackagesPage.jsx    /packages: pricing cards + FAQ
@@ -163,8 +178,8 @@ Ciigus-Website/
     │   ├── Footer.jsx          4-column footer, socials, contact info
     │   ├── Hero.jsx            Video hero, headline, CTAs, animated stat counters
     │   ├── TechMarquee.jsx     Scrolling tech-logo strip (CSS animation)
-    │   ├── Marquee.jsx         ⚠ Unused text ticker (not imported anywhere)
-    │   ├── Services.jsx        Home: auto-scrolling services carousel (GSAP)
+    │   ├── Services.jsx        Home: swipeable, auto-scrolling services strip (✅ rebuilt)
+    │   ├── ServiceCard.jsx     ✅ Bento card used on /services
     │   ├── Process.jsx         "Idea → product" winding road map (desktop + mobile SVGs)
     │   ├── Work.jsx            Home: stacked-card project carousel (swipe on mobile)
     │   ├── ProjectModal.jsx    Project detail modal (used by Work and WorkPage)
@@ -207,7 +222,7 @@ Ciigus-Website/
 | Route | Page | Status | Notes |
 |---|---|---|---|
 | `/` | HomePage | ✅ | All sections render; ✅ FIXED: contact form now sends via Web3Forms |
-| `/services` | ServicesPage | ✅ | Hero, 11-card image grid, CTA |
+| `/services` | ServicesPage | ✅ | ✅ REDESIGNED 2026-10-01: hero, 8-card bento grid, timber spotlight, process, why, final CTA |
 | `/work` | WorkPage | ✅ | ✅ REBUILT 2026-10-01: 12 projects, category filters, designed covers, status badges, timber & plywood section. Still needs tech stacks, live links and screenshots |
 | `/about` | AboutPage | ✅ | Roles, value cards, process map, CTA (mostly the same content as the home About section) |
 | `/packages` | PackagesPage | ✅ | Content complete; ✅ FIXED: the invisible "Get Started" buttons (§5 bug #1) |
@@ -223,7 +238,7 @@ Ciigus-Website/
 | Navbar | ✅ | Works on desktop and mobile. ✅ FIXED: active link now turns white |
 | Hero | ✅ | ✅ FIXED: dead `badge` animation removed; CTA buttons (previously invisible) now show; video compressed to 4.33 MB with poster and slow-connection handling |
 | TechMarquee | ✅ | ✅ FIXED: "ClickUp" showed Discord's logo; now the real ClickUp mark (self-hosted) |
-| Services carousel | ✅ | Auto-scrolls, pauses on hover |
+| Services strip | ✅ | ✅ REBUILT 2026-10-01: 8 services, swipeable, pause on hover/touch/focus/button, reduced-motion aware, no clipped text |
 | Process road map | ✅ | Separate desktop and mobile SVGs with scroll-scrubbed path |
 | Work carousel | ✅ | ✅ 12 projects, featured first, designed covers and status badges (2026-10-01) |
 | About | ✅ | Roles and value cards |
@@ -236,9 +251,9 @@ Ciigus-Website/
 - ✅ FIXED (2026-09-30): WhatsApp is now `94782612328` (wa.me format) with display `078 261 2328`, and `formatPhone()` is removed. Was: **Contact info** (`content.js:283-289`): the comment says _"update with your real info"_. The WhatsApp comment says "no + or spaces", but the value is `+94782612328`. wa.me links officially expect the number without the `+`. `formatPhone()` depends on the `+`, so fix both together.
 - ✅ FIXED (2026-10-01): the full 12-project list with designed covers; `tech`/`link`/`image` fields are ready but still empty. Was: **Work items:** emoji thumbnails (🏔️📋🪵💰) instead of screenshots. No client names or links. The `tech` field that `ProjectModal` supports is never filled, so the modal's "Tech Stack" block never appears.
 - ✅ FIXED (2026-10-01). **Footer:** `Privacy Policy · Terms of Service` was plain text (`Footer.jsx:203`), not links.
-- **Footer service links:** all 6 go to `/services`. None deep-link to the specific service.
+- ✅ FIXED (2026-10-01): footer service links now deep-link to each card (`/services#id`). Was: **Footer service links:** all 6 go to `/services`. None deep-link to the specific service.
 - ✅ FIXED (2026-10-01): hero stats are now "10 Projects Delivered / 2 In Development / 100% Client Focused", matching the project list. Was: "2+ Products Shipped / 3+ Active Projects".
-- **Unused content:** `marqueeItems` (only used by the unused `Marquee.jsx`) and the `invert` flag on tech logos.
+- ✅ REMOVED (2026-10-01): `marqueeItems` and `Marquee.jsx`. Was: **Unused content:** `marqueeItems` (only used by the unused `Marquee.jsx`) and the `invert` flag on tech logos.
 - **Typos/copy:** `ContactPage.jsx:173` "Tell us about your project **,** we'll…" (stray space before the comma). Asset filename `Ciiguss_withou_text.png`.
 - No lorem ipsum and no TODO/FIXME comments anywhere.
 
@@ -288,7 +303,7 @@ Ciigus-Website/
 8. **🟡 Conflicting classes** in `Hero.jsx:122`: `pb-6 … pb-24` and `md:pb-8 … md:pb-20`. The later class wins unpredictably.
 
 ### Unused files, code and dependencies
-- `src/components/Marquee.jsx` and `marqueeItems` in `content.js`: never imported.
+- ~~`src/components/Marquee.jsx` and `marqueeItems` in `content.js`: never imported.~~ ✅ deleted (2026-10-01).
 - `src/assets/logo-mark.png`: imported as `markLogo` in `Logo.jsx:1` but never used. It is still emitted into the build (8.9 KB).
 - `public/logo-full.png`, `public/logo-mark.png`: never referenced.
 - Unused keyframes/animation tokens in `index.css`: `scroll`, `pulse-animation`, `marquee-scroll`, `marquee-vertical` (`--animate-scroll`, `--animate-pulse-*`, `--animate-marquee-vertical`).
@@ -301,7 +316,7 @@ Ciigus-Website/
 - **Convention drift from `CLAUDE.md`:** lots of copy is hardcoded in JSX (page headings, CTAs, hero text, footer tagline, office hours in the footer vs `officeHours` in content.js). Heavy inline `style={{}}` in Hero, Footer, ContactPage, Marquee and TechMarquee. Hardcoded hex colours (`#0a0f1e`, `#1e2d45`, `#a8b3cc`, `#0d1626`) that belong in `@theme` tokens.
 - `index.html` contains an inline `<style>` for `.ticker-track`; it belongs in `index.css`.
 - `README.md` and `CLAUDE.md` are out of date (README describes `.css` files per component and `--accent`/`--brand-grad` variables; CLAUDE.md says "no routing").
-- A legacy Tailwind v3 class `bg-gradient-to-t` appears in `Services.jsx:81` (it still compiles in v4; `bg-linear-to-t` is the v4 name). `flex-shrink-0` is similar.
+- ✅ GONE with the strip rebuild (2026-10-01). Was: a legacy Tailwind v3 class `bg-gradient-to-t` appears in `Services.jsx:81` (it still compiles in v4; `bg-linear-to-t` is the v4 name). `flex-shrink-0` is similar.
 
 ### Accessibility
 - **Contrast failures (WCAG AA needs 4.5:1 for normal text):**
@@ -317,7 +332,7 @@ Ciigus-Website/
 - **Mobile menu:** no `aria-expanded`/`aria-controls`. The label is always "Open menu". Links remain tabbable while collapsed (it hides via `max-height`/`opacity`).
 - **Modal:** no `role="dialog"`/`aria-modal`, no Escape key, no focus management.
 - **Motion:** no `prefers-reduced-motion` handling. The autoplaying video, infinite marquees, 3D tilt and intro overlay all always run.
-- **Emoji used as icons** (services, values, work, process) aren't `aria-hidden`, so screen readers announce them.
+- 🟡 Partly fixed: service and work emoji are gone (2026-10-01); values, process and footer still use them. **Emoji used as icons** (services, values, work, process) aren't `aria-hidden`, so screen readers announce them.
 - Duplicated marquee items (rendered twice for looping) should be `aria-hidden` on the second copy.
 - ✅ Good: all 5 `<img>` usages have `alt`; social icon links have `aria-label`s; carousel buttons have labels; `<html lang="en">` is set; semantic `<nav>`, `<section>` and `<footer>` are used.
 
@@ -363,7 +378,7 @@ Ciigus-Website/
 | 9 | ✅ **DONE**: ~~Fix console warnings~~ (footer key, `badge` target), plus the invisible hero CTAs | Clean console | Small |
 | 10 | ✅ **DONE**: ~~Fix the wrong "ClickUp" (Discord) logo~~. Still open: self-host the other 24 tech logos | Correctness and reliability | Small |
 | 11 | **Accessibility pass**: ~~label/`id` pairs~~ ✅, contrast fixes (~~success message~~ ✅, section labels, footer legal), menu `aria-expanded` and focus handling, modal dialog semantics and Escape key, `prefers-reduced-motion` | Usability and compliance | Medium |
-| 12 | **Clean-up**: delete `Marquee.jsx`, unused logos, unused keyframes, `bun.lockb`, the Vite timestamp file; remove the unused `markLogo` import | Hygiene | Small |
+| 12 | **Clean-up**: ~~delete `Marquee.jsx`~~ ✅, unused logos, unused keyframes, `bun.lockb`, the Vite timestamp file; remove the unused `markLogo` import | Hygiene | Small |
 | 13 | **Refactor duplication** (~~shared social icons~~ ✅, ~~`formatPhone`~~ ✅, project card) and move hardcoded copy and colours into `content.js` and `@theme` per `CLAUDE.md` | Maintainability | Medium |
 | 14 | **Update `README.md` and `CLAUDE.md`** to match the current router and page architecture | Onboarding | Small |
 | 15 | Shorten or skip the intro overlay on repeat visits; optimise the logo PNG | Perceived performance | Small |
@@ -390,7 +405,7 @@ Fixed: contact forms, invisible Packages and hero buttons, the 73 MB video, soci
 | 3 | After deploying, **check link previews** (paste www.ciigus.com/services into WhatsApp; use the Facebook Sharing Debugger and LinkedIn Post Inspector to refresh their caches) and **submit `https://www.ciigus.com/sitemap.xml` in Google Search Console** | Owner | Small |
 | 4 | **Fill in project details** in `content.js`: `tech` for all 12, `link` for the live websites, and `image` screenshots (the designed covers stand in until then). Emoji are already gone (#5) | Owner + Dev | Small |
 | 5 | **Remaining accessibility**: section-label contrast (`#00ba9c` on white, 2.47:1), footer copyright contrast (2.54:1), mobile menu `aria-expanded` and focus handling, project modal dialog semantics and Escape key, reduced motion for the marquees, intro overlay and hero video (#11) | Dev | Medium |
-| 6 | **Clean-up**: unused `Marquee.jsx`, unused logos, `circuit-bg.jpg` (now redundant), unused keyframes, stale `bun.lockb`, the committed `vite.config.js.timestamp-….mjs`; optimise the 83 KB logo PNG (#12, #15) | Dev | Small |
+| 6 | **Clean-up**: ~~unused `Marquee.jsx`~~ ✅, unused logos, `circuit-bg.jpg` (now redundant), unused keyframes, stale `bun.lockb`, the committed `vite.config.js.timestamp-….mjs`; optimise the 83 KB logo PNG (#12, #15) | Dev | Small |
 | 7 | **Update `README.md` and `CLAUDE.md`** (routing, `src/lib`, `src/hooks`, SEO plugin, `.env`) (#14) | Dev | Small |
 | 8 | Optional: LocalBusiness JSON-LD, analytics (if added, **update the Privacy Policy**, which currently says there are no analytics cookies), self-host the remaining tech logos, rewrite git history to drop the old 73 MB video | Dev | Small–Medium |
 
