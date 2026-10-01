@@ -13,7 +13,7 @@ _Analysis date: 2026-09-28 · Commit analysed: `179962a` (main, clean) · Analys
 > | 3 | React key-spread warning | `src/components/Footer.jsx` | Warning gone on every page |
 > | 4 | GSAP "target not found" (dead `data-hero="badge"` step removed). **Also found and fixed: the hero CTA buttons ("Explore Services" / "Start a Project") were invisible in production.** GSAP recorded opacity ~0 as their end value because of the buttons' CSS `transition-all`; the timeline now animates the `[data-hero="cta"]` wrapper instead | `src/components/Hero.jsx` | Warning gone; both CTAs at opacity 1; hover effects restored |
 > | 5 | 404 page in the site's design, with a catch-all route | new `src/pages/NotFoundPage.jsx`, `src/App.jsx`, `src/data/content.js` (`notFound`) | Unknown and nested URLs show the 404 with navbar and footer |
-> | 6 | Hero video 73 MB → **4.33 MB** (720p H.264 High@4.0, 4 reference frames, 0.88 Mbps, two-pass, audio removed, faststart; SSIM 0.990 vs source). First-frame poster added (50 KB WebP). Autoplay skipped only when Chrome reports `slow-2g`/`2g` or Data Saver is on (poster only, zero video bytes) | `public/assets/Video/Ciigus_hero.mp4`, new `Ciigus_hero_poster.webp`, `src/components/Hero.jsx` | Chrome and Edge with hardware decoding: plays on every reload at 1440px and 390px. 2g / Data Saver: poster only, no video request |
+> | 6 | Hero video 73 MB → **4.33 MB** (720p H.264 High@4.0, 4 reference frames, 0.88 Mbps, two-pass, audio removed, faststart; SSIM **0.982** vs the true 1080p source, see correction 6c). First-frame poster added (50 KB WebP). Autoplay skipped only when Chrome reports `slow-2g`/`2g` or Data Saver is on (poster only, zero video bytes) | `public/assets/Video/Ciigus_hero.mp4`, new `Ciigus_hero_poster.webp`, `src/components/Hero.jsx` | Chrome and Edge with hardware decoding: plays on every reload at 1440px and 390px. 2g / Data Saver: poster only, no video request |
 > | 6b | **Follow-up bug in fix 6 (found after a user report that the video wasn't working):** the first version also skipped autoplay on `3g`. Chrome's `effectiveType` is mostly a round-trip-time estimate, and on this machine's normal broadband it flipped to `3g` (RTT 300–800 ms) after a few requests, leaving the hero frozen on the poster in Chrome and Edge. `3g` is no longer treated as slow. The video was also re-encoded from 16 to 4 reference frames at level 4.0 (it was 5.0) for phone hardware-decoder compatibility | `src/components/Hero.jsx`, `public/assets/Video/*` | Reload test: 6/6 plays in Chrome and 6/6 in Edge, including loads reporting `3g` |
 >
 > **Final check:** `npm run build` passes with no warnings. All 7 routes (including a 404 URL) were loaded at 1440px and 390px, scrolled end to end, with the Work modal opened. That produced **0 console warnings/errors in dev and 0 in production**, and no horizontal overflow.
@@ -52,6 +52,20 @@ _Analysis date: 2026-09-28 · Commit analysed: `179962a` (main, clean) · Analys
 > | 14 | **SEO:** unique title and description per route, canonical URLs, Open Graph and Twitter `summary_large_image` tags, a 1200×630 share image (`og-image.jpg`, 85 KB) and the theme colour. Link-preview crawlers don't run JS, so a Vite plugin **prerenders one HTML file per route** with its tags baked in, and `vercel.json` `cleanUrls` serves `/services` from `services.html`. `usePageMeta` keeps tags in sync during in-app navigation, and the 404 is `noindex`. Square favicons (`favicon.ico` 16/32/48, 192px `favicon.png`, 180px `apple-touch-icon.png`). `robots.txt` and `sitemap.xml` are generated at build time with `https://www.ciigus.com` URLs | new `lib/seo.js`, `hooks/usePageMeta.js`, `public/og-image.jpg`, `public/favicon.ico`, `public/apple-touch-icon.png`; `vite.config.js`, `vercel.json`, `index.html`, `public/favicon.png`, `content.js` (`site`, `pageMeta`) |
 >
 > **Verified:** `npm run build` passes. **0 console warnings/errors on all 9 routes (including /privacy, /terms and a 404 URL) at 1440px and 390px, in both dev and the production build.** The contact-form suite passed 56/56 (Web3Forms mocked). All 8 page titles are unique and ≤ 60 characters, descriptions are ≤ 160 characters, and `sitemap.xml` is valid XML.
+
+> ## ✅ Fix log: 2026-10-01 (Work section)
+>
+> All committed and pushed to `main`.
+>
+> | # | Change | Files |
+> |---|---|---|
+> | 6c | **Correction to fix 6b.** The phone-compatibility re-encode was made from the first 720p encode (git `HEAD` at the time was a local commit holding it), not from the original 73 MB 1080p file, and its "SSIM 0.990 vs source" figure was measured against that first encode. Re-encoded from the true original (commit `179962a`) with the same settings: SSIM against the real source went from **0.977 to 0.982** at the same 4.3 MB. Poster regenerated. Playback re-verified at 1440px and 390px | `public/assets/Video/*` |
+> | 15 | **Work section rebuilt with the full list:** 12 projects in Business Systems, E-commerce & Web and AI Solutions (the two Ella restaurant projects merged; no client names). New fields: `id`, `category`, `status` (`completed`/`live`/`in-development`), `tech[]`, `link`, `image`, `featured`, plus LogMaster's `cta` ("Request a demo", which opens WhatsApp with "Hi, I'm interested in a LogMaster demo."). The **emoji thumbnails are replaced by designed covers** (category gradient, grid, category icon, project name); setting `image` swaps in a screenshot, and the visible card heading then reappears automatically. **Status badges** on every card. **/work filter tabs** (All / Business Systems / E-commerce & Web / AI Solutions): buttons with `aria-pressed` and counts, a live region announcing results, wrapping on mobile, and a reduced-motion-aware animation. The **home carousel shows the 4 featured projects first**. The **popup** shows Tech Stack and "Visit Live Site" only when filled (verified with temporary test data), plus the demo button. New /work section: **"Digital solutions for the timber & plywood industry"** (LogMaster, inventory, AI defect detection, website + SEO; each opens its project). **Hero stats** are now 10 delivered and 2 in development. The /work meta description is updated | `content.js`, `Work.jsx`, `pages/WorkPage.jsx`, `ProjectModal.jsx`, new `WorkCover.jsx`, `StatusBadge.jsx`, `CategoryIcon.jsx`, `ProjectCardFooter.jsx` |
+> | 16 | **New service: "AI & Computer Vision Solutions"** (quality inspection, certificate verification, image recognition), with an image cut from the original hero footage. Also added to the footer service links, the contact form's service list and the /services meta description | `content.js`, `public/assets/Services/ai-computer-vision-quality-inspection.webp` |
+>
+> **Verified:** `npm run build` passes; 0 console warnings/errors on all 9 routes at 1440px and 390px in dev and production. Work tests passed 22/22 (order, badges, covers, filters, popup, demo link, industry section, mobile fit) plus 2/2 for tech/link rendering. Contact form tests still pass 56/56, and the hero video plays at both widths.
+>
+> **Still to fill in `content.js`:** each project's `tech` list, `link` for live sites (likely the greenhouse, printer supplies, plywood and Ella restaurant websites), and `image` once screenshots exist (e.g. `/assets/Work/logmaster.webp`).
 
 **Method:** I read every file in `src/`, plus `index.html`, the config files, `README.md` and `CLAUDE.md`. I ran a production build, ran the dev server, and loaded every route in headless Chrome at desktop (1440px) and mobile (390px) widths. That run captured console output, network failures, computed styles and screenshots. I also checked every external image URL, measured all asset sizes, and ran `npm audit`.
 
@@ -154,6 +168,8 @@ Ciigus-Website/
     │   ├── Process.jsx         "Idea → product" winding road map (desktop + mobile SVGs)
     │   ├── Work.jsx            Home: stacked-card project carousel (swipe on mobile)
     │   ├── ProjectModal.jsx    Project detail modal (used by Work and WorkPage)
+    │   ├── WorkCover.jsx       ✅ Designed project cover, or the `image` screenshot when set
+    │   ├── StatusBadge.jsx     ✅ Completed / Live / In Development badge
     │   ├── About.jsx           Home: team roles + value cards
     │   ├── ValueCard.jsx       3D-tilt value card
     │   ├── Contact.jsx         Home: short contact form (✅ sends via Web3Forms)
@@ -192,7 +208,7 @@ Ciigus-Website/
 |---|---|---|---|
 | `/` | HomePage | ✅ | All sections render; ✅ FIXED: contact form now sends via Web3Forms |
 | `/services` | ServicesPage | ✅ | Hero, 11-card image grid, CTA |
-| `/work` | WorkPage | 🟡 | 4 projects, but emoji instead of real screenshots, no live links, modal repeats the card text |
+| `/work` | WorkPage | ✅ | ✅ REBUILT 2026-10-01: 12 projects, category filters, designed covers, status badges, timber & plywood section. Still needs tech stacks, live links and screenshots |
 | `/about` | AboutPage | ✅ | Roles, value cards, process map, CTA (mostly the same content as the home About section) |
 | `/packages` | PackagesPage | ✅ | Content complete; ✅ FIXED: the invisible "Get Started" buttons (§5 bug #1) |
 | `/contact` | ContactPage | ✅ | ✅ FIXED: form sends via Web3Forms, with validation, loading/error states and WhatsApp fallback |
@@ -209,7 +225,7 @@ Ciigus-Website/
 | TechMarquee | ✅ | ✅ FIXED: "ClickUp" showed Discord's logo; now the real ClickUp mark (self-hosted) |
 | Services carousel | ✅ | Auto-scrolls, pauses on hover |
 | Process road map | ✅ | Separate desktop and mobile SVGs with scroll-scrubbed path |
-| Work carousel | 🟡 | Swipe, arrows and dots work. Projects use emoji placeholders. The "View Project" modal adds nothing new |
+| Work carousel | ✅ | ✅ 12 projects, featured first, designed covers and status badges (2026-10-01) |
 | About | ✅ | Roles and value cards |
 | Contact (short form) | ✅ | ✅ FIXED: sends via Web3Forms; "Send via WhatsApp" button added |
 | Footer | ✅ | ✅ FIXED: Privacy/Terms are real links; real Facebook, LinkedIn and Instagram profiles |
@@ -218,10 +234,10 @@ Ciigus-Website/
 - ~~**Contact forms (both):** fake submission.~~ ✅ FIXED (2026-09-30). Was: `Contact.jsx:22-38` has a commented Formspree example with `https://formspree.io/f/XXXX`. `ContactPage.jsx:122-132` only calls `setSent(true)`. **Every lead is lost.**
 - ✅ FIXED (2026-10-01): real Facebook, LinkedIn and Instagram links; YouTube and TikTok removed. Was: **Social links** (`content.js:291-297`): `youtube.com/@ciigus`, `facebook.com/ciigus`, `instagram.com/ciigus`, `tiktok.com/@ciigus`. The source comment says _"update with your real profile URLs"_. Confirm they are really Ciigus's accounts.
 - ✅ FIXED (2026-09-30): WhatsApp is now `94782612328` (wa.me format) with display `078 261 2328`, and `formatPhone()` is removed. Was: **Contact info** (`content.js:283-289`): the comment says _"update with your real info"_. The WhatsApp comment says "no + or spaces", but the value is `+94782612328`. wa.me links officially expect the number without the `+`. `formatPhone()` depends on the `+`, so fix both together.
-- **Work items:** emoji thumbnails (🏔️📋🪵💰) instead of screenshots. No client names or links. The `tech` field that `ProjectModal` supports is never filled, so the modal's "Tech Stack" block never appears.
+- ✅ FIXED (2026-10-01): the full 12-project list with designed covers; `tech`/`link`/`image` fields are ready but still empty. Was: **Work items:** emoji thumbnails (🏔️📋🪵💰) instead of screenshots. No client names or links. The `tech` field that `ProjectModal` supports is never filled, so the modal's "Tech Stack" block never appears.
 - ✅ FIXED (2026-10-01). **Footer:** `Privacy Policy · Terms of Service` was plain text (`Footer.jsx:203`), not links.
 - **Footer service links:** all 6 go to `/services`. None deep-link to the specific service.
-- **Hero stats:** "2+ Products Shipped / 3+ Active Projects / 100% Client Focused". Check these are the numbers you want to publish.
+- ✅ FIXED (2026-10-01): hero stats are now "10 Projects Delivered / 2 In Development / 100% Client Focused", matching the project list. Was: "2+ Products Shipped / 3+ Active Projects".
 - **Unused content:** `marqueeItems` (only used by the unused `Marquee.jsx`) and the `invert` flag on tech logos.
 - **Typos/copy:** `ContactPage.jsx:173` "Tell us about your project **,** we'll…" (stray space before the comma). Asset filename `Ciiguss_withou_text.png`.
 - No lorem ipsum and no TODO/FIXME comments anywhere.
@@ -242,8 +258,8 @@ Ciigus-Website/
 | Contact form (/contact) | ✅ | ✅ FIXED: same as home; `?package=` prefill from Packages still works |
 | WhatsApp / email links | ✅ | ✅ All `wa.me` links use `94782612328`; number shown as 078 261 2328; email is a `mailto:` link |
 | Floating WhatsApp button | ✅ | ✅ ADDED 2026-10-01: every page, accessible, reduced-motion aware |
-| Project filtering | ❌ | Not built (only 4 projects, so it isn't needed yet) |
-| Project detail | 🟡 | Modal opens and closes on backdrop/✕. No Escape-key close, no focus trap, no `role="dialog"`, no body scroll lock |
+| Project filtering | ✅ | ✅ /work filter tabs with `aria-pressed`, counts and a live region (2026-10-01) |
+| Project detail | 🟡 | ✅ Shows the cover, status, Tech Stack (when filled), Visit Live Site (when linked) and LogMaster's demo button. Still: opens and closes on backdrop/✕ only. No Escape-key close, no focus trap, no `role="dialog"`, no body scroll lock |
 | Work carousel | ✅ | Arrows (desktop), swipe and dots (mobile), counter |
 | 404 page | ✅ | ✅ FIXED: `NotFoundPage` via `<Route path="*">` |
 | Legal pages | ❌ | Missing |
@@ -340,7 +356,7 @@ Ciigus-Website/
 | 2 | ✅ **DONE**: ~~Fix the unlayered base CSS (`@layer base`)~~ | Invisible Packages buttons; broken link colours | Small |
 | 3 | ✅ **DONE**: ~~Compress the 73 MB hero video; add a poster~~ (4.33 MB, poster, slow-connection check) | Huge mobile data cost and slow first load | Small–Medium |
 | 4 | ✅ **DONE**: contact info, WhatsApp format and real social media URLs (2026-10-01) | Wrong links = lost trust and leads | Small |
-| 5 | **Real Work content**: screenshots, client/industry, tech stack (`tech` field), live links for finished projects | The portfolio is the key trust signal; emoji look unfinished | Medium |
+| 5 | 🟡 **Mostly DONE (2026-10-01)**: full project list, categories, filters, covers, status badges. **Still open:** fill `tech`, `link` and `image` per project | The portfolio is the key trust signal; emoji look unfinished | Medium |
 | 6 | ✅ **DONE**: ~~Add a 404 route~~ | Unknown URLs are blank | Small |
 | 7 | ✅ **DONE (2026-10-01)** except the optional LocalBusiness JSON-LD: ~~per-route title/description, Open Graph/Twitter + share image, robots.txt, sitemap.xml, square favicon and apple-touch-icon~~ | Discoverability and link previews | Medium |
 | 8 | ✅ **DONE (2026-10-01)** as templates: ~~Privacy Policy and Terms pages, linked from the footer~~. **Still open:** have them reviewed, then remove the template notice | Legal and trust | Small–Medium |
@@ -372,7 +388,7 @@ Fixed: contact forms, invisible Packages and hero buttons, the 73 MB video, soci
 | 1 | **Add `VITE_WEB3FORMS_KEY` in Vercel** (Settings → Environment Variables, Production + Preview) and **redeploy**, then send one real test enquiry from www.ciigus.com and check Gmail (and Spam) | Owner | 5 min |
 | 2 | **Have the Privacy Policy and Terms reviewed**, then delete the `reviewNote` lines in `content.js` to remove the template notice | Owner / adviser | Small |
 | 3 | After deploying, **check link previews** (paste www.ciigus.com/services into WhatsApp; use the Facebook Sharing Debugger and LinkedIn Post Inspector to refresh their caches) and **submit `https://www.ciigus.com/sitemap.xml` in Google Search Console** | Owner | Small |
-| 4 | **Real Work content**: screenshots instead of emoji, live links, and the `tech` field (#5) | Dev | Medium |
+| 4 | **Fill in project details** in `content.js`: `tech` for all 12, `link` for the live websites, and `image` screenshots (the designed covers stand in until then). Emoji are already gone (#5) | Owner + Dev | Small |
 | 5 | **Remaining accessibility**: section-label contrast (`#00ba9c` on white, 2.47:1), footer copyright contrast (2.54:1), mobile menu `aria-expanded` and focus handling, project modal dialog semantics and Escape key, reduced motion for the marquees, intro overlay and hero video (#11) | Dev | Medium |
 | 6 | **Clean-up**: unused `Marquee.jsx`, unused logos, `circuit-bg.jpg` (now redundant), unused keyframes, stale `bun.lockb`, the committed `vite.config.js.timestamp-….mjs`; optimise the 83 KB logo PNG (#12, #15) | Dev | Small |
 | 7 | **Update `README.md` and `CLAUDE.md`** (routing, `src/lib`, `src/hooks`, SEO plugin, `.env`) (#14) | Dev | Small |
