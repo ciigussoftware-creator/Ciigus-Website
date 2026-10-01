@@ -288,6 +288,12 @@ export const contact = {
   responseTime: "We typically respond within 24 hours",
 };
 
+export const floatingWhatsApp = {
+  message: "Hi Ciigus Software, I'd like to know more about your services.",
+  label: "Chat with Ciigus Software on WhatsApp (opens in a new tab)",
+  tooltip: "Chat with us on WhatsApp",
+};
+
 export const enquiryForm = {
   subject: "New enquiry from Ciigus website",
   fromName: "Ciigus Website",

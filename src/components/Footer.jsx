@@ -132,7 +132,7 @@ export default function Footer() {
   }, [])
 
   return (
-    <footer ref={footerRef} className="bg-[#0a0f1e] border-t border-[#1e2d45] py-16 px-10">
+    <footer ref={footerRef} className="bg-[#0a0f1e] border-t border-[#1e2d45] pt-16 pb-28 px-10">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr] gap-10">
         <div ref={(el) => (columnsRef.current[0] = el)}>
           <Logo variant="mark" size={40} showText />
