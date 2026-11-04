@@ -97,110 +97,114 @@ export default function Process() {
   const mobileCardsRef = useRef([])
 
   useGSAP(() => {
-    gsap.from(headerRef.current.children, {
-      y: 30,
-      opacity: 0,
-      duration: 0.7,
-      stagger: 0.15,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: 'top 80%',
-        toggleActions: 'play none none none',
-      },
-    })
-
-    const length = progressPathRef.current.getTotalLength()
-    gsap.set(progressPathRef.current, {
-      strokeDasharray: length,
-      strokeDashoffset: length,
-    })
-
-    gsap.to(progressPathRef.current, {
-      strokeDashoffset: 0,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: roadRef.current,
-        start: 'top 80%',
-        end: 'bottom bottom',
-        scrub: 1,
-      },
-    })
-
-    const mobileLength = mobileProgressPathRef.current.getTotalLength()
-    gsap.set(mobileProgressPathRef.current, {
-      strokeDasharray: mobileLength,
-      strokeDashoffset: mobileLength,
-    })
-
-    gsap.to(mobileProgressPathRef.current, {
-      strokeDashoffset: 0,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: mobileRoadRef.current,
-        start: 'top 80%',
-        end: 'bottom bottom',
-        scrub: 1,
-      },
-    })
-
-    NODE_POSITIONS.forEach((pt, i) => {
-      const node = nodesRef.current[i]
-      const card = cardsRef.current[i]
-
-      gsap.set(card, { opacity: 0, x: pt.isLeft ? -40 : 40 })
-
-      const tl = gsap.timeline({
+    const mm = gsap.matchMedia()
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      gsap.from(headerRef.current.children, {
+        y: 30,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.15,
+        ease: 'power3.out',
         scrollTrigger: {
-          trigger: node,
-          start: 'top 60%',
+          trigger: sectionRef.current,
+          start: 'top 80%',
           toggleActions: 'play none none none',
         },
       })
 
-      tl.to(node, {
-        scale: 1.3,
-        filter: 'drop-shadow(0 0 8px var(--color-green))',
-        transformOrigin: '50% 50%',
-        duration: 0.4,
-        ease: 'power2.out',
-      }, 0)
-      tl.to(card, {
-        opacity: 1,
-        x: 0,
-        duration: 0.5,
-        ease: 'power3.out',
-      }, 0)
-    })
+      const length = progressPathRef.current.getTotalLength()
+      gsap.set(progressPathRef.current, {
+        strokeDasharray: length,
+        strokeDashoffset: length,
+      })
 
-    MOBILE_NODE_POSITIONS.forEach((pt, i) => {
-      const node = mobileNodesRef.current[i]
-      const card = mobileCardsRef.current[i]
-
-      gsap.set(card, { opacity: 0, x: pt.isLeft ? -40 : 40 })
-
-      const tl = gsap.timeline({
+      gsap.to(progressPathRef.current, {
+        strokeDashoffset: 0,
+        ease: 'none',
         scrollTrigger: {
-          trigger: node,
-          start: 'top 60%',
-          toggleActions: 'play none none none',
+          trigger: roadRef.current,
+          start: 'top 80%',
+          end: 'bottom bottom',
+          scrub: 1,
         },
       })
 
-      tl.to(node, {
-        scale: 1.3,
-        filter: 'drop-shadow(0 0 8px var(--color-green))',
-        transformOrigin: '50% 50%',
-        duration: 0.4,
-        ease: 'power2.out',
-      }, 0)
-      tl.to(card, {
-        opacity: 1,
-        x: 0,
-        duration: 0.5,
-        ease: 'power3.out',
-      }, 0)
+      const mobileLength = mobileProgressPathRef.current.getTotalLength()
+      gsap.set(mobileProgressPathRef.current, {
+        strokeDasharray: mobileLength,
+        strokeDashoffset: mobileLength,
+      })
+
+      gsap.to(mobileProgressPathRef.current, {
+        strokeDashoffset: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: mobileRoadRef.current,
+          start: 'top 80%',
+          end: 'bottom bottom',
+          scrub: 1,
+        },
+      })
+
+      NODE_POSITIONS.forEach((pt, i) => {
+        const node = nodesRef.current[i]
+        const card = cardsRef.current[i]
+
+        gsap.set(card, { opacity: 0, x: pt.isLeft ? -40 : 40 })
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: node,
+            start: 'top 60%',
+            toggleActions: 'play none none none',
+          },
+        })
+
+        tl.to(node, {
+          scale: 1.3,
+          filter: 'drop-shadow(0 0 8px var(--color-green))',
+          transformOrigin: '50% 50%',
+          duration: 0.4,
+          ease: 'power2.out',
+        }, 0)
+        tl.to(card, {
+          opacity: 1,
+          x: 0,
+          duration: 0.5,
+          ease: 'power3.out',
+        }, 0)
+      })
+
+      MOBILE_NODE_POSITIONS.forEach((pt, i) => {
+        const node = mobileNodesRef.current[i]
+        const card = mobileCardsRef.current[i]
+
+        gsap.set(card, { opacity: 0, x: pt.isLeft ? -40 : 40 })
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: node,
+            start: 'top 60%',
+            toggleActions: 'play none none none',
+          },
+        })
+
+        tl.to(node, {
+          scale: 1.3,
+          filter: 'drop-shadow(0 0 8px var(--color-green))',
+          transformOrigin: '50% 50%',
+          duration: 0.4,
+          ease: 'power2.out',
+        }, 0)
+        tl.to(card, {
+          opacity: 1,
+          x: 0,
+          duration: 0.5,
+          ease: 'power3.out',
+        }, 0)
+      })
     })
+    return () => mm.revert()
   }, { scope: sectionRef })
 
   return (

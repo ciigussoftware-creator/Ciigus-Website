@@ -21,22 +21,28 @@ export default function AboutPage() {
   const cardsRef = useRef([])
 
   useEffect(() => {
+    const mm = gsap.matchMedia()
     const ctx = gsap.context(() => {
-      gsap.from(cardsRef.current, {
-        y: 50,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.15,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: gridRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        gsap.from(cardsRef.current, {
+          y: 50,
+          opacity: 0,
+          duration: 0.7,
+          stagger: 0.15,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        })
       })
     }, gridRef)
 
-    return () => ctx.revert()
+    return () => {
+      mm.revert()
+      ctx.revert()
+    }
   }, [])
 
   return (

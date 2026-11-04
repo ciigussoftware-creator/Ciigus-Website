@@ -18,19 +18,27 @@ export default function App() {
   const rootRef = useRef(null)
 
   useGSAP(() => {
-    const tl = gsap.timeline({ defaults: { ease: 'power3.inOut' } })
+    const mm = gsap.matchMedia()
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.inOut' } })
 
-    tl.to('[data-reveal="mark"]', {
-      scale: 1.08,
-      opacity: 0,
-      duration: 0.5,
-      delay: 0.3,
+      tl.to('[data-reveal="mark"]', {
+        scale: 1.08,
+        opacity: 0,
+        duration: 0.5,
+        delay: 0.3,
+      })
+      .to('[data-reveal="overlay"]', {
+        yPercent: -100,
+        duration: 0.8,
+      }, '-=0.2')
+      .set('[data-reveal="overlay"]', { display: 'none' })
     })
-    .to('[data-reveal="overlay"]', {
-      yPercent: -100,
-      duration: 0.8,
-    }, '-=0.2')
-    .set('[data-reveal="overlay"]', { display: 'none' })
+    // The overlay covers the page by default, so it must still be removed
+    mm.add('(prefers-reduced-motion: reduce)', () => {
+      gsap.set('[data-reveal="overlay"]', { display: 'none' })
+    })
+    return () => mm.revert()
   }, { scope: rootRef })
 
   return (

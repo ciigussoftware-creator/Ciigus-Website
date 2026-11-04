@@ -8,13 +8,17 @@ export default function NotFoundPage() {
   const sectionRef = useRef(null)
 
   useGSAP(() => {
-    gsap.from('[data-notfound]', {
-      y: 30,
-      opacity: 0,
-      duration: 0.7,
-      stagger: 0.12,
-      ease: 'power3.out',
+    const mm = gsap.matchMedia()
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      gsap.from('[data-notfound]', {
+        y: 30,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.12,
+        ease: 'power3.out',
+      })
     })
+    return () => mm.revert()
   }, { scope: sectionRef })
 
   return (

@@ -1,12 +1,15 @@
 import { useRef } from 'react'
 import gsap from 'gsap'
 
+const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
 export default function ValueCard({ icon, title, desc, accentColor, cardRef }) {
   const tiltRef = useRef(null)
   const iconRef = useRef(null)
   const glowRef = useRef(null)
 
   const handleMouseMove = (e) => {
+    if (prefersReducedMotion()) return
     const el = tiltRef.current
     const rect = el.getBoundingClientRect()
     const px = (e.clientX - rect.left) / rect.width
@@ -22,12 +25,14 @@ export default function ValueCard({ icon, title, desc, accentColor, cardRef }) {
   }
 
   const handleMouseEnter = () => {
-    gsap.to(iconRef.current, {
-      scale: 1.2,
-      duration: 0.5,
-      ease: 'back.out(1.7)',
-      overwrite: true,
-    })
+    if (!prefersReducedMotion()) {
+      gsap.to(iconRef.current, {
+        scale: 1.2,
+        duration: 0.5,
+        ease: 'back.out(1.7)',
+        overwrite: true,
+      })
+    }
     gsap.to(glowRef.current, {
       opacity: 0.4,
       duration: 0.4,

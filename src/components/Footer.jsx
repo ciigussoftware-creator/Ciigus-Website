@@ -75,22 +75,28 @@ export default function Footer() {
   const columnsRef = useRef([])
 
   useEffect(() => {
+    const mm = gsap.matchMedia()
     const ctx = gsap.context(() => {
-      gsap.from(columnsRef.current, {
-        y: 40,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: footerRef.current,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        gsap.from(columnsRef.current, {
+          y: 40,
+          opacity: 0,
+          duration: 0.7,
+          stagger: 0.1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: footerRef.current,
+            start: 'top 85%',
+            toggleActions: 'play none none none',
+          },
+        })
       })
     }, footerRef)
 
-    return () => ctx.revert()
+    return () => {
+      mm.revert()
+      ctx.revert()
+    }
   }, [])
 
   return (

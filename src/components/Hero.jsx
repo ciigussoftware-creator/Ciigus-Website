@@ -13,6 +13,11 @@ function CounterStat({ value }) {
     const el = ref.current
     const counter = { val: 0 }
 
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      el.textContent = num + suffix
+      return
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (!entry.isIntersecting) return
@@ -53,31 +58,35 @@ export default function Hero() {
   const [autoplayVideo] = useState(shouldAutoplayVideo)
 
   useGSAP(() => {
-    const tl = gsap.timeline({ defaults: { ease: 'power3.inOut' } })
+    const mm = gsap.matchMedia()
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      const tl = gsap.timeline({ defaults: { ease: 'power3.inOut' } })
 
-    tl.from('[data-hero="heading"]', {
-      y: 40,
-      opacity: 0,
-      duration: 0.9,
+      tl.from('[data-hero="heading"]', {
+        y: 40,
+        opacity: 0,
+        duration: 0.9,
+      })
+      .from('[data-hero="desc"]', {
+        y: 30,
+        opacity: 0,
+        duration: 0.7,
+      }, '-=0.45')
+      // Animate the wrapper, not the buttons: btn-primary/btn-outline carry a
+      // CSS `transition-all` that makes GSAP record opacity ~0 as the end value.
+      .from('[data-hero="cta"]', {
+        y: 25,
+        opacity: 0,
+        duration: 0.6,
+      }, '-=0.4')
+      .from('[data-hero="stats"] > *', {
+        y: 25,
+        opacity: 0,
+        duration: 0.6,
+        stagger: 0.1,
+      }, '-=0.3')
     })
-    .from('[data-hero="desc"]', {
-      y: 30,
-      opacity: 0,
-      duration: 0.7,
-    }, '-=0.45')
-    // Animate the wrapper, not the buttons: btn-primary/btn-outline carry a
-    // CSS `transition-all` that makes GSAP record opacity ~0 as the end value.
-    .from('[data-hero="cta"]', {
-      y: 25,
-      opacity: 0,
-      duration: 0.6,
-    }, '-=0.4')
-    .from('[data-hero="stats"] > *', {
-      y: 25,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.1,
-    }, '-=0.3')
+    return () => mm.revert()
   }, { scope: sectionRef })
 
   return (

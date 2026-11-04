@@ -14,41 +14,53 @@ export default function PackagesPage() {
   const faqItemsRef = useRef([])
 
   useEffect(() => {
+    const mm = gsap.matchMedia()
     const ctx = gsap.context(() => {
-      gsap.from(cardsRef.current, {
-        y: 40,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.12,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: gridRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        gsap.from(cardsRef.current, {
+          y: 40,
+          opacity: 0,
+          duration: 0.6,
+          stagger: 0.12,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        })
       })
     }, gridRef)
 
-    return () => ctx.revert()
+    return () => {
+      mm.revert()
+      ctx.revert()
+    }
   }, [])
 
   useEffect(() => {
+    const mm = gsap.matchMedia()
     const ctx = gsap.context(() => {
-      gsap.from(faqItemsRef.current, {
-        y: 25,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.08,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: faqRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        gsap.from(faqItemsRef.current, {
+          y: 25,
+          opacity: 0,
+          duration: 0.5,
+          stagger: 0.08,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: faqRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        })
       })
     }, faqRef)
 
-    return () => ctx.revert()
+    return () => {
+      mm.revert()
+      ctx.revert()
+    }
   }, [])
 
   return (

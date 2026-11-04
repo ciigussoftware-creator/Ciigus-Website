@@ -18,6 +18,7 @@ export default function Work() {
   useEffect(() => {
     if (!cardRef.current) return
     gsap.killTweensOf(cardRef.current)
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
     gsap.fromTo(
       cardRef.current,
       { x: directionRef.current === 'next' ? '100%' : '-100%' },
@@ -96,6 +97,7 @@ export default function Work() {
                     ref={(el) => {
                       if (i === currentIndex) cardRef.current = el
                     }}
+                    inert={offset === 0 ? undefined : ''}
                     style={getCardStyle(offset)}
                     className={`col-start-1 row-start-1 bg-surface border border-border rounded-lg overflow-hidden shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)] flex flex-col ${
                       offset === 0 ? '' : 'transition-[transform,opacity] duration-300'

@@ -18,18 +18,22 @@ export default function FadeUp({
   const ref = useRef(null)
 
   useGSAP(() => {
-    gsap.from(ref.current, {
-      y,
-      opacity: 0,
-      duration,
-      delay,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: ref.current,
-        start,
-        toggleActions: 'play none none none',
-      },
+    const mm = gsap.matchMedia()
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      gsap.from(ref.current, {
+        y,
+        opacity: 0,
+        duration,
+        delay,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: ref.current,
+          start,
+          toggleActions: 'play none none none',
+        },
+      })
     })
+    return () => mm.revert()
   }, { scope: ref })
 
   return (

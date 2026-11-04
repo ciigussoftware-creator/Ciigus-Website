@@ -70,6 +70,7 @@ export default function Navbar() {
         <button
           className="flex md:hidden flex-col gap-1.25 bg-transparent border-none cursor-pointer p-1"
           aria-label="Open menu"
+          aria-expanded={menuOpen}
           onClick={() => setMenuOpen((o) => !o)}
         >
           <span
@@ -91,6 +92,8 @@ export default function Navbar() {
       </nav>
 
       <div
+        // React 18 has no boolean `inert` prop; an empty string sets the attribute
+        inert={menuOpen ? undefined : ''}
         style={{
           left: '50%',
           transform: 'translateX(-50%)',

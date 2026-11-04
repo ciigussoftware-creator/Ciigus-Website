@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { useGSAP } from '@gsap/react'
 import { whatsappUrl } from '../lib/contact'
@@ -8,16 +8,57 @@ import StatusBadge from './StatusBadge'
 export default function ProjectModal({ item, onClose }) {
   const overlayRef = useRef(null)
   const panelRef = useRef(null)
+  const onCloseRef = useRef(onClose)
+  onCloseRef.current = onClose
+  const isOpen = Boolean(item)
+
+  // Callers pass an inline onClose, so read it from a ref; otherwise this would
+  // re-run on every parent render and lose the element that opened the modal.
+  useEffect(() => {
+    if (!isOpen) return
+    const opener = document.activeElement
+    const panel = panelRef.current
+    panel.focus({ preventScroll: true })
+
+    const onKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        onCloseRef.current()
+        return
+      }
+      if (e.key !== 'Tab') return
+      const focusable = panel.querySelectorAll('a[href], button:not([disabled])')
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      const active = document.activeElement
+      if (e.shiftKey && (active === first || active === panel || !panel.contains(active))) {
+        e.preventDefault()
+        last.focus()
+      } else if (!e.shiftKey && (active === last || !panel.contains(active))) {
+        e.preventDefault()
+        first.focus()
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      opener?.focus?.()
+    }
+  }, [isOpen])
 
   useGSAP(
     () => {
       if (!item) return
-      gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' })
-      gsap.fromTo(
-        panelRef.current,
-        { opacity: 0, scale: 0.92, y: 20 },
-        { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: 'power3.out' }
-      )
+      const mm = gsap.matchMedia()
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        gsap.fromTo(overlayRef.current, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' })
+        gsap.fromTo(
+          panelRef.current,
+          { opacity: 0, scale: 0.92, y: 20 },
+          { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: 'power3.out' }
+        )
+      })
+      return () => mm.revert()
     },
     { scope: overlayRef, dependencies: [item] }
   )
@@ -32,8 +73,12 @@ export default function ProjectModal({ item, onClose }) {
     >
       <div
         ref={panelRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label={item.title}
+        tabIndex={-1}
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-surface border border-border rounded-lg shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)]"
+        className="outline-none relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-surface border border-border rounded-lg shadow-[0_30px_60px_-20px_rgba(0,0,0,0.6)]"
       >
         <button
           onClick={onClose}

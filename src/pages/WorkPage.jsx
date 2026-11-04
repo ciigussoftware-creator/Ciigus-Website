@@ -37,32 +37,42 @@ export default function WorkPage() {
   const visible = filter === workFilterAll ? workItems : workItems.filter((p) => p.category === filter)
 
   useGSAP(() => {
-    gsap.from('[data-work-hero]', {
-      y: 30,
-      opacity: 0,
-      duration: 0.7,
-      stagger: 0.15,
-      ease: 'power3.out',
+    const mm = gsap.matchMedia()
+    mm.add('(prefers-reduced-motion: no-preference)', () => {
+      gsap.from('[data-work-hero]', {
+        y: 30,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.15,
+        ease: 'power3.out',
+      })
     })
+    return () => mm.revert()
   }, { scope: heroRef })
 
   useEffect(() => {
+    const mm = gsap.matchMedia()
     const ctx = gsap.context(() => {
-      introTweenRef.current = gsap.from(cardsRef.current.filter(Boolean), {
-        y: 40,
-        opacity: 0,
-        duration: 0.6,
-        stagger: 0.08,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: gridRef.current,
-          start: 'top 80%',
-          toggleActions: 'play none none none',
-        },
+      mm.add('(prefers-reduced-motion: no-preference)', () => {
+        introTweenRef.current = gsap.from(cardsRef.current.filter(Boolean), {
+          y: 40,
+          opacity: 0,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: gridRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none none',
+          },
+        })
       })
     }, gridRef)
 
-    return () => ctx.revert()
+    return () => {
+      mm.revert()
+      ctx.revert()
+    }
   }, [])
 
   // On a filter change, finish the scroll-in intro (so no card is left hidden)
