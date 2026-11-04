@@ -8,6 +8,7 @@
   --color-accent: #0095fc;
   --color-accent-d: #0077c9;
   --color-accent2: #00ba9c;
+  --color-accent2-d: #007f6b;
   --color-green: #d5e73c;
   --color-text: #0d0d0d;
   --color-muted: #444444;
@@ -105,7 +106,7 @@
 }
 
 @utility section-label {
-  @apply text-[0.78rem] uppercase tracking-[0.12em] text-accent2 font-medium mb-4;
+  @apply text-[0.78rem] uppercase tracking-[0.12em] text-accent2-d font-medium mb-4;
 }
 
 @utility section-title {

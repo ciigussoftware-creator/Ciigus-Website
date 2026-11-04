@@ -111,9 +111,9 @@ export default function ContactPage() {
           <div className="text-[0.78rem] uppercase tracking-[0.12em] text-accent2 font-medium mb-4">
             Get In Touch
           </div>
-          <h1 className="font-head text-gray-900 text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-[-1px] leading-[1.15] mb-4">
+          <h2 className="font-head text-gray-900 text-[clamp(1.8rem,4vw,2.8rem)] font-bold tracking-[-1px] leading-[1.15] mb-4">
             Let's build something great together.
-          </h1>
+          </h2>
           <p className="text-gray-600 font-light leading-relaxed mb-10 max-w-md mx-auto">
             Tell us about your project , we'll figure out the path forward.
           </p>

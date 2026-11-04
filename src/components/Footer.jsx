@@ -4,14 +4,14 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Logo from './Logo'
 import BrandIcon from './BrandIcon'
-import { contact, socialLinks, footerServiceLinks, footerCompanyLinks, footerLegalLinks, footerAbout } from '../data/content'
+import { contact, socialLinks, footerServiceLinks, footerCompanyLinks, footerLegalLinks, footerAbout, officeHours } from '../data/content'
 import { whatsappUrl } from '../lib/contact'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const MUTED = '#a8b3cc'
 const WHITE = '#ffffff'
-const FAINT = '#4a5568'
+const FAINT = '#718099'
 
 function FooterLink({ to, children }) {
   return (
@@ -146,7 +146,12 @@ export default function Footer() {
               <span>📍</span> {contact.location}
             </div>
             <div className="flex items-start gap-2" style={{ color: MUTED, fontSize: '0.875rem' }}>
-              <span>🕐</span> Mon–Fri, 9AM–6PM (Sri Lanka Time)
+              <span>🕐</span>
+              <div>
+                {officeHours.map((oh) => (
+                  <div key={oh.day}>{oh.day}: {oh.hours}</div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
