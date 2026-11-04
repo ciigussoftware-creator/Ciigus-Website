@@ -19,33 +19,27 @@ npm run preview  # preview the production build locally
 
 ```
 ciigus-website/
-├── index.html                 ← HTML shell (fonts, root div)
+├── index.html                 ← HTML shell (fonts, favicons, SEO placeholder)
 ├── package.json
-├── vite.config.js
+├── vite.config.js             ← Vite + SEO plugin (per-route HTML, sitemap, robots.txt)
+├── vercel.json                ← clean URLs + SPA rewrite
+├── .env.example               ← copy to .env and set VITE_WEB3FORMS_KEY
 ├── public/
-│   ├── favicon.png            ← browser tab icon (logo mark)
-│   ├── logo-mark.png          ← gear + C symbol only
-│   └── logo-full.png          ← full logo (symbol + wordmark)
+│   ├── favicon.ico / favicon.png / apple-touch-icon.png / og-image.jpg
+│   └── assets/                ← service images, work screenshots, hero video, tech logos
 └── src/
-    ├── main.jsx               ← React entry point
-    ├── App.jsx                ← assembles all sections
-    ├── index.css              ← global styles + CSS color variables
-    ├── assets/
-    │   ├── logo-mark.png
-    │   └── logo-full.png
-    ├── data/
-    │   └── content.js         ← ALL editable text/content lives here
-    └── components/
-        ├── Navbar.jsx / .css
-        ├── Logo.jsx  / .css
-        ├── Hero.jsx  / .css
-        ├── Marquee.jsx / .css
-        ├── Services.jsx / .css
-        ├── Process.jsx / .css
-        ├── Work.jsx / .css
-        ├── About.jsx / .css
-        ├── Contact.jsx / .css
-        └── Footer.jsx / .css
+    ├── main.jsx               ← React entry point (BrowserRouter)
+    ├── App.jsx                ← route table
+    ├── index.css              ← Tailwind import, @theme tokens, shared @utility classes
+    ├── layouts/RootLayout.jsx ← Navbar, Footer, floating WhatsApp button
+    ├── pages/                 ← one file per route (Home, Services, Work, About,
+    │                            Packages, Contact, Legal, NotFound)
+    ├── components/            ← page sections and shared UI
+    ├── hooks/                 ← useEnquiryForm, usePageMeta
+    ├── lib/                   ← contact.js (Web3Forms, WhatsApp), seo.js
+    ├── assets/                ← logo images used by Logo.jsx
+    └── data/
+        └── content.js         ← ALL editable text/content lives here
 ```
 
 ## Editing Content
@@ -60,32 +54,35 @@ To update contact info, edit the `contact` object at the bottom.
 
 ## Changing Colors
 
-All colors are CSS variables at the top of **`src/index.css`** inside `:root`.
+All colors are Tailwind theme tokens in the `@theme` block at the top of
+**`src/index.css`** (used as classes like `text-accent`, `bg-green`).
 The brand colors are derived from the logo:
 
-- `--accent`  → cyan/blue (the "C")
-- `--accent2` → green (the gear)
-- `--green`   → bright leaf-green highlight
-- `--brand-grad` → the green→cyan gradient used on buttons & highlights
+- `--color-accent`  → cyan/blue (the "C")
+- `--color-accent2` → teal
+- `--color-green`   → bright lime highlight
+
+The green→blue gradient on buttons and highlights is the `btn-primary`
+utility (`bg-linear-to-br from-green to-accent`).
 
 ## Logo
 
-Two cropped, transparent-background versions of the logo are included:
+The `<Logo />` component (`src/components/Logo.jsx`) shows the gear + C symbol
+(`src/assets/Ciiguss_withou_text.png`) with an optional "Ciigus" wordmark.
+It's used in the navbar, the footer and the intro overlay.
 
-- **Mark** (`logo-mark.png`) — gear + C symbol, used in the navbar.
-- **Full** (`logo-full.png`) — symbol + "Ciigus Software" wordmark, used in the footer.
+## Contact Forms
 
-The `<Logo />` component (`src/components/Logo.jsx`) renders either via the
-`variant="mark"` or `variant="full"` prop.
+Both forms (the home page `src/components/Contact.jsx` and
+`src/pages/ContactPage.jsx`) send enquiries by email through
+[Web3Forms](https://web3forms.com):
 
-## Wiring Up the Contact Form
+1. Create an access key at https://web3forms.com.
+2. Copy `.env.example` to `.env` and set `VITE_WEB3FORMS_KEY`.
+3. On Vercel, add the same variable under Settings → Environment Variables,
+   then redeploy (Vite bakes it in at build time).
 
-The form in `src/components/Contact.jsx` currently shows a success message
-on submit. To actually send messages, the easiest option is **Formspree**:
-
-1. Create a form at https://formspree.io and copy the endpoint URL.
-2. In `Contact.jsx`'s `handleSubmit`, POST the `form` state to that URL
-   (an example `fetch` call is included as a comment).
+Without the key, the forms show an error with a "message us on WhatsApp" link.
 
 ## Deployment
 

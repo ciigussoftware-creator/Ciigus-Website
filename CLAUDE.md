@@ -1,34 +1,65 @@
 # CLAUDE.md
 
+Marketing site for Ciigus Software (Sri Lanka). Client-side React SPA, deployed on Vercel.
+
 ## Stack
-- React 18 + Vite
-- Tailwind CSS v4 (`@tailwindcss/vite` plugin — theme lives in `src/index.css` via `@theme`, not `tailwind.config.js`)
-- GSAP + `@gsap/react` for all animation (scroll reveals, marquee, counters). No other animation library — don't add framer-motion or similar; extend GSAP patterns instead.
+- React 18 + Vite 5, plain JS/JSX (no TypeScript, no PropTypes)
+- react-router-dom 7 (`BrowserRouter` in `src/main.jsx`)
+- Tailwind CSS v4 via `@tailwindcss/vite`; theme lives in `src/index.css` `@theme` (no `tailwind.config.js`)
+- GSAP + `@gsap/react` for all animation. Don't add another animation library.
+- No lint, formatter, tests or CI are configured.
+
+## Commands
+```bash
+npm install
+cp .env.example .env   # set VITE_WEB3FORMS_KEY
+npm run dev            # http://localhost:5173
+npm run build          # dist/ + per-route HTML, sitemap.xml, robots.txt
+npm run preview
+```
+
+## Routes (`src/App.jsx`, all nested in `src/layouts/RootLayout.jsx`)
+| Path | Page |
+|---|---|
+| `/` | `pages/HomePage.jsx` (Hero, TechMarquee, Services, Process, Work, About, Contact) |
+| `/services` | `pages/ServicesPage.jsx` |
+| `/work` | `pages/WorkPage.jsx` (`?category=` filter, `#timber-plywood`) |
+| `/about` | `pages/AboutPage.jsx` |
+| `/packages` | `pages/PackagesPage.jsx` |
+| `/contact` | `pages/ContactPage.jsx` (`?service=`, `?package=` pre-fill) |
+| `/privacy`, `/terms` | `pages/LegalPage.jsx` with `privacyPolicy` / `termsOfService` |
+| `*` | `pages/NotFoundPage.jsx` |
+
+`RootLayout` renders ScrollToTop, Navbar, the page, Footer and FloatingWhatsApp, and calls `usePageMeta`. Adding a route means adding it in `App.jsx` **and** a `pageMeta` entry in `content.js` (that drives titles, the sitemap and the prerendered HTML).
 
 ## Structure
-- `src/components/*.jsx` — one component per file, default export, function declaration (`export default function Name() {}`).
-- `src/data/content.js` — single source of truth for all copy/content (arrays of objects). Components map over this data; don't hardcode copy strings into JSX.
-- `src/assets/` — images, imported directly (`import x from '../assets/x.png'`).
-- `App.jsx` composes section components in page order; no routing.
+- `src/pages/` one file per route; `src/components/` sections and shared UI (one default-exported function per file)
+- `src/data/content.js` single source for copy and data: `services`, `workItems`, `packages`, `contact`, `pageMeta`, legal text, nav/footer links. Components map over it; put new copy here, not in JSX. Stats (`workStats`) are computed from `workItems`.
+- `src/lib/contact.js` WhatsApp URLs, form validation, Web3Forms submit
+- `src/lib/seo.js` per-route meta tags, shared by `vite.config.js` and `src/hooks/usePageMeta.js`
+- `src/hooks/useEnquiryForm.js` form state, errors, honeypot, submit status
+- `public/assets/` Services, work screenshots, hero video, tech logos (referenced as `/assets/...`). Commit optimized `.webp` only; PNG originals in `public/assets/work/` are git-ignored.
+- `src/assets/` logo images imported by `Logo.jsx`
+
+## Contact forms
+Two forms (`components/Contact.jsx` on Home, `pages/ContactPage.jsx`) share `useEnquiryForm`. On submit they POST JSON to `https://api.web3forms.com/submit` with `access_key` = `import.meta.env.VITE_WEB3FORMS_KEY`. The key is inlined into the public bundle (normal for Web3Forms) and must also be set in Vercel's environment variables; without it the forms show the error state with a WhatsApp fallback. Every WhatsApp link goes through `whatsappUrl()` in `lib/contact.js`.
+
+## SEO / build
+The `ciigus-seo` plugin in `vite.config.js` writes `<route>.html` for each `pageMeta` route with its meta baked in, plus `sitemap.xml` and `robots.txt`. `vercel.json` `cleanUrls` serves them; keep it.
 
 ## Styling
-- Tailwind utility classes inline in JSX only. No CSS modules, styled-components, or per-component CSS files.
-- Shared repeated patterns go in `src/index.css` as `@utility` classes (e.g. `section-label`, `section-title`, `btn-primary`) — add new ones there rather than repeating long class strings across components.
-- Design tokens (`--color-*`, `--font-*`, `--radius-*`) are defined in `index.css`'s `@theme` block. Add new tokens there before using arbitrary values repeatedly.
+- Tailwind classes inline in JSX. No CSS modules, CSS-in-JS or per-component stylesheets.
+- Repeated patterns are `@utility` classes in `index.css` (`section-label`, `section-title`, `section-sub`, `btn-primary`, `btn-outline`, `btn-outline-light`…). Add tokens to `@theme` before reusing an arbitrary value.
+- Base styles must stay inside `@layer base`, or they override Tailwind utilities.
 
-## Animation conventions (GSAP)
-Two idioms are used depending on the component; pick the matching one — don't mix:
+## Animation (GSAP)
+- On-mount animations: `useGSAP(() => {...}, { scope: ref })`, targeting children by `data-*` attributes.
+- Scroll reveals: `gsap.registerPlugin(ScrollTrigger)` at module scope; in `useEffect`, use `gsap.context(..., ref)` and return `ctx.revert()`. Use `start: 'top 80%'` and `toggleActions: 'play none none none'`.
+- Lists: collect nodes with `ref={(el) => (arr.current[i] = el)}` and animate with `stagger`.
+- Wrap new animations in `gsap.matchMedia().add('(prefers-reduced-motion: no-preference)', ...)`.
+- Animate a plain wrapper, not elements with CSS `transition-*` classes (buttons); otherwise GSAP records wrong end values.
 
-1. **Simple, always-visible-on-mount elements** (Hero, Marquee): use `useGSAP(() => { ... }, { scope: sectionRef })` from `@gsap/react`, targeting children via `data-*` attributes (e.g. `data-hero="heading"`) rather than refs when animating multiple named parts.
-2. **Scroll-triggered sections** (Services, Process, Work): use `gsap.registerPlugin(ScrollTrigger)` at module scope, then inside `useEffect`, wrap animations in `gsap.context(() => { ... }, sectionRef)` and return `() => ctx.revert()` for cleanup. Trigger config: `start: 'top 80%'` (or `70–85%` depending on section), `toggleActions: 'play none none none'` (animate once, no reverse).
-3. **Lists of repeated items** (cards, steps): collect DOM nodes into a ref array via `ref={(el) => (arrRef.current[i] = el)}`, animate the array with `stagger`.
-
-## Component conventions
-- Props destructured with defaults in the function signature (e.g. `Logo({ variant = 'mark', size = 36, showText = true })`).
-- No comments except where a non-obvious workaround or constraint needs explaining (see `Contact.jsx`'s form-submission note as the existing example — short block explaining integration options, not restating what code does).
-- No PropTypes/TypeScript — plain JS, informal prop contracts documented via default values and usage.
-
-## What not to do
-- Don't introduce a second animation library alongside GSAP.
-- Don't move content out of `src/data/content.js` into inline JSX.
-- Don't add a CSS-in-JS solution or component-scoped stylesheets.
+## Conventions
+- Destructure props with defaults in the signature (`Logo({ variant = 'mark', size = 36 })`).
+- Comments only for non-obvious constraints or workarounds.
+- Some older components still hardcode copy or use inline `style={{}}`; don't copy that pattern into new code.
