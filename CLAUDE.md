@@ -23,9 +23,9 @@ npm run preview
 |---|---|
 | `/` | `pages/HomePage.jsx` (Hero, TechMarquee, Services, Process, Work, About, Contact) |
 | `/services` | `pages/ServicesPage.jsx` |
-| `/work` | `pages/WorkPage.jsx` (`?category=` filter, `#timber-plywood`) |
+| `/work` | `pages/WorkPage.jsx` (`?category=` filter, `?project=<id>` opens that project's popup, `#timber-plywood`) |
 | `/about` | `pages/AboutPage.jsx` |
-| `/packages` | `pages/PackagesPage.jsx` |
+| `/packages` | `pages/PackagesPage.jsx` (`?industry=` selects a package tab) |
 | `/contact` | `pages/ContactPage.jsx` (`?service=`, `?package=` pre-fill) |
 | `/privacy`, `/terms` | `pages/LegalPage.jsx` with `privacyPolicy` / `termsOfService` |
 | `*` | `pages/NotFoundPage.jsx` |
@@ -34,7 +34,7 @@ npm run preview
 
 ## Structure
 - `src/pages/` one file per route; `src/components/` sections and shared UI (one default-exported function per file)
-- `src/data/content.js` single source for copy and data: `services`, `workItems`, `packages`, `contact`, `pageMeta`, legal text, nav/footer links. Components map over it; put new copy here, not in JSX. Stats (`workStats`) are computed from `workItems`.
+- `src/data/content.js` single source for copy and data: `services`, `workItems`, `industryPackages`/`packageSystems`, `contact`, `pageMeta`, legal text, nav/footer links. Components map over it; put new copy here, not in JSX. Stats (`workStats`) are computed from `workItems`.
 - `src/lib/contact.js` WhatsApp URLs, form validation, Web3Forms submit
 - `src/lib/seo.js` per-route meta tags, shared by `vite.config.js` and `src/hooks/usePageMeta.js`
 - `src/hooks/useEnquiryForm.js` form state, errors, honeypot, submit status

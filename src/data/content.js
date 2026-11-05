@@ -31,8 +31,8 @@ export const pageMeta = {
     description: "Ciigus Software is a Sri Lankan team of developers, QA engineers, business analysts and project managers building clean, scalable software.",
   },
   "/packages": {
-    title: "Pricing & Packages | Ciigus Software",
-    description: "Website and software packages from LKR 35,000. Compare the Starter, Growth and Enterprise packages to find the right fit for your business.",
+    title: "Industry Software Packages | Ciigus Software",
+    description: "Ready-made software packages for pharmacies, restaurants, construction companies, retail shops and timber & plywood businesses. Every package can be customised.",
   },
   "/contact": {
     title: "Contact Us | Ciigus Software",
@@ -164,8 +164,6 @@ export const services = [
     highlight: true,
   },
 ];
-
-const serviceName = (id) => services.find((s) => s.id === id).title;
 
 export const servicesSection = {
   label: "What We Do",
@@ -478,79 +476,173 @@ export const navItems = [
   { href: "/contact", label: "Contact" },
 ];
 
-export const packages = [
+// Systems offered across the industry packages. A package can rename a system
+// (e.g. "Full ERP System"); the Mix and match section lists these default names.
+// icon: a key of PackageIcon's shapes.
+export const packageSystems = {
+  queue: { name: "Patient Queue Management System", icon: "queue" },
+  inventory: { name: "Inventory Management System", icon: "inventory" },
+  pos: { name: "POS System", icon: "pos" },
+  payroll: { name: "Payroll System", icon: "payroll" },
+  erp: { name: "ERP System", icon: "erp" },
+  website: { name: "Portfolio Website + SEO", icon: "website" },
+  ecommerce: { name: "E-commerce Website + SEO", icon: "ecommerce" },
+  dms: { name: "Document Management System (DMS)", icon: "dms" },
+  logmaster: { name: "LogMaster (Timber Measurement System)", icon: "logmaster" },
+};
+
+const payrollBenefit = "Run monthly salaries, with EPF/ETF and APIT worked out for you.";
+
+// id: tab id and the /packages?industry= value. shortName: tab label on phones.
+// projectId: optional workItems id whose screenshot is shown in the panel; its
+// "See it in action" button opens that project's popup, or goes to workLink if set.
+// systems[].id: a key of packageSystems; name overrides its default name.
+export const industryPackages = [
   {
-    id: "starter",
-    name: "Starter Package",
-    price: "LKR 35,000–60,000",
-    popular: false,
-    bestFor: "Small businesses, startups",
-    covers: [serviceName("websites-ecommerce"), serviceName("seo-search-visibility")],
-    features: [
-      "Business website (up to 5 pages)",
-      "Mobile responsive design",
-      "Basic SEO setup",
-      "Contact form",
-      "1 month free support",
+    id: "pharmacy",
+    name: "Pharmacy / Dispensary",
+    shortName: "Pharmacy",
+    icon: "pharmacy",
+    pitch: "Systems that help a pharmacy or dispensary serve patients in order and keep track of medicine stock.",
+    systems: [
+      { id: "queue", benefit: "Call patients in turn so your counter stays calm and organised." },
+      { id: "inventory", benefit: "Track medicine stock so you can see what's running low and reorder in time." },
     ],
   },
   {
-    id: "growth",
-    name: "Growth Package",
-    price: "LKR 80,000–150,000",
-    popular: true,
-    bestFor: "Growing businesses",
-    covers: [serviceName("websites-ecommerce"), serviceName("mobile-desktop-apps"), serviceName("erp-business-systems")],
-    features: [
-      "Everything in Starter",
-      "Custom web app or mobile app",
-      "Admin dashboard",
-      "Payment gateway integration",
-      "API integrations",
-      "3 months free support",
+    id: "restaurant",
+    name: "Restaurant",
+    shortName: "Restaurant",
+    icon: "restaurant",
+    pitch: "Everything a restaurant needs day to day, from taking orders at the counter to paying staff and showing your menu online.",
+    projectId: "restaurant-ella",
+    systems: [
+      { id: "pos", benefit: "Take orders and handle bills quickly at the counter." },
+      { id: "inventory", benefit: "Keep track of ingredients and supplies so you don't run out mid-service." },
+      { id: "payroll", benefit: payrollBenefit },
+      { id: "erp", name: "Full ERP System", benefit: "Bring orders, stock and staff together in one system." },
+      { id: "website", name: "Portfolio Website with Menu + SEO", benefit: "Show your menu online and help new customers find you on Google." },
     ],
   },
   {
-    id: "enterprise",
-    name: "Enterprise Package",
-    price: "Custom Pricing",
-    popular: false,
-    bestFor: "Large businesses, complex systems",
-    covers: [serviceName("erp-business-systems"), serviceName("timber-plywood")],
-    features: [
-      "Everything in Growth",
-      "Full custom software (ERP, payroll, SaaS)",
-      "Dedicated project manager",
-      "Multi-phase delivery",
-      "6 months support + SLA",
+    id: "construction",
+    name: "Construction Company",
+    shortName: "Construction",
+    icon: "construction",
+    pitch: "Software for construction companies that need their projects, documents and online presence in order.",
+    projectId: "construction-erp",
+    systems: [
+      { id: "erp", benefit: "Manage projects, materials, labour and costs in one place." },
+      { id: "website", benefit: "Show your completed projects and help clients find you on Google." },
+      { id: "dms", benefit: "Keep drawings, contracts and site records organised and easy to find." },
+    ],
+  },
+  {
+    id: "retail",
+    name: "Retail Shop",
+    shortName: "Retail",
+    icon: "retail",
+    pitch: "Sell online, keep track of your stock and pay your staff, with systems built for a growing shop.",
+    projectId: "printer-supplies-ecommerce",
+    systems: [
+      { id: "ecommerce", benefit: "Sell your products online and help shoppers find your store on Google." },
+      { id: "inventory", benefit: "See what's selling and what needs reordering before it runs out." },
+      { id: "payroll", benefit: payrollBenefit },
+    ],
+  },
+  {
+    id: "timber-plywood",
+    name: "Plywood & Timber Company",
+    shortName: "Timber",
+    icon: "timber",
+    pitch: "Built around how timber and plywood businesses work, from measuring logs to paying staff and bringing in enquiries online.",
+    projectId: "plywood-website-seo",
+    workLink: "/work#timber-plywood",
+    systems: [
+      { id: "payroll", benefit: payrollBenefit },
+      { id: "website", benefit: "Present your products and help buyers find you on Google." },
+      { id: "logmaster", benefit: "Record and track log measurements digitally instead of on paper." },
     ],
   },
 ];
 
-export const packagesNote = `${serviceName("ai-computer-vision")} and ${serviceName("branding-content-marketing")} projects are quoted individually. Tell us what you need and we'll send a proposal.`;
-
-export const packagesFaq = [
-  {
-    q: "How is pricing determined for a project?",
-    a: "Pricing depends on scope — number of pages or screens, custom features, integrations, and timeline. The ranges above cover most projects; we give an exact quote after a short discovery call.",
+export const packagesPage = {
+  hero: {
+    label: "Packages",
+    title: "Ready-made solutions for your industry",
+    sub: "Choose your industry to see what's included. Every package can be customised to fit your business.",
   },
-  {
-    q: "Do I need to pay the full amount upfront?",
-    a: "No. We typically split payment into milestones — an initial deposit to start, and remaining payments tied to delivery stages.",
+  tabsLabel: "Choose your industry",
+  includedLabel: "What's included",
+  includedCount: (n) => `${n} ${n === 1 ? "system" : "systems"} included`,
+  quoteLabel: "Request a Quote",
+  quoteMessage: (packageName) => `Hi Ciigus Software, I'd like a quote for the ${packageName} package.`,
+  showcaseLabel: "From our work",
+  seeLabel: "See it in action",
+  noShowcase: {
+    title: "See it before you decide",
+    desc: "Every package starts with a free consultation and a demo of the systems.",
   },
-  {
-    q: "What happens after the free support period ends?",
-    a: "You can continue on a maintenance retainer, or reach out on an as-needed basis for paid support and updates.",
+  buildOwn: {
+    label: "Build your own package",
+    title: "Pick only the systems you need.",
+    desc: "Choose systems from any package, in any combination, and we'll quote for exactly what you pick.",
+    hint: "Tap a system to add or remove it.",
+    selectedCount: (n) => (n === 0 ? "No systems selected yet" : `${n} ${n === 1 ? "system" : "systems"} selected`),
+    clearLabel: "Clear selection",
+    ctaLabel: "Get a quote on WhatsApp",
+    ctaMessage: "Hi Ciigus Software, I'd like to build a custom package of systems.",
+    selectionMessage: (names) =>
+      `Hi Ciigus Software, I'd like a quote for these systems:\n${names.map((name) => `- ${name}`).join("\n")}`,
   },
-  {
-    q: "Can I upgrade from Starter to Growth later?",
-    a: "Yes — most projects are built to scale. We can extend an existing Starter site into a Growth-tier product without starting over.",
+  process: {
+    label: "How it works",
+    title: "From first chat to ongoing support.",
+    steps: [
+      { title: "Free consultation", desc: "We talk through how your business runs and which systems you need." },
+      { title: "Demo", desc: "We show you the systems working so you can see how they fit." },
+      { title: "Setup", desc: "We set up and configure the systems for your business." },
+      { title: "Training", desc: "We train you and your staff to use the systems day to day." },
+      { title: "Ongoing support", desc: "We stay available for help, fixes and updates after you go live." },
+    ],
   },
-  {
-    q: "How long does a typical project take?",
-    a: "A Starter site usually takes 1-3 weeks. Growth projects run 4-8 weeks. Enterprise systems are scoped in phases with timelines defined during planning.",
+  faq: {
+    label: "FAQ",
+    title: "Common questions about our packages.",
+    items: [
+      {
+        q: "Can I customise a package?",
+        a: "Yes. Every package is a starting point, and we adjust the systems to match how your business works.",
+      },
+      {
+        q: "Can I buy just one system?",
+        a: "Yes. You can choose a single system from any package.",
+      },
+      {
+        q: "Can I combine systems from different packages?",
+        a: "Yes. Pick the systems you need from any package and we'll quote for that combination.",
+      },
+      {
+        q: "How do I get a price?",
+        a: "Every business is different, so we quote after a free consultation. Message us on WhatsApp or send an enquiry through the contact page.",
+      },
+      {
+        q: "Do you provide training and support?",
+        a: "Yes. We train your staff during setup and stay available for support after you go live.",
+      },
+      {
+        q: "What if my industry isn't listed?",
+        a: "We also build custom systems. Tell us what you need and we'll suggest the right approach.",
+      },
+    ],
   },
-];
+  finalCta: {
+    title: "Need something different? We build custom systems too.",
+    desc: "Tell us how your business works and we'll suggest the right system.",
+    whatsapp: { label: "Chat on WhatsApp", message: "Hi Ciigus Software, I'd like to discuss a custom system." },
+    contact: { label: "Contact Us", to: "/contact" },
+  },
+};
 
 export const contact = {
   email: "ciigussoftware@gmail.com",
@@ -682,7 +774,7 @@ export const termsOfService = {
     {
       heading: "Quotes and pricing",
       body: [
-        "Package prices and timelines shown on this website are indicative ranges, not binding offers. A project is confirmed only by a written proposal or agreement that sets out its scope, price and timeline.",
+        "Package descriptions on this website are general information, not binding offers. A project is confirmed only by a written proposal or agreement that sets out its scope, price and timeline.",
       ],
     },
     {

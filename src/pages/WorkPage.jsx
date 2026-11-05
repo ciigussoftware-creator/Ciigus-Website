@@ -27,7 +27,17 @@ export default function WorkPage() {
   const initialFilter = categoryBySlug[searchParams.get('category')] ?? workFilterAll
   const shownFilterRef = useRef(initialFilter)
   const [filter, setFilter] = useState(initialFilter)
-  const [activeItem, setActiveItem] = useState(null)
+  // ?project=<id> (linked from /packages) opens that project's popup on load
+  const [activeItem, setActiveItem] = useState(() => workItems.find((p) => p.id === searchParams.get('project')) ?? null)
+
+  const closeModal = () => {
+    setActiveItem(null)
+    if (searchParams.has('project')) {
+      const next = new URLSearchParams(searchParams)
+      next.delete('project')
+      setSearchParams(next, { replace: true })
+    }
+  }
 
   const chooseFilter = (f) => {
     setFilter(f)
@@ -229,7 +239,7 @@ export default function WorkPage() {
         </Link>
       </section>
 
-      <ProjectModal item={activeItem} onClose={() => setActiveItem(null)} />
+      <ProjectModal item={activeItem} onClose={closeModal} />
     </>
   )
 }
